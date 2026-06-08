@@ -1,5 +1,5 @@
 {
-  "name": "navi",
+  "name": "open-navi",
   "version": "0.1.0",
   "description": "NAVI local daemon CLI wrapper for Node.js installs.",
   "main": "index.cjs",

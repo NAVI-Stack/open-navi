@@ -71,8 +71,8 @@ func requirePackagedDaemonControl(w io.Writer, env []string) bool {
 	}
 	fmt.Fprintln(w, "NAVI local daemon lifecycle is available only through the packaged Node or Python CLI.")
 	fmt.Fprintln(w, "Install and run one of:")
-	fmt.Fprintln(w, "  npm install navi")
-	fmt.Fprintln(w, "  pip install navi")
+	fmt.Fprintln(w, "  npm install open-navi")
+	fmt.Fprintln(w, "  pip install open-navi")
 	fmt.Fprintln(w)
 	fmt.Fprintln(w, "Developer builds may set NAVI_DISTRIBUTION_CHANNEL=dev explicitly.")
 	return false

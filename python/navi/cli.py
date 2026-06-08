@@ -30,7 +30,7 @@ def resolve_native_binary(env: Mapping[str, str] | None = None) -> str:
         return str(bundled)
 
     raise FileNotFoundError(
-        "NAVI native binary was not found. Reinstall the navi pip package, "
+        "NAVI native binary was not found. Reinstall the open-navi pip package, "
         "or set NAVI_NATIVE_BIN to a built navi executable."
     )
 

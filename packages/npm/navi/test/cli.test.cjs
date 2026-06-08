@@ -17,3 +17,9 @@ test("resolveNativeBinary honors NAVI_NATIVE_BIN override", () => {
   assert.equal(cli.resolveNativeBinary({ NAVI_NATIVE_BIN: bin }), bin);
 });
 
+test("resolveNativeBinary points users to open-navi and NAVI_NATIVE_BIN when missing", () => {
+  assert.throws(
+    () => cli.resolveNativeBinary({}),
+    /Reinstall the open-navi npm package.*NAVI_NATIVE_BIN/s
+  );
+});

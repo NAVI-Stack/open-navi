@@ -86,7 +86,7 @@ From the NAVI repository root (directory containing `compose.yml`):
 ```bash
 docker compose -f compose.yml up -d --build   # NaviD Docker mode
 make build build-cli                          # Build local NaviD + NaviExe
-npm install navi && navi daemon start         # User-facing local daemon mode
+npm install open-navi && navi daemon start    # User-facing local daemon mode
 NAVI_DISTRIBUTION_CHANNEL=dev ./bin/navi.exe daemon start  # Developer local daemon shortcut
 make test                                     # Run unit tests
 make generate-python                          # Synchronize Python models
@@ -146,5 +146,6 @@ The documentation corpus in `docs/` is the single authoritative knowledge base. 
 ## Communications Style
 
 - Use `NAVI` (uppercase) for product headings.
-- Use `navi` (lowercase) for package names, CLI commands, and paths.
+- Use `open-navi` for the public npm/PyPI package name.
+- Use `navi` (lowercase) for CLI commands, the Python import package, and paths.
 - Commits should follow: `<package>: <description>`.

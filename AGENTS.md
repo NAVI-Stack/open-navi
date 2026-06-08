@@ -93,12 +93,12 @@ docker compose -f compose.yml up -d --build
 #   NAVI_OLLAMA_URL=https://... docker compose -f compose.strict.yml up -d --build
 
 # NaviD local daemon mode (user-facing)
-npm install navi
+npm install open-navi
 navi daemon start
 navi daemon status
 navi daemon stop
 # or:
-pip install navi
+pip install open-navi
 navi daemon start
 
 # Native developer builds
@@ -441,7 +441,8 @@ Reference the NAVI-native integration guide at [`docs/agents/everything-claude-c
 | Context | Convention |
 |---------|-----------|
 | Product headings, badges | `NAVI` (uppercase) |
-| Package names, CLI commands, paths | `navi` (lowercase) |
+| Public package name | `open-navi` |
+| CLI commands, Python import package, paths | `navi` (lowercase) |
 | Go package names | snake_case directories, standard Go naming |
 | Directive modes | `ALL_CAPS` constants (e.g., `DirectiveModeAct`) |
 | NATS subjects | `navi.<stream>.<event>` |

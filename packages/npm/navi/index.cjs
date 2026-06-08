@@ -20,7 +20,7 @@ function resolveNativeBinary(env = process.env) {
   }
 
   throw new Error(
-    "NAVI native binary was not found. Reinstall the navi npm package, " +
+    "NAVI native binary was not found. Reinstall the open-navi npm package, " +
       "or set NAVI_NATIVE_BIN to a built navi executable."
   );
 }

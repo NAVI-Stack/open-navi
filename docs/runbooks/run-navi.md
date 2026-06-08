@@ -57,16 +57,16 @@ docker compose -f compose.yml logs -f navid
 
 ## Start NaviD: Local Daemon Mode
 
-Install one of the packaged CLIs:
+Install the public `open-navi` package through Node or Python. Both packages expose the installed command as `navi`:
 
 ```bash
-npm install navi
+npm install open-navi
 ```
 
 or:
 
 ```bash
-pip install navi
+pip install open-navi
 ```
 
 Start the daemon:
@@ -143,6 +143,8 @@ $env:NAVI_SQLITE_PATH = "C:\navi\data\navi.db"; navi daemon start
 ```
 
 Use `./bin/navid` directly only for foreground developer debugging. Use packaged `navi daemon start` for user-facing persistent background operation.
+
+For wrapper development, set `NAVI_NATIVE_BIN` to point the npm/pip wrapper at a locally built native `navi` executable.
 
 ## Health Check
 

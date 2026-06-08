@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "navi"
+name = "open-navi"
 version = "0.1.0"
 description = "NAVI Python SDK and local daemon CLI wrapper."
 requires-python = ">=3.10"

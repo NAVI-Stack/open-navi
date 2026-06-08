@@ -24,6 +24,13 @@ class CliWrapperTests(unittest.TestCase):
 
         self.assertEqual(cli.resolve_native_binary({"NAVI_NATIVE_BIN": override}), override)
 
+    def test_resolve_native_binary_points_users_to_open_navi_and_override(self):
+        with self.assertRaisesRegex(
+            FileNotFoundError,
+            r"Reinstall the open-navi pip package.*NAVI_NATIVE_BIN",
+        ):
+            cli.resolve_native_binary({})
+
 
 if __name__ == "__main__":
     unittest.main()

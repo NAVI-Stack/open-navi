@@ -191,7 +191,7 @@ func TestRequirePackagedDaemonControlMessage(t *testing.T) {
 		t.Fatal("expected direct daemon control to be rejected")
 	}
 	text := out.String()
-	for _, want := range []string{"npm install navi", "pip install navi", "NAVI_DISTRIBUTION_CHANNEL=dev"} {
+	for _, want := range []string{"npm install open-navi", "pip install open-navi", "NAVI_DISTRIBUTION_CHANNEL=dev"} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("expected message to mention %q, got %q", want, text)
 		}
