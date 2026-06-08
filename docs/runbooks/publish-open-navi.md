@@ -130,7 +130,7 @@ Run it with `publish=true` only after release approval and registry access are c
 - GitHub environments: `npm` and `pypi`, preferably with required reviewer approval.
 - First npm publish: `NPM_TOKEN`, owned by the release maintainer or release organization, unless npm trusted publishing is already configured for every package.
 - PyPI pending trusted publisher for project `open-navi`, repository `NAVI-Stack/open-navi`, workflow filename `publish-open-navi.yml`, and environment `pypi`.
-- Final package license metadata in npm and PyPI. The workflow blocks publish mode while the license is missing or still marked `UNLICENSED`.
+- Apache-2.0 package license metadata in npm and PyPI. The workflow blocks publish mode if license metadata drifts from the approved Apache-2.0 release state.
 
 Before the first public upload, confirm the registry names are still available:
 
@@ -165,7 +165,7 @@ The first check validates package names, aligned versions, native optional depen
 
 Before the first release:
 
-- Decide the legal release license and add it to npm package metadata, PyPI metadata, and the root license file.
+- Confirm the legal release license remains Apache-2.0 across root `LICENSE`/`NOTICE`, npm package metadata, and PyPI metadata.
 - Confirm the public owner identity for npm/PyPI. Current metadata uses `NAVI Stack` and repository `NAVI-Stack/open-navi`.
 - Configure GitHub environments `npm` and `pypi` with release maintainers as required reviewers.
 - Configure a PyPI pending trusted publisher for `open-navi`; pending publishers can create the project on first successful publish.

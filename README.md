@@ -141,6 +141,10 @@ Docker mode overrides state paths in Compose (`/navi/data/...`). Local daemon mo
 - [docs/specs/gateway-api.md](docs/specs/gateway-api.md)
 - [docs/VISION.md](docs/VISION.md)
 
+## License
+
+Open-NAVI is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
 ## Current Gaps
 
 - The browser Console (`web-src/navi-console/`, React + Vite, built into `web/`) is feature-complete for chat but lacks e2e/integration test coverage.
