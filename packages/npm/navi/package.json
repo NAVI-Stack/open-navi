@@ -2,15 +2,43 @@
   "name": "open-navi",
   "version": "0.1.0",
   "description": "NAVI local daemon CLI wrapper for Node.js installs.",
+  "author": "NAVI Stack",
+  "homepage": "https://github.com/NAVI-Stack/open-navi#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NAVI-Stack/open-navi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NAVI-Stack/open-navi/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "registry": "https://registry.npmjs.org"
+  },
+  "keywords": [
+    "navi",
+    "ai",
+    "agent",
+    "daemon",
+    "local-first"
+  ],
   "main": "index.cjs",
   "bin": {
     "navi": "./cli.cjs"
   },
   "files": [
-    "bin/",
+    "README.md",
     "cli.cjs",
     "index.cjs"
   ],
+  "optionalDependencies": {
+    "open-navi-darwin-arm64": "0.1.0",
+    "open-navi-darwin-x64": "0.1.0",
+    "open-navi-linux-arm64": "0.1.0",
+    "open-navi-linux-x64": "0.1.0",
+    "open-navi-win32-x64": "0.1.0"
+  },
   "scripts": {
     "test": "node --test test/*.test.cjs"
   },

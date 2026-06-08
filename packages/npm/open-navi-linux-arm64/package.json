@@ -1,0 +1,29 @@
+{
+  "name": "open-navi-linux-arm64",
+  "version": "0.1.0",
+  "description": "NAVI native binaries for Linux arm64.",
+  "author": "NAVI Stack",
+  "homepage": "https://github.com/NAVI-Stack/open-navi#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NAVI-Stack/open-navi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NAVI-Stack/open-navi/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "registry": "https://registry.npmjs.org"
+  },
+  "files": [
+    "bin/"
+  ],
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "license": "UNLICENSED"
+}

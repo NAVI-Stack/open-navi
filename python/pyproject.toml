@@ -6,13 +6,23 @@ build-backend = "setuptools.build_meta"
 name = "open-navi"
 version = "0.1.0"
 description = "NAVI Python SDK and local daemon CLI wrapper."
+readme = "README.md"
 requires-python = ">=3.10"
+authors = [
+    { name = "NAVI Stack" }
+]
+keywords = ["navi", "ai", "agent", "daemon", "local-first"]
+
+[project.urls]
+Homepage = "https://github.com/NAVI-Stack/open-navi#readme"
+Repository = "https://github.com/NAVI-Stack/open-navi"
+Issues = "https://github.com/NAVI-Stack/open-navi/issues"
 
 [project.scripts]
 navi = "navi.cli:main"
 
 [tool.setuptools]
-packages = ["navi", "navi.tests"]
+packages = ["navi", "navi.bin", "navi._generated", "navi.tests"]
 
 [tool.setuptools.package-data]
 navi = ["bin/*"]

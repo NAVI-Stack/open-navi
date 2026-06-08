@@ -20,7 +20,9 @@ from types import ModuleType
 
 # python/navi/_schema.py  →  parents[2] is the repo root.
 #   parents[0] = python/navi   parents[1] = python   parents[2] = <repo root>
-_GENERATED = (
+_PACKAGED_GENERATED = Path(__file__).resolve().parent / "_generated" / "governed.py"
+
+_REPO_GENERATED = (
     Path(__file__).resolve().parents[2]
     / "schema"
     / "python"
@@ -30,12 +32,13 @@ _GENERATED = (
 
 
 def _load_governed() -> ModuleType:
-    if not _GENERATED.exists():
+    generated = _PACKAGED_GENERATED if _PACKAGED_GENERATED.exists() else _REPO_GENERATED
+    if not generated.exists():
         raise ImportError(
             "navi SDK: generated governed types not found at %s; "
-            "run `make generate-python` first" % _GENERATED
+            "run `make generate-python` first" % generated
         )
-    spec = importlib.util.spec_from_file_location("navi_schema_governed", _GENERATED)
+    spec = importlib.util.spec_from_file_location("navi_schema_governed", generated)
     if spec is None or spec.loader is None:  # pragma: no cover - defensive
         raise ImportError("navi SDK: could not load generated governed types")
     module = importlib.util.module_from_spec(spec)

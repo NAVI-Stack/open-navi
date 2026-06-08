@@ -112,6 +112,21 @@ web-src/packages/*/.ladle/.cache/
 .codex-gocache/
 .codex-gomodcache/
 
+# Release packaging scratch/output. Native payloads are generated during release
+# preparation and should not be committed as repo source.
+.npm-cache/
+.release-check/
+python/build/
+python/dist/
+python/*.egg-info/
+python/navi/bin/*
+!python/navi/bin/
+!python/navi/bin/__init__.py
+python/navi/_generated/*
+!python/navi/_generated/
+!python/navi/_generated/__init__.py
+packages/npm/open-navi-*/bin/
+
 # Plugin specific files
 plugins/navi-programmer/programmer-sample-reference
 web-src/navi-console/.vite/

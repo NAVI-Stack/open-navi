@@ -17,9 +17,24 @@ test("resolveNativeBinary honors NAVI_NATIVE_BIN override", () => {
   assert.equal(cli.resolveNativeBinary({ NAVI_NATIVE_BIN: bin }), bin);
 });
 
+test("nativePackageName maps supported platforms", () => {
+  assert.equal(cli.nativePackageName("darwin", "arm64"), "open-navi-darwin-arm64");
+  assert.equal(cli.nativePackageName("darwin", "x64"), "open-navi-darwin-x64");
+  assert.equal(cli.nativePackageName("linux", "arm64"), "open-navi-linux-arm64");
+  assert.equal(cli.nativePackageName("linux", "x64"), "open-navi-linux-x64");
+  assert.equal(cli.nativePackageName("win32", "x64"), "open-navi-win32-x64");
+});
+
+test("nativePackageName rejects unsupported platforms", () => {
+  assert.throws(
+    () => cli.nativePackageName("freebsd", "x64"),
+    /Unsupported platform/
+  );
+});
+
 test("resolveNativeBinary points users to open-navi and NAVI_NATIVE_BIN when missing", () => {
   assert.throws(
     () => cli.resolveNativeBinary({}),
-    /Reinstall the open-navi npm package.*NAVI_NATIVE_BIN/s
+    /Reinstall the open-navi npm package.*optional dependencies.*NAVI_NATIVE_BIN/s
   );
 });

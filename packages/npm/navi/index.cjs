@@ -8,20 +8,43 @@ function executableName(platform = process.platform) {
   return platform === "win32" ? "navi.exe" : "navi";
 }
 
-function resolveNativeBinary(env = process.env) {
+function nativePackageName(platform = process.platform, arch = process.arch) {
+  if (platform === "darwin" && arch === "arm64") return "open-navi-darwin-arm64";
+  if (platform === "darwin" && arch === "x64") return "open-navi-darwin-x64";
+  if (platform === "linux" && arch === "arm64") return "open-navi-linux-arm64";
+  if (platform === "linux" && arch === "x64") return "open-navi-linux-x64";
+  if (platform === "win32" && arch === "x64") return "open-navi-win32-x64";
+
+  throw new Error(`Unsupported platform for open-navi native binaries: ${platform}-${arch}`);
+}
+
+function resolveNativeBinary(env = process.env, platform = process.platform, arch = process.arch) {
   const override = (env.NAVI_NATIVE_BIN || "").trim();
   if (override) {
     return override;
   }
 
-  const bundled = path.join(__dirname, "bin", executableName());
+  const bundled = path.join(__dirname, "bin", executableName(platform));
   if (existsSync(bundled)) {
     return bundled;
   }
 
+  try {
+    const nativePkgJson = require.resolve(`${nativePackageName(platform, arch)}/package.json`);
+    const nativeRoot = path.dirname(nativePkgJson);
+    const nativeBin = path.join(nativeRoot, "bin", executableName(platform));
+    if (existsSync(nativeBin)) {
+      return nativeBin;
+    }
+  } catch (err) {
+    if (err && err.code !== "MODULE_NOT_FOUND") {
+      throw err;
+    }
+  }
+
   throw new Error(
-    "NAVI native binary was not found. Reinstall the open-navi npm package, " +
-      "or set NAVI_NATIVE_BIN to a built navi executable."
+    "NAVI native binary was not found. Reinstall the open-navi npm package " +
+      "with optional dependencies enabled, or set NAVI_NATIVE_BIN to a built navi executable."
   );
 }
 
@@ -44,6 +67,7 @@ function run(args = process.argv.slice(2), options = {}) {
 module.exports = {
   buildNativeEnv,
   executableName,
+  nativePackageName,
   resolveNativeBinary,
   run,
 };

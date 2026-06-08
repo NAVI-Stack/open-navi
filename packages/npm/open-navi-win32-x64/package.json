@@ -1,0 +1,29 @@
+{
+  "name": "open-navi-win32-x64",
+  "version": "0.1.0",
+  "description": "NAVI native binaries for Windows x64.",
+  "author": "NAVI Stack",
+  "homepage": "https://github.com/NAVI-Stack/open-navi#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NAVI-Stack/open-navi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NAVI-Stack/open-navi/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "registry": "https://registry.npmjs.org"
+  },
+  "files": [
+    "bin/"
+  ],
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "license": "UNLICENSED"
+}

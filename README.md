@@ -137,6 +137,7 @@ Docker mode overrides state paths in Compose (`/navi/data/...`). Local daemon mo
 - [docs/README.md](docs/README.md)
 - [Visual Architecture Guide](docs/architecture/navi-system-architecture-guide.md)
 - [docs/runbooks/run-navi.md](docs/runbooks/run-navi.md)
+- [docs/runbooks/publish-open-navi.md](docs/runbooks/publish-open-navi.md)
 - [docs/specs/gateway-api.md](docs/specs/gateway-api.md)
 - [docs/VISION.md](docs/VISION.md)
 

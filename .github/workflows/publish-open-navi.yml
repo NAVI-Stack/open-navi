@@ -1,0 +1,212 @@
+name: Publish open-navi
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publish to npm and PyPI after building artifacts"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python packaging tools
+        run: python -m pip install --upgrade pip setuptools wheel twine
+
+      - name: Read package version
+        id: version
+        shell: bash
+        run: |
+          version="$(node -p "require('./packages/npm/navi/package.json').version")"
+          python_version="$(python - <<'PY'
+          import tomllib
+          from pathlib import Path
+          print(tomllib.loads(Path('python/pyproject.toml').read_text())['project']['version'])
+          PY
+          )"
+          if [ "$version" != "$python_version" ]; then
+            echo "npm version $version does not match PyPI version $python_version" >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Check release metadata
+        shell: bash
+        run: |
+          node scripts/check-open-navi-release.cjs
+          if [ "${{ github.event.inputs.publish }}" = "true" ]; then
+            node scripts/check-open-navi-release.cjs --for-publish
+            node scripts/check-open-navi-registries.cjs --expect unpublished-version --version "${{ steps.version.outputs.version }}"
+          fi
+
+      - name: Verify wrappers
+        run: |
+          go test ./cmd/navi -count=1
+          node --test packages/npm/navi/test/cli.test.cjs
+          cd python
+          python -m unittest navi.tests.test_cli navi.tests.test_query_context
+
+      - name: Build npm native packages and PyPI wheels
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf dist/npm python/dist python/build python/*.egg-info
+          mkdir -p dist/npm python/dist
+          version="${{ steps.version.outputs.version }}"
+          ldflags="-X main.version=${version}"
+
+          build_target() {
+            local goos="$1"
+            local goarch="$2"
+            local node_platform="$3"
+            local node_arch="$4"
+            local wheel_platform="$5"
+            local exe=""
+            if [ "$node_platform" = "win32" ]; then
+              exe=".exe"
+            fi
+
+            rm -rf bin
+            mkdir -p bin
+            CGO_ENABLED=0 GOOS="$goos" GOARCH="$goarch" go build -ldflags "$ldflags" -o "bin/navi${exe}" ./cmd/navi
+            CGO_ENABLED=0 GOOS="$goos" GOARCH="$goarch" go build -ldflags "$ldflags" -o "bin/navid${exe}" ./cmd/navid
+
+            node scripts/prepare-open-navi-release.cjs --platform "$node_platform" --arch "$node_arch"
+
+            (cd "packages/npm/open-navi-${node_platform}-${node_arch}" && npm pack --pack-destination "../../../dist/npm")
+            (cd python && rm -rf build && python setup.py bdist_wheel --plat-name "$wheel_platform" --python-tag py3 && python setup.py clean --all)
+          }
+
+          build_target darwin arm64 darwin arm64 macosx_11_0_arm64
+          build_target darwin amd64 darwin x64 macosx_10_15_x86_64
+          build_target linux arm64 linux arm64 manylinux2014_aarch64
+          build_target linux amd64 linux x64 manylinux2014_x86_64
+          build_target windows amd64 win32 x64 win_amd64
+
+          (cd packages/npm/navi && npm pack --pack-destination "../../../dist/npm")
+
+      - name: Inspect artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="${{ steps.version.outputs.version }}"
+          ls -lh dist/npm
+          ls -lh python/dist
+          test -f "dist/npm/open-navi-${version}.tgz"
+          for target in darwin-arm64 darwin-x64 linux-arm64 linux-x64 win32-x64; do
+            test -f "dist/npm/open-navi-${target}-${version}.tgz"
+          done
+          for platform in macosx_11_0_arm64 macosx_10_15_x86_64 manylinux2014_aarch64 manylinux2014_x86_64 win_amd64; do
+            test -f "python/dist/open_navi-${version}-py3-none-${platform}.whl"
+          done
+          node scripts/verify-open-navi-artifacts.cjs --npm-dist dist/npm --python-dist python/dist
+          node scripts/smoke-open-navi-install.cjs --npm-dist dist/npm --python-dist python/dist --python python
+          python -m twine check python/dist/*.whl
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: open-navi-release-artifacts
+          path: |
+            dist/npm/*.tgz
+            python/dist/*.whl
+
+  publish-npm:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ github.event.inputs.publish == 'true' }}
+    environment: npm
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: open-navi-release-artifacts
+          path: release-artifacts
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Prepare npm authentication
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm --version
+          if [ -n "${NODE_AUTH_TOKEN:-}" ]; then
+            printf '//registry.npmjs.org/:_authToken=%s\nregistry=https://registry.npmjs.org\n' "$NODE_AUTH_TOKEN" > ~/.npmrc
+            echo "Using NPM_TOKEN for npm publish."
+          else
+            echo "NPM_TOKEN is not set; npm publish will use trusted publishing OIDC if package settings are configured."
+          fi
+
+      - name: Publish native npm packages first
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm publish release-artifacts/dist/npm/open-navi-darwin-arm64-${{ needs.build.outputs.version }}.tgz --access public --provenance
+          npm publish release-artifacts/dist/npm/open-navi-darwin-x64-${{ needs.build.outputs.version }}.tgz --access public --provenance
+          npm publish release-artifacts/dist/npm/open-navi-linux-arm64-${{ needs.build.outputs.version }}.tgz --access public --provenance
+          npm publish release-artifacts/dist/npm/open-navi-linux-x64-${{ needs.build.outputs.version }}.tgz --access public --provenance
+          npm publish release-artifacts/dist/npm/open-navi-win32-x64-${{ needs.build.outputs.version }}.tgz --access public --provenance
+
+      - name: Publish open-navi npm wrapper
+        run: npm publish release-artifacts/dist/npm/open-navi-${{ needs.build.outputs.version }}.tgz --access public --provenance
+
+  publish-pypi:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ github.event.inputs.publish == 'true' }}
+    environment: pypi
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: open-navi-release-artifacts
+          path: release-artifacts
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: release-artifacts/python/dist
+
+  verify-published:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - publish-npm
+      - publish-pypi
+    if: ${{ github.event.inputs.publish == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Verify registries show the release
+        run: node scripts/check-open-navi-registries.cjs --expect published --version "${{ needs.build.outputs.version }}" --retries 12 --retry-delay-ms 10000
