@@ -14,11 +14,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi"
-	"github.com/ceoai/navi/internal/onboarding"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi"
+	"github.com/open-navi/navi/internal/onboarding"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 const postOnboardingGreetingContent = "Hi, I'm NAVI. Your local instance is ready. I can help you chat, plan, inspect system state, and start working through tasks when you are."

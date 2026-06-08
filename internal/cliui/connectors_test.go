@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/ceoai/navi/internal/connectors"
+	"github.com/open-navi/navi/internal/connectors"
 	"github.com/stretchr/testify/assert"
 )
 

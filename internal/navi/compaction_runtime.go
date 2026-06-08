@@ -5,8 +5,8 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/ceoai/navi/internal/navi/compaction"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/navi/compaction"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
 )
 
 type chatCompactionStore interface {

@@ -17,8 +17,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ceoai/navi/internal/store"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/store"
 )
 
 type contextKey string

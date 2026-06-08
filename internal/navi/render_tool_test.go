@@ -7,12 +7,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/inference"
-	"github.com/ceoai/navi/internal/navi/render"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	"github.com/ceoai/navi/internal/schema"
-	navitool "github.com/ceoai/navi/internal/tool"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/inference"
+	"github.com/open-navi/navi/internal/navi/render"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/schema"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 func renderTestThread() *ChatThread {

@@ -9,7 +9,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // FirstRunState is the compact state machine used by the backend-hosted

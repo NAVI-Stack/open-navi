@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/llmkb"
+	"github.com/open-navi/navi/internal/llmkb"
 	"gopkg.in/yaml.v3"
 )
 

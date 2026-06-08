@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/config"
+	"github.com/open-navi/navi/internal/config"
 )
 
 type mockOpStore struct {

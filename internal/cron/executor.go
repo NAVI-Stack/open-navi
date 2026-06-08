@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // DirectiveWriter is the subset of directive writes required for cron.

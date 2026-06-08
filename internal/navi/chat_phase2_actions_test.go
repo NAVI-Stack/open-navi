@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/navi"
-	navistore "github.com/ceoai/navi/internal/navi/store"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	corestore "github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/navi"
+	navistore "github.com/open-navi/navi/internal/navi/store"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	corestore "github.com/open-navi/navi/internal/store"
 )
 
 func newTestNAVIForChatActions(t *testing.T) (*navi.NAVI, *navistore.SQLiteStore) {

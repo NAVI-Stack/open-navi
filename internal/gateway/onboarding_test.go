@@ -10,9 +10,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/connectors"
-	"github.com/ceoai/navi/internal/store"
-	"github.com/ceoai/navi/internal/worldmodel"
+	"github.com/open-navi/navi/internal/connectors"
+	"github.com/open-navi/navi/internal/store"
+	"github.com/open-navi/navi/internal/worldmodel"
 )
 
 func TestHandleOnboardingRecoveryCreatesOwnerContact(t *testing.T) {

@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	naviruntime "github.com/ceoai/navi/internal/runtime"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
 )
 
 func TestExecuteRunStatusUsesRuntimeSessionID(t *testing.T) {

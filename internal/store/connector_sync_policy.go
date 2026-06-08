@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // CIP P5 — connector_sync_policy store (raw SQL, no ORM).

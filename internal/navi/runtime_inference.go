@@ -7,12 +7,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/navi/inference"
-	"github.com/ceoai/navi/internal/navi/orchestration"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	"github.com/ceoai/navi/internal/schema"
-	navitool "github.com/ceoai/navi/internal/tool"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/navi/inference"
+	"github.com/open-navi/navi/internal/navi/orchestration"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/schema"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 func (l *AgentLoop) decideRunInference(

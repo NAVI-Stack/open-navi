@@ -3,7 +3,7 @@ package navi
 import (
 	"context"
 
-	"github.com/ceoai/navi/internal/presence"
+	"github.com/open-navi/navi/internal/presence"
 )
 
 // PresenceService returns the stable NAVI-owned presence service for this instance.

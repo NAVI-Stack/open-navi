@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/test/e2e/harness"
+	"github.com/open-navi/navi/test/e2e/harness"
 )
 
 var suiteStack *harness.Stack

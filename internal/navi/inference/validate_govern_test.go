@@ -5,10 +5,10 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/navi/proposals"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/navi/proposals"
+	"github.com/open-navi/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 type mockValidationDependency struct {

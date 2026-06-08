@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/ceoai/navi/internal/intake/canonicalize"
+	"github.com/open-navi/navi/internal/intake/canonicalize"
 )
 
 // minQuoteRunes is the shortest span we treat as a meaningful quote.

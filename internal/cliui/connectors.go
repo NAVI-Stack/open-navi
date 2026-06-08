@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/ceoai/navi/internal/connectors"
 	"github.com/charmbracelet/huh"
+	"github.com/open-navi/navi/internal/connectors"
 )
 
 // FetchSetupSchema fetches the connector schema from the gateway.

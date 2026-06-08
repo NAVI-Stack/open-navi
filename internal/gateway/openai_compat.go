@@ -19,11 +19,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/navi"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/navi"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 type openAIRequest struct {

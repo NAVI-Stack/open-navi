@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ceoai/navi/internal/config"
+	"github.com/open-navi/navi/internal/config"
 )
 
 // ControlPlane is the runtime service that owns all LLM provider infrastructure:

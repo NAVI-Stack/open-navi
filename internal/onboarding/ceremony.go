@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/store"
 )
 
 const (

@@ -10,10 +10,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/ceoai/navi/internal/llm"
-	coreskill "github.com/ceoai/navi/internal/navi/skill"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/llm"
+	coreskill "github.com/open-navi/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 type SkillEntry = coreskill.SkillEntry

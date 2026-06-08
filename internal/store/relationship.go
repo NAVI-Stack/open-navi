@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // SaveRelationship inserts or updates a relationship edge.

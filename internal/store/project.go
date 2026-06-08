@@ -9,7 +9,7 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func SaveProject(ctx context.Context, db *sql.DB, project schema.Project) error {

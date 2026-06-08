@@ -9,7 +9,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 // streamState accumulates partial results across NDJSON lines.

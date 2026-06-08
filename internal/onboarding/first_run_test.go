@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/store"
 )
 
 func TestFirstRunTransitions(t *testing.T) {

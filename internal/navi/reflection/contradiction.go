@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // RecentMessagesFunc returns the most recent directive messages (newest first) for

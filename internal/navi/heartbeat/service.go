@@ -10,10 +10,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/navi"
-	"github.com/ceoai/navi/internal/prompts"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/navi"
+	"github.com/open-navi/navi/internal/prompts"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 const (

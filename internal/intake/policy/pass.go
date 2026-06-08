@@ -3,7 +3,7 @@ package policy
 import (
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // CostPerKBUSD is the V1 synthetic per-kilobyte intake cost estimate (distill +

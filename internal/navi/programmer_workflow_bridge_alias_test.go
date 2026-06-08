@@ -3,8 +3,8 @@ package navi
 import (
 	"testing"
 
-	"github.com/ceoai/navi/internal/navi/skill"
-	navitool "github.com/ceoai/navi/internal/tool"
+	"github.com/open-navi/navi/internal/navi/skill"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 // These tests prove the workflow bridge accepts Coder-facing skill aliases

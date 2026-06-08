@@ -1,6 +1,6 @@
 package model
 
-import "github.com/ceoai/navi/internal/llm"
+import "github.com/open-navi/navi/internal/llm"
 
 func normalizeProviderResponse(profile llmProviderProfile, raw *llm.Response) map[string]any {
 	if raw == nil {

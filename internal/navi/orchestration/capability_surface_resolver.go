@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	navitool "github.com/ceoai/navi/internal/tool"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 // CapabilitySurfaceResolver resolves a request-scoped capability surface over

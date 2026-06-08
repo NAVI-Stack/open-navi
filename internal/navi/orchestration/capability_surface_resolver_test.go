@@ -4,9 +4,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/schema"
-	navitool "github.com/ceoai/navi/internal/tool"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/schema"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 func TestCapabilitySurfaceResolverIncludesToolsInRegistryOrder(t *testing.T) {

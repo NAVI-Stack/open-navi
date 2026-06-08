@@ -4,9 +4,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/inference"
-	"github.com/ceoai/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/inference"
+	"github.com/open-navi/navi/internal/navi/orchestration"
 )
 
 func TestApplyInferenceModelDirectiveCannotWidenResolvedRuntimeSurface(t *testing.T) {

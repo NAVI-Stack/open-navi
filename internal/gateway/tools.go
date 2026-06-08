@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	navitool "github.com/ceoai/navi/internal/tool"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 func (s *Server) toolRegistry() *navitool.Registry {

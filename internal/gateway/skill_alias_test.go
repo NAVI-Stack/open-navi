@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ceoai/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/navi/skill"
 )
 
 // TestLookupSkillEntryResolvesCoderAlias proves the gateway skill-by-id lookup

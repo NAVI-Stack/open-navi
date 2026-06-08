@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/store"
 )
 
 func openTelemetryKBTestRepo(t *testing.T) *store.SQLiteLLMKBRepo {

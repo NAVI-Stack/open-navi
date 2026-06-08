@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	artifactsvc "github.com/ceoai/navi/internal/artifact"
-	"github.com/ceoai/navi/internal/schema"
+	artifactsvc "github.com/open-navi/navi/internal/artifact"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func (s *Server) emitArtifactWorkspaceEvent(ctx context.Context, eventType schema.EventType, artifact *schema.Artifact, version *schema.ArtifactVersion, resultStatus string, failureClass schema.FailureClass, failureCode string, startedAt time.Time) {

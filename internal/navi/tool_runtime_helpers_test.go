@@ -10,15 +10,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/inference"
-	"github.com/ceoai/navi/internal/navi/proposals"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
-	navitool "github.com/ceoai/navi/internal/tool"
-	"github.com/ceoai/navi/internal/worldmodel"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/inference"
+	"github.com/open-navi/navi/internal/navi/proposals"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
+	navitool "github.com/open-navi/navi/internal/tool"
+	"github.com/open-navi/navi/internal/worldmodel"
 )
 
 func cacheInferenceEnvelope(t *testing.T, run *naviruntime.RunState, envelope inference.DecisionEnvelope) {

@@ -7,11 +7,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/navi"
-	"github.com/ceoai/navi/internal/navi/inference"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	"github.com/ceoai/navi/internal/schema"
-	corestore "github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/navi"
+	"github.com/open-navi/navi/internal/navi/inference"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/schema"
+	corestore "github.com/open-navi/navi/internal/store"
 )
 
 func TestAssistantEventVisibilityInternalHeartbeatSession(t *testing.T) {

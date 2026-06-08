@@ -5,8 +5,8 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/ceoai/navi/internal/navi/orchestration"
-	orchestrationcontext "github.com/ceoai/navi/internal/navi/orchestration/context"
+	"github.com/open-navi/navi/internal/navi/orchestration"
+	orchestrationcontext "github.com/open-navi/navi/internal/navi/orchestration/context"
 )
 
 // defaultContextRetrievalBudgetTokens bounds how much retrieved context the

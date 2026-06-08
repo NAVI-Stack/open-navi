@@ -24,17 +24,17 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ceoai/navi/internal/connectors"
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/connectors"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // PkgDirs maps a Go import path to its source directory (relative to the module
 // root) for the go/ast enum-value pass.
 var PkgDirs = map[string]string{
-	"github.com/ceoai/navi/internal/schema":     "internal/schema",
-	"github.com/ceoai/navi/internal/governor":   "internal/governor",
-	"github.com/ceoai/navi/internal/connectors": "internal/connectors",
+	"github.com/open-navi/navi/internal/schema":     "internal/schema",
+	"github.com/open-navi/navi/internal/governor":   "internal/governor",
+	"github.com/open-navi/navi/internal/connectors": "internal/connectors",
 }
 
 // EnumMember is one member of a generated enum. Name is the canonical

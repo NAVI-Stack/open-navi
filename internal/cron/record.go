@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/store"
 )
 
 func jobFromRecord(r store.CronJobRecord) (Job, error) {

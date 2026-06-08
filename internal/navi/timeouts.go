@@ -3,7 +3,7 @@ package navi
 import (
 	"time"
 
-	naviruntime "github.com/ceoai/navi/internal/runtime"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
 )
 
 // Chat-path timeout budgets form a strict ordering that MUST be preserved:

@@ -8,11 +8,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/ceoai/navi/internal/capability"
-	"github.com/ceoai/navi/internal/connectors"
-	"github.com/ceoai/navi/internal/navi/plugin"
-	"github.com/ceoai/navi/internal/navi/skill"
-	navitool "github.com/ceoai/navi/internal/tool"
+	"github.com/open-navi/navi/internal/capability"
+	"github.com/open-navi/navi/internal/connectors"
+	"github.com/open-navi/navi/internal/navi/plugin"
+	"github.com/open-navi/navi/internal/navi/skill"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 const (

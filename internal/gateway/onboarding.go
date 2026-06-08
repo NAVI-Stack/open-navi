@@ -14,8 +14,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/onboarding"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/onboarding"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // OwnerPassport is the one-time ownership and recovery artifact returned by

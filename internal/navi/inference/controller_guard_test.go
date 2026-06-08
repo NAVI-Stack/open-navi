@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/navi/orchestration"
 )
 
 // synthesisThatAllowsCapabilityExecution returns a DecisionSynthesis whose

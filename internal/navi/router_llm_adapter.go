@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/ceoai/navi/internal/llm"
-	navitool "github.com/ceoai/navi/internal/tool"
+	"github.com/open-navi/navi/internal/llm"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 type llmCallbacksRouter struct {

@@ -4,10 +4,10 @@ import (
 	"context"
 	"strings"
 
-	"github.com/ceoai/navi/internal/navi/inference"
-	"github.com/ceoai/navi/internal/navi/orchestration"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/navi/inference"
+	"github.com/open-navi/navi/internal/navi/orchestration"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // AuthorizeWorkerTask routes worker execution through the same ICS authority seam used by runs.

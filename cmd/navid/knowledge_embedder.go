@@ -8,8 +8,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ceoai/navi/internal/navi/skill"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/store"
 )
 
 const (

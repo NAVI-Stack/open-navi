@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/ceoai/navi/internal/navi"
-	"github.com/ceoai/navi/internal/navi/experience"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/navi"
+	"github.com/open-navi/navi/internal/navi/experience"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 type experienceSnapshotResponse struct {

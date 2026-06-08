@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"time"
 
-	intakepolicy "github.com/ceoai/navi/internal/intake/policy"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	intakepolicy "github.com/open-navi/navi/internal/intake/policy"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // CIP P5 — intake sync policy + sync log gateway surface.

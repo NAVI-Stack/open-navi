@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	coreskill "github.com/ceoai/navi/internal/navi/skill"
-	storepkg "github.com/ceoai/navi/internal/store"
+	coreskill "github.com/open-navi/navi/internal/navi/skill"
+	storepkg "github.com/open-navi/navi/internal/store"
 )
 
 func TestContactHandlersReturnPersistedTimestamps(t *testing.T) {

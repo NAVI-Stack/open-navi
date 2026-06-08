@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/store"
 )
 
 func setupGapDetectorDB(t *testing.T) (*GapDetector, *context.Context) {

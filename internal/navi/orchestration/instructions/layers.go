@@ -1,7 +1,7 @@
 // Package instructions compiles explicit NCOS instruction layers.
 package instructions
 
-import "github.com/ceoai/navi/internal/navi/orchestration"
+import "github.com/open-navi/navi/internal/navi/orchestration"
 
 type SystemCoreInput struct {
 	IdentityRules      []string

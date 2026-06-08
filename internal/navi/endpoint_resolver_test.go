@@ -5,9 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/ceoai/navi/internal/navi"
-	navistore "github.com/ceoai/navi/internal/navi/store"
-	corestore "github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/navi"
+	navistore "github.com/open-navi/navi/internal/navi/store"
+	corestore "github.com/open-navi/navi/internal/store"
 )
 
 func TestEndpointResolverConsoleOriginEnsuresConsoleEndpoint(t *testing.T) {

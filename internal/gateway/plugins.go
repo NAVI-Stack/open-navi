@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/ceoai/navi/internal/navi/plugin"
+	"github.com/open-navi/navi/internal/navi/plugin"
 )
 
 // findPluginManifest returns the registered manifest matching id (by ID or PluginID).

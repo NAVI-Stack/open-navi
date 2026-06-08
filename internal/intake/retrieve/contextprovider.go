@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"log/slog"
 
-	"github.com/ceoai/navi/internal/intake/embed"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/intake/embed"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // ContextProvider adapts the hybrid retrieval surface to the Conscious loop's

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // Step is a single step in a Compose sequence. Reversibility determines

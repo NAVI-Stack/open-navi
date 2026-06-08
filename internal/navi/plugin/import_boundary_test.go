@@ -11,7 +11,7 @@ import (
 func TestInternalPackagesDoNotImportConcretePlugins(t *testing.T) {
 	repoRoot := filepath.Clean(filepath.Join("..", "..", ".."))
 	internalRoot := filepath.Join(repoRoot, "internal")
-	forbidden := "github.com/ceoai/navi/" + "plugins/"
+	forbidden := "github.com/open-navi/navi/" + "plugins/"
 
 	err := filepath.WalkDir(internalRoot, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {

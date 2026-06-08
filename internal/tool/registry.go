@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // Registry stores tools in registration order with collision detection.

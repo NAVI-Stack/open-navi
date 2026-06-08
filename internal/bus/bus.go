@@ -10,9 +10,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
 	"github.com/nats-io/nats.go"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // Handler is a callback invoked when a subscribed event is received.

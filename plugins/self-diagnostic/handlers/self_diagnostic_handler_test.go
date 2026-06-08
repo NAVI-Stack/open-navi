@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	coreskill "github.com/ceoai/navi/internal/navi/skill"
-	"github.com/ceoai/navi/internal/store"
+	coreskill "github.com/open-navi/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/store"
 )
 
 var GetInternalHandler = coreskill.GetInternalHandler

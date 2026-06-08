@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/navi"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/navi"
 )
 
 const activeChatMetaKeyPrefix = "active_chat"

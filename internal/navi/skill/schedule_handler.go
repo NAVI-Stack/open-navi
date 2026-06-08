@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/cron"
-	"github.com/ceoai/navi/internal/store"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/cron"
+	"github.com/open-navi/navi/internal/store"
 )
 
 func argString(args map[string]any, keys ...string) string {

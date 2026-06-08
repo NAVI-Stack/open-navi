@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // ObserveOutcome reconciles actual runtime execution outcomes back into ICS-owned state.

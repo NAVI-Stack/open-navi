@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 // knownModels is the static catalog of Anthropic Claude models.

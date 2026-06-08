@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // TestIntakePolicyRoundTrip exercises the CIP P5 gateway surface: GET the

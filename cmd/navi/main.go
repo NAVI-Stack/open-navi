@@ -20,10 +20,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/ceoai/navi/internal/cliui"
-	"github.com/ceoai/navi/internal/coderalias"
-	"github.com/ceoai/navi/internal/connectors"
-	"github.com/ceoai/navi/internal/onboarding"
+	"github.com/open-navi/navi/internal/cliui"
+	"github.com/open-navi/navi/internal/coderalias"
+	"github.com/open-navi/navi/internal/connectors"
+	"github.com/open-navi/navi/internal/onboarding"
 	"nhooyr.io/websocket"
 )
 

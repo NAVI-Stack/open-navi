@@ -9,7 +9,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ceoai/navi/connectors"
+	"github.com/open-navi/navi/connectors"
 )
 
 // GatewayBridgeConnector wraps an out-of-process connector registered via the

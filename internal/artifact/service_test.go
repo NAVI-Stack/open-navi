@@ -12,9 +12,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/blob"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/blob"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 func TestServiceCreateArtifact_ValidatesJSONPayload(t *testing.T) {

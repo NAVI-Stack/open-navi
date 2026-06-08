@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 type stubExecutor struct {

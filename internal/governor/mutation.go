@@ -3,7 +3,7 @@ package governor
 import (
 	"encoding/json"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // EffectClassWorldModelMutation is the governed effect-vocabulary entry for

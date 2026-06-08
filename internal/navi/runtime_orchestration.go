@@ -8,13 +8,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/orchestration"
-	orchestrationcontext "github.com/ceoai/navi/internal/navi/orchestration/context"
-	orchestrationinstructions "github.com/ceoai/navi/internal/navi/orchestration/instructions"
-	orchestrationmodel "github.com/ceoai/navi/internal/navi/orchestration/model"
-	orchestrationtrace "github.com/ceoai/navi/internal/navi/orchestration/trace"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/orchestration"
+	orchestrationcontext "github.com/open-navi/navi/internal/navi/orchestration/context"
+	orchestrationinstructions "github.com/open-navi/navi/internal/navi/orchestration/instructions"
+	orchestrationmodel "github.com/open-navi/navi/internal/navi/orchestration/model"
+	orchestrationtrace "github.com/open-navi/navi/internal/navi/orchestration/trace"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func newRuntimeOrchestrationPipeline(loop *AgentLoop) *orchestration.Pipeline {

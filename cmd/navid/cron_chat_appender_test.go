@@ -6,10 +6,10 @@ import (
 	"errors"
 	"testing"
 
-	cpkg "github.com/ceoai/navi/internal/cron"
-	"github.com/ceoai/navi/internal/navi"
-	navistore "github.com/ceoai/navi/internal/navi/store"
-	corestore "github.com/ceoai/navi/internal/store"
+	cpkg "github.com/open-navi/navi/internal/cron"
+	"github.com/open-navi/navi/internal/navi"
+	navistore "github.com/open-navi/navi/internal/navi/store"
+	corestore "github.com/open-navi/navi/internal/store"
 	_ "modernc.org/sqlite"
 )
 

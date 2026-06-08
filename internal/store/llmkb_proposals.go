@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ceoai/navi/internal/llmkb"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/llmkb"
 )
 
 // SaveRoutingProposal persists a single routing proposal row.

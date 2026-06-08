@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/navi"
+	"github.com/open-navi/navi/internal/navi"
 )
 
 func TestDeleteChatMessagesFrom_TruncatesAndRecomputesCounters(t *testing.T) {

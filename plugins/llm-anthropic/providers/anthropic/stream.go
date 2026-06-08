@@ -7,7 +7,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 // parseSSEStream reads an Anthropic SSE event stream from body, forwarding

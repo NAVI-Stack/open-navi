@@ -4,9 +4,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ceoai/navi/connectors"
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/config"
+	"github.com/open-navi/navi/connectors"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/config"
 )
 
 // ConnectorFactory creates a connector from runtime config and bus.

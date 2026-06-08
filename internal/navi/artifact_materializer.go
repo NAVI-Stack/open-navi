@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/artifact"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
-	navitool "github.com/ceoai/navi/internal/tool"
+	"github.com/open-navi/navi/internal/artifact"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 // ArtifactMaterializer implements the Cognitive Layer decision logic for

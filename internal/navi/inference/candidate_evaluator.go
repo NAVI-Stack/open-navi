@@ -4,8 +4,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 const (

@@ -9,12 +9,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/artifact"
-	"github.com/ceoai/navi/internal/blob"
-	"github.com/ceoai/navi/internal/navi/orchestration"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/artifact"
+	"github.com/open-navi/navi/internal/blob"
+	"github.com/open-navi/navi/internal/navi/orchestration"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 func TestArtifactPromotionRequestResolvesPriorAssistantHTML(t *testing.T) {

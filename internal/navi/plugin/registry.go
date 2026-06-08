@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/hooks"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/hooks"
 )
 
 // Service is a lifecycle service that can be started and stopped.

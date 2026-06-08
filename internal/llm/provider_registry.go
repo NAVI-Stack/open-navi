@@ -6,7 +6,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/ceoai/navi/internal/config"
+	"github.com/open-navi/navi/internal/config"
 )
 
 // ProviderFactory constructs a concrete inference provider for a provider key.

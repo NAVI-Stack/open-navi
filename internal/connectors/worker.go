@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/connectors"
-	"github.com/ceoai/navi/internal/hooks"
-	"github.com/ceoai/navi/internal/schema"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/connectors"
+	"github.com/open-navi/navi/internal/hooks"
+	"github.com/open-navi/navi/internal/schema"
 	"golang.org/x/time/rate"
 )
 

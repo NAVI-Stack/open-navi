@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	coreskill "github.com/ceoai/navi/internal/navi/skill"
-	naviprogrammer "github.com/ceoai/navi/plugins/navi-programmer/handlers"
+	coreskill "github.com/open-navi/navi/internal/navi/skill"
+	naviprogrammer "github.com/open-navi/navi/plugins/navi-programmer/handlers"
 )
 
 const CoderRepoSkillID = "navi.coder.repo"

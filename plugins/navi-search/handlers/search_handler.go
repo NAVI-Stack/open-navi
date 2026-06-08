@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
-	coreskill "github.com/ceoai/navi/internal/navi/skill"
+	coreskill "github.com/open-navi/navi/internal/navi/skill"
 )
 
 type SkillEntry = coreskill.SkillEntry

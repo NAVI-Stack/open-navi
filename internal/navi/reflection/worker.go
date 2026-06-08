@@ -10,14 +10,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/command"
-	"github.com/ceoai/navi/internal/navi/experience"
-	"github.com/ceoai/navi/internal/navi/proposals"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
-	"github.com/ceoai/navi/internal/worldmodel"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/command"
+	"github.com/open-navi/navi/internal/navi/experience"
+	"github.com/open-navi/navi/internal/navi/proposals"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
+	"github.com/open-navi/navi/internal/worldmodel"
 )
 
 // ContradictionChecker is an optional hook. When set, the worker calls it before

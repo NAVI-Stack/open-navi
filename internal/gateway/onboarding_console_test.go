@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/onboarding"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/onboarding"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // TestRootRedirectsToOnboardingWhenFirstRunIncomplete verifies that GET /

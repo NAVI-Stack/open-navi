@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/ceoai/navi/internal/config"
+	"github.com/open-navi/navi/internal/config"
 )
 
 func TestProviderRegistryBuildsByProviderKey(t *testing.T) {

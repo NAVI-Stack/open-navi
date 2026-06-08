@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/governor"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/governor"
 )
 
 func testLoopConfig(t *testing.T) LoopConfig {

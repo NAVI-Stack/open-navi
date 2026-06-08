@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/ceoai/navi/internal/sandbox"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/sandbox"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 type executionContextKey struct{}

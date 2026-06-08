@@ -5,10 +5,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/orchestration"
-	"github.com/ceoai/navi/internal/schema"
-	navitool "github.com/ceoai/navi/internal/tool"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/schema"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 func TestResolveCapabilitySurface_GuardsInvalidSurface(t *testing.T) {

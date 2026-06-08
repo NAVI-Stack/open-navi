@@ -7,10 +7,10 @@ import (
 	"strings"
 	"testing"
 
-	pkgconn "github.com/ceoai/navi/connectors"
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	pkgconn "github.com/open-navi/navi/connectors"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 	"gopkg.in/yaml.v3"
 )
 

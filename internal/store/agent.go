@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // RegisterAgent records an agent as live (retired_at IS NULL).

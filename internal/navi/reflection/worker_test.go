@@ -9,12 +9,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/navi/experience"
-	navistore "github.com/ceoai/navi/internal/navi/store"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
-	"github.com/ceoai/navi/internal/worldmodel"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/navi/experience"
+	navistore "github.com/open-navi/navi/internal/navi/store"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
+	"github.com/open-navi/navi/internal/worldmodel"
 )
 
 func newTestWorker(t *testing.T) (*Worker, *worldmodel.WorldModel, *sql.DB) {

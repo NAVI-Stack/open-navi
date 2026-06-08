@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/navi"
-	"github.com/ceoai/navi/internal/navi/inference"
+	"github.com/open-navi/navi/internal/navi"
+	"github.com/open-navi/navi/internal/navi/inference"
 )
 
 func (s *SQLiteStore) SaveICSState(ctx context.Context, runID string, envelope inference.DecisionEnvelope) (*navi.ICSState, error) {

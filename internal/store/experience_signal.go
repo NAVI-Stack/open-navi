@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func SavePreferenceSignal(ctx context.Context, db *sql.DB, signal schema.PreferenceSignal) error {

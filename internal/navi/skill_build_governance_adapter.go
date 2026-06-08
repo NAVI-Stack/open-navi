@@ -4,11 +4,11 @@ import (
 	"context"
 	"strings"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/navi/inference"
-	"github.com/ceoai/navi/internal/navi/orchestration"
-	"github.com/ceoai/navi/internal/navi/skill"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/navi/inference"
+	"github.com/open-navi/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // skillBuildGovernanceAdapter routes skill/connector build governance through the

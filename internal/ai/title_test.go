@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 type mockProvider struct {

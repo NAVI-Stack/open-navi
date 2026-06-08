@@ -29,9 +29,9 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/ceoai/navi/internal/intake/embed"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/intake/embed"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // Weights tune the hybrid ranking. They are kept configurable per the task

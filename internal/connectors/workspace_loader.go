@@ -6,9 +6,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	pkgconn "github.com/ceoai/navi/connectors"
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/config"
+	pkgconn "github.com/open-navi/navi/connectors"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/config"
 	"gopkg.in/yaml.v3"
 )
 

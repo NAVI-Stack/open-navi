@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	connreg "github.com/ceoai/navi/internal/connectors"
+	connreg "github.com/open-navi/navi/internal/connectors"
 )
 
 func TestLoaderLoadManifestsPrefersWorkspace(t *testing.T) {

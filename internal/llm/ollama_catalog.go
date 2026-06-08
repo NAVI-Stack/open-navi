@@ -7,7 +7,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/ceoai/navi/internal/config"
+	"github.com/open-navi/navi/internal/config"
 )
 
 // EnrichOllamaFromAPI fetches the list of models from Ollama's /api/tags and

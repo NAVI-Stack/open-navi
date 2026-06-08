@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/ceoai/navi/internal/navi"
+	"github.com/open-navi/navi/internal/navi"
 )
 
 func TestSQLiteStoreEnsureConsoleEndpointIsStable(t *testing.T) {

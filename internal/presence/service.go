@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // Service manages the authoritative presence state of NAVI and observes PET user presence.

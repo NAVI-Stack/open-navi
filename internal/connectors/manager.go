@@ -9,10 +9,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ceoai/navi/connectors"
-	"github.com/ceoai/navi/internal/command"
-	"github.com/ceoai/navi/internal/hooks"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/connectors"
+	"github.com/open-navi/navi/internal/command"
+	"github.com/open-navi/navi/internal/hooks"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // SaveExecutionOutcomeFunc persists an execution outcome (e.g. for Send command recording).

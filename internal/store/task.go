@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 const taskSelectColumns = `id, title, description, status, risk, assigned_to, directive_id, dependencies, surfaces, verification, cost,

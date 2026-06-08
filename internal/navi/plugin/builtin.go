@@ -1,6 +1,6 @@
 package plugin
 
-import "github.com/ceoai/navi/internal/llm"
+import "github.com/open-navi/navi/internal/llm"
 
 // Builtin plugin tool names (executors are in internal/navi/loop.go).
 const (

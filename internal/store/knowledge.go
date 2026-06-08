@@ -12,7 +12,7 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 const knowledgeEmbeddingDimensions = 96

@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/llmkb"
-	"github.com/ceoai/navi/internal/schema"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/llmkb"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // ensureKBProfileExists checks if a profile exists in the KB and creates a stub if missing.

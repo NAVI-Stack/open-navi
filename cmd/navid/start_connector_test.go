@@ -5,12 +5,12 @@ import (
 	"path/filepath"
 	"testing"
 
-	pkgconn "github.com/ceoai/navi/connectors"
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/config"
-	intconnectors "github.com/ceoai/navi/internal/connectors"
-	"github.com/ceoai/navi/internal/navi/plugin"
-	"github.com/ceoai/navi/internal/store"
+	pkgconn "github.com/open-navi/navi/connectors"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/config"
+	intconnectors "github.com/open-navi/navi/internal/connectors"
+	"github.com/open-navi/navi/internal/navi/plugin"
+	"github.com/open-navi/navi/internal/store"
 )
 
 type testConnector struct {

@@ -12,10 +12,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/presence"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/presence"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 	"nhooyr.io/websocket"
 )
 

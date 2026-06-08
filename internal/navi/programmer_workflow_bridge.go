@@ -9,11 +9,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/ceoai/navi/internal/coderalias"
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/skill"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	navitool "github.com/ceoai/navi/internal/tool"
+	"github.com/open-navi/navi/internal/coderalias"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/skill"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 const (

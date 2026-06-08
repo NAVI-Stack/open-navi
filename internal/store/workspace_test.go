@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func TestWorkspaceCRUDAndWhitelistLifecycle(t *testing.T) {
@@ -35,7 +35,7 @@ func TestWorkspaceCRUDAndWhitelistLifecycle(t *testing.T) {
 		Kind:           schema.WorkspaceKindProject,
 		Status:         schema.WorkspaceStatusActive,
 		LocalRoots:     []string{"/tmp/navi-test", "/tmp/navi-test"},
-		RepoRoots:      []string{"github.com/ceoai/navi", " github.com/ceoai/navi "},
+		RepoRoots:      []string{"github.com/open-navi/navi", " github.com/open-navi/navi "},
 		ProtectedPaths: []string{"/tmp/navi-test/secrets", "/tmp/navi-test/secrets"},
 		AllowedActions: schema.AllowedActions{
 			Read: true, Write: true, Create: true, Modify: true, RenameMove: true, Delete: false, Execute: false,
@@ -65,7 +65,7 @@ func TestWorkspaceCRUDAndWhitelistLifecycle(t *testing.T) {
 	if !reflect.DeepEqual(fetched.LocalRoots, []string{"/tmp/navi-test"}) {
 		t.Fatalf("unexpected local_roots: %#v", fetched.LocalRoots)
 	}
-	if !reflect.DeepEqual(fetched.RepoRoots, []string{"github.com/ceoai/navi"}) {
+	if !reflect.DeepEqual(fetched.RepoRoots, []string{"github.com/open-navi/navi"}) {
 		t.Fatalf("unexpected repo_roots: %#v", fetched.RepoRoots)
 	}
 	if !reflect.DeepEqual(fetched.Tags, []string{"alpha"}) {

@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // UpsertProject inserts or updates a project and returns the persisted value.

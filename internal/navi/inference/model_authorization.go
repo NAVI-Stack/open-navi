@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/llm"
-	navitool "github.com/ceoai/navi/internal/tool"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/llm"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 // PrepareModelCall asks ICS to emit the exact model-call directive for this cycle.

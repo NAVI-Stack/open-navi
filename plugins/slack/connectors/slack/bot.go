@@ -13,10 +13,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ceoai/navi/connectors"
-	navicore "github.com/ceoai/navi/internal/navi"
-	"github.com/ceoai/navi/internal/schema"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/connectors"
+	navicore "github.com/open-navi/navi/internal/navi"
+	"github.com/open-navi/navi/internal/schema"
 	"nhooyr.io/websocket"
 	"nhooyr.io/websocket/wsjson"
 )

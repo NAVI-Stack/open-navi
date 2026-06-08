@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ceoai/navi/internal/intake/distill"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/intake/distill"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // DistillFn is the single distillation primitive P4 retrieval shares with P2

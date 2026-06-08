@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/llmkb"
+	"github.com/open-navi/navi/internal/llmkb"
 )
 
 func TestSQLiteLLMKBRepo_LoadLLMSeeds_IdempotentAndPreservesLiveState(t *testing.T) {

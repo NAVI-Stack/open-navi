@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func SaveDirective(ctx context.Context, db *sql.DB, d schema.Directive) error {

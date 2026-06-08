@@ -8,8 +8,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/ceoai/navi/internal/llm"
 	"github.com/charmbracelet/huh"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 // FetchCatalog fetches the LLM catalog from the gateway.

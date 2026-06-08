@@ -3,7 +3,7 @@ package gateway
 import (
 	"net/http"
 
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // handleInstanceReset POST /api/instance/reset (and OPTIONS for CORS preflight).

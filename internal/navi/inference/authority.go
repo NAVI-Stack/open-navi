@@ -4,11 +4,11 @@ import (
 	"context"
 	"strings"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/orchestration"
-	"github.com/ceoai/navi/internal/schema"
-	navitool "github.com/ceoai/navi/internal/tool"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/schema"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 // RuntimeDisposition is the authoritative instruction ICS gives the runtime.

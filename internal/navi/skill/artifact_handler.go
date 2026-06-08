@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ceoai/navi/internal/artifact"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/artifact"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // RegisterArtifactHandler registers internal handlers for the core-artifact skill.

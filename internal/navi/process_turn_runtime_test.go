@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/navi/inference"
+	"github.com/open-navi/navi/internal/navi/inference"
 )
 
 func TestProcessTurnWakesActiveRuntimeSessionForActiveChat(t *testing.T) {

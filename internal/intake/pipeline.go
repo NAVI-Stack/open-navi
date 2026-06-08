@@ -7,11 +7,11 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/ceoai/navi/internal/intake/canonicalize"
-	"github.com/ceoai/navi/internal/intake/chunk"
-	"github.com/ceoai/navi/internal/intake/distill"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/intake/canonicalize"
+	"github.com/open-navi/navi/internal/intake/chunk"
+	"github.com/open-navi/navi/internal/intake/distill"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // IngestDistillFn is the ingest-side reference to the distillation primitive

@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"testing"
 
-	corestore "github.com/ceoai/navi/internal/store"
+	corestore "github.com/open-navi/navi/internal/store"
 	_ "modernc.org/sqlite" // pure-Go sqlite driver for tests (no CGO)
 )
 

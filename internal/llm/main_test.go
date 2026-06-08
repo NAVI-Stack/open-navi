@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/ceoai/navi/internal/config"
+	"github.com/open-navi/navi/internal/config"
 )
 
 // TestMain sets up the package-level test environment.

@@ -6,12 +6,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/filetools"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
-	navitool "github.com/ceoai/navi/internal/tool"
-	"github.com/ceoai/navi/internal/worldmodel"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/filetools"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
+	navitool "github.com/open-navi/navi/internal/tool"
+	"github.com/open-navi/navi/internal/worldmodel"
 )
 
 func TestMaybeMaterializeArtifactOutputs_FileWriteCreatesArtifactAndHistory(t *testing.T) {

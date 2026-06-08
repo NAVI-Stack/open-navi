@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/intake/embed"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/intake/embed"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // seed inserts a record + chunk + embedding so retrieval has a candidate.

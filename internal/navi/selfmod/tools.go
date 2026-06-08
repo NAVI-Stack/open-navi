@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 const (

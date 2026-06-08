@@ -1,6 +1,6 @@
 package skill
 
-import "github.com/ceoai/navi/internal/capability"
+import "github.com/open-navi/navi/internal/capability"
 
 // OSS27Spec follows the "Structured Capability Mechanisms in AI Systems and a Proposed 2027 Skill Standard".
 // It separates the LLM's understanding from the execution runtime's requirements.

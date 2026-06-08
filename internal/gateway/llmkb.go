@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/llmkb"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/llmkb"
+	"github.com/open-navi/navi/internal/store"
 )
 
 type llmkbGroupProvenance struct {

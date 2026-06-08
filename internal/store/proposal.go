@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	naviproposals "github.com/ceoai/navi/internal/navi/proposals"
-	"github.com/ceoai/navi/internal/schema"
 	"github.com/google/uuid"
+	naviproposals "github.com/open-navi/navi/internal/navi/proposals"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // PrepareProposalFromReflection builds a proposal for Subconscious-originated changes

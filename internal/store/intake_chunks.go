@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // SaveIntakeChunk inserts c into intake_chunks. The insert is idempotent: a

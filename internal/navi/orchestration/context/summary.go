@@ -3,7 +3,7 @@ package context
 import (
 	"strings"
 
-	"github.com/ceoai/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/navi/orchestration"
 )
 
 type SummaryInput struct {

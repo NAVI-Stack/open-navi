@@ -4,10 +4,10 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/hooks"
-	connreg "github.com/ceoai/navi/internal/connectors"
+	"github.com/open-navi/navi/internal/bus"
+	connreg "github.com/open-navi/navi/internal/connectors"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/hooks"
 )
 
 // API is the unified registration surface for code-based extensions.

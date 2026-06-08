@@ -3,8 +3,8 @@ package llm
 import (
 	"context"
 
-	"github.com/ceoai/navi/internal/llmkb"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/llmkb"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // LLMKBRepo is the subset of the LLM knowledge-base repository that the

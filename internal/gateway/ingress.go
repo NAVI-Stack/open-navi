@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	naviruntime "github.com/ceoai/navi/internal/runtime"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
 )
 
 // naviMessageIngressTimeout bounds the full gateway ingress path for session

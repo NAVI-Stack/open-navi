@@ -10,7 +10,7 @@ import (
 	"database/sql"
 	"log/slog"
 
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // Entry is a single synthesized entity to fold into the summary index.

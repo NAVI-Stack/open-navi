@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/ceoai/navi/connectors"
-	"github.com/ceoai/navi/internal/navi"
+	"github.com/open-navi/navi/connectors"
+	"github.com/open-navi/navi/internal/navi"
 )
 
 func TestDeliveryServiceExplicitOnlySkipsImplicitConnectorDispatch(t *testing.T) {

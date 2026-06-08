@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // fixedPresetResolver returns the same preset for every domain.

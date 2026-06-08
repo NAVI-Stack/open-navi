@@ -3,7 +3,7 @@ package context
 import (
 	"fmt"
 
-	"github.com/ceoai/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/navi/orchestration"
 )
 
 func applyBudget(items []orchestration.ContextItem, cfg Config) ([]orchestration.ContextItem, orchestration.ContextBudget, []string) {

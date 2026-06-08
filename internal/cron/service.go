@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ceoai/navi/internal/config"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/config"
+	"github.com/open-navi/navi/internal/store"
 )
 
 const (

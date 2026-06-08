@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/ceoai/navi/internal/intake/policy"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/intake/policy"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // CIP P5 — per-connector pass accounting. The worker accumulates counters for an

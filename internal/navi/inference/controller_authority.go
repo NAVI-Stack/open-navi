@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/navi/orchestration"
 )
 
 func (c *Controller) finalizeDecision(ctx context.Context, input InferenceInput, rationale Rationale) (DecisionEnvelope, error) {

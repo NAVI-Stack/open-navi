@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/blob"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/blob"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // Service provides artifact management operations.

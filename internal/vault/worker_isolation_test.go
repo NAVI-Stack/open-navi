@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/governor"
+	"github.com/open-navi/navi/internal/governor"
 )
 
 // worldModelEntityTables mirrors the intake isolation test: a Vault edit must

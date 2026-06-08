@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/skill"
 )
 
 // stubProvider implements llm.Provider for testing.

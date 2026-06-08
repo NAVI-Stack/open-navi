@@ -3,8 +3,8 @@ package main
 import (
 	"testing"
 
-	"github.com/ceoai/navi/internal/connectors"
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/connectors"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 func TestPluginBootstrapRegistersProviderFactories(t *testing.T) {

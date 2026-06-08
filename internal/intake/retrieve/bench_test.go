@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/intake/embed"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/intake/embed"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // BenchmarkRetrieve10kChunks measures end-to-end hybrid retrieval latency at the

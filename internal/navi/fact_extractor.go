@@ -9,9 +9,9 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/experience"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/experience"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 const factExtractorPrompt = `Extract durable facts from this conversation turn.

@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/navi"
+	"github.com/open-navi/navi/internal/navi"
 )
 
 func TestSQLiteSessionStore_ChatStoreRoundTrip(t *testing.T) {

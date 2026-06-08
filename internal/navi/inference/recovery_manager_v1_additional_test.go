@@ -3,7 +3,7 @@ package inference
 import (
 	"testing"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // If recovery requires approval, retry must never be selected even for timeout.

@@ -8,11 +8,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/navi"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
-	"github.com/ceoai/navi/internal/worldmodel"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/navi"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
+	"github.com/open-navi/navi/internal/worldmodel"
 )
 
 type projectUpsertRequest struct {

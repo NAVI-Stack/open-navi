@@ -8,7 +8,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 // toolCallAccumulator assembles incremental tool call deltas into complete

@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/prompts"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/prompts"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 const defaultChatSummaryBatchSize = 20

@@ -27,11 +27,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/intake/score"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/intake/score"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // Input bundles one distilled chunk with the upstream stage outputs synthesis

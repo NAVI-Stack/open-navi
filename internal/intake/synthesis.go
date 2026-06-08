@@ -7,14 +7,14 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/intake/embed"
-	"github.com/ceoai/navi/internal/intake/extract"
-	"github.com/ceoai/navi/internal/intake/fold"
-	"github.com/ceoai/navi/internal/intake/score"
-	"github.com/ceoai/navi/internal/intake/synthesize"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/intake/embed"
+	"github.com/open-navi/navi/internal/intake/extract"
+	"github.com/open-navi/navi/internal/intake/fold"
+	"github.com/open-navi/navi/internal/intake/score"
+	"github.com/open-navi/navi/internal/intake/synthesize"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // SynthesisConfig carries the P3 stage dependencies. It is assembled once at

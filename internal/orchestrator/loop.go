@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // LoopConfig configures an orchestration loop.

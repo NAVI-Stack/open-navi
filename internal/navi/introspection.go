@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/prompts"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/prompts"
 )
 
 // ConnectorHealthInfo holds the name and status of a connector for introspection.

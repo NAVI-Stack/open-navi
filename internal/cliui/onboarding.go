@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/ceoai/navi/internal/connectors"
 	"github.com/charmbracelet/huh"
+	"github.com/open-navi/navi/internal/connectors"
 )
 
 // DisplayPassport renders the owner passport using cliui BoxStyle instead of raw ASCII art.

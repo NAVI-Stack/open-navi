@@ -5,10 +5,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/navi/orchestration"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/navi/orchestration"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // ContractVersionV1 identifies the first ICS contract version.

@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/ceoai/navi/internal/config"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/config"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 type inMemorySettings struct {

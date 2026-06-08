@@ -9,10 +9,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/ceoai/navi/connectors"
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/config"
-	connreg "github.com/ceoai/navi/internal/connectors"
+	"github.com/open-navi/navi/connectors"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/config"
+	connreg "github.com/open-navi/navi/internal/connectors"
 	"gopkg.in/yaml.v3"
 )
 

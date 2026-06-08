@@ -3,9 +3,9 @@ package inference
 import (
 	"testing"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/navi/orchestration"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func TestCandidateEvaluatorRanksExecuteAboveFallbacks(t *testing.T) {

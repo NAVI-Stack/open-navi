@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/navi/experience"
+	"github.com/open-navi/navi/internal/navi/experience"
 )
 
 func TestNormalizeExperienceModeUsesSupportedExperienceProfiles(t *testing.T) {

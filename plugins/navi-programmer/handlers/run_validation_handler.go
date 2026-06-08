@@ -15,11 +15,11 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/ceoai/navi/internal/coderalias"
-	coreskill "github.com/ceoai/navi/internal/navi/skill"
-	coresandbox "github.com/ceoai/navi/internal/sandbox"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/coderalias"
+	coreskill "github.com/open-navi/navi/internal/navi/skill"
+	coresandbox "github.com/open-navi/navi/internal/sandbox"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 const (

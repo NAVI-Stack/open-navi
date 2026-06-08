@@ -1,6 +1,6 @@
 package trace
 
-import "github.com/ceoai/navi/internal/navi/orchestration"
+import "github.com/open-navi/navi/internal/navi/orchestration"
 
 const (
 	StageRunStarted                = "run_started"

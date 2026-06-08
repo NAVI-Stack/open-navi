@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/orchestration"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func TestDefaultDecisionEnvelope_DoesNotForceToolChoiceForAuthorizedCapability(t *testing.T) {

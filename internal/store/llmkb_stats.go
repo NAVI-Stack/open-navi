@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 
-	"github.com/ceoai/navi/internal/llmkb"
+	"github.com/open-navi/navi/internal/llmkb"
 )
 
 // MaterializeUsageStats aggregates raw execution records into profile usage stats.

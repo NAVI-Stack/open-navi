@@ -6,13 +6,13 @@ import (
 	"net/http"
 	"testing"
 
-	pkgconn "github.com/ceoai/navi/connectors"
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/cognitive"
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/navi"
-	navistore "github.com/ceoai/navi/internal/navi/store"
-	"github.com/ceoai/navi/internal/worldmodel"
+	pkgconn "github.com/open-navi/navi/connectors"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/cognitive"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/navi"
+	navistore "github.com/open-navi/navi/internal/navi/store"
+	"github.com/open-navi/navi/internal/worldmodel"
 )
 
 func TestConversationEndpointGatewayFlow(t *testing.T) {

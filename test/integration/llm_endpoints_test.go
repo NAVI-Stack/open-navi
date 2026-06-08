@@ -13,9 +13,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/gateway"
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/gateway"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/store"
 	"github.com/stretchr/testify/require"
 )
 

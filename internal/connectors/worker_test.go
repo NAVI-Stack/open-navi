@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/connectors"
+	"github.com/open-navi/navi/connectors"
 )
 
 // mockConnector implements connectors.Connector for testing.

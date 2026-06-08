@@ -1,7 +1,7 @@
 package gateway
 
 import (
-	"github.com/ceoai/navi/internal/connectors"
+	"github.com/open-navi/navi/internal/connectors"
 )
 
 // ConnectorInfo describes a registered connector instance (re-exported for API compatibility).

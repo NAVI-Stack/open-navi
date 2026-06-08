@@ -12,12 +12,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/prompts"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
-	"github.com/ceoai/navi/internal/worldmodel"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/prompts"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
+	"github.com/open-navi/navi/internal/worldmodel"
 )
 
 // LLMDirectiveAdapter implements LLMAdapter using a real llm.Provider and the

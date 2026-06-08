@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	coresandbox "github.com/ceoai/navi/internal/sandbox"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	coresandbox "github.com/open-navi/navi/internal/sandbox"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 func TestRunValidationHandlerUsesCoreSandboxRunner(t *testing.T) {

@@ -9,11 +9,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/cognitive"
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/llmkb"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/cognitive"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/llmkb"
+	"github.com/open-navi/navi/internal/store"
 )
 
 func TestGatewayDebugLLMKBProfilesEndpoints(t *testing.T) {

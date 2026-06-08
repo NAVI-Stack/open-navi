@@ -3,7 +3,7 @@ package orchestrator
 import (
 	"context"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // LLMAdapter is the interface for LLM-backed directive orchestrators.

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ceoai/navi/internal/governor"
+	"github.com/open-navi/navi/internal/governor"
 )
 
 // AuthorizeToolCall routes one concrete tool attempt through the authoritative ICS seam.

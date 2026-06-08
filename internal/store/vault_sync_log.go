@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // CIP P5 — vault_sync_log store (raw SQL, no ORM). Append-only record of every

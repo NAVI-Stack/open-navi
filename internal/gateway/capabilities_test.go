@@ -7,17 +7,17 @@ import (
 	"path/filepath"
 	"testing"
 
-	pkgconn "github.com/ceoai/navi/connectors"
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/capability"
-	"github.com/ceoai/navi/internal/cognitive"
-	"github.com/ceoai/navi/internal/config"
-	intconnectors "github.com/ceoai/navi/internal/connectors"
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/navi/plugin"
-	"github.com/ceoai/navi/internal/navi/skill"
-	"github.com/ceoai/navi/internal/schema"
-	navitool "github.com/ceoai/navi/internal/tool"
+	pkgconn "github.com/open-navi/navi/connectors"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/capability"
+	"github.com/open-navi/navi/internal/cognitive"
+	"github.com/open-navi/navi/internal/config"
+	intconnectors "github.com/open-navi/navi/internal/connectors"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/navi/plugin"
+	"github.com/open-navi/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/schema"
+	navitool "github.com/open-navi/navi/internal/tool"
 )
 
 func TestCapabilityGraphEndpointReturnsInventoryShape(t *testing.T) {

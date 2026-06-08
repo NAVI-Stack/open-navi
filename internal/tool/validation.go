@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 var canonicalToolIDPattern = regexp.MustCompile(`^[a-z0-9]+(?:[_-][a-z0-9]+)*\.[a-z0-9]+(?:[_-][a-z0-9]+)*\.[a-z0-9]+(?:[_-][a-z0-9]+)*(?:\.[a-z0-9]+(?:[_-][a-z0-9]+)*)*$`)

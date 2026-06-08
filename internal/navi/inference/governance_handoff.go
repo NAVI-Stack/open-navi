@@ -1,6 +1,6 @@
 package inference
 
-import "github.com/ceoai/navi/internal/governor"
+import "github.com/open-navi/navi/internal/governor"
 
 // ActionDescriptor converts the handoff into the existing governor input shape.
 func (g GovernanceHandoff) ActionDescriptor(chat ChatContext) governor.ActionDescriptor {

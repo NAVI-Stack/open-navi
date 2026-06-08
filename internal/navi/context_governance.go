@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	naviruntime "github.com/ceoai/navi/internal/runtime"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
 )
 
 type contextGovernance struct {

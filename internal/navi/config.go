@@ -5,15 +5,15 @@ import (
 	"database/sql"
 	"time"
 
-	"github.com/ceoai/navi/internal/bus"
-	cronsvc "github.com/ceoai/navi/internal/cron"
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/plugin"
-	"github.com/ceoai/navi/internal/navi/skill"
-	"github.com/ceoai/navi/internal/prompts"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/worldmodel"
+	"github.com/open-navi/navi/internal/bus"
+	cronsvc "github.com/open-navi/navi/internal/cron"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/plugin"
+	"github.com/open-navi/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/prompts"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/worldmodel"
 )
 
 // AutonomyPresetResolver is aliased so config can stay free of governor import when not using autonomy.

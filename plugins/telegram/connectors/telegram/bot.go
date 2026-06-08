@@ -19,12 +19,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ceoai/navi/connectors"
-	intconnectors "github.com/ceoai/navi/internal/connectors"
-	"github.com/ceoai/navi/internal/intake"
-	navicore "github.com/ceoai/navi/internal/navi"
-	"github.com/ceoai/navi/internal/schema"
 	"github.com/gorilla/websocket"
+	"github.com/open-navi/navi/connectors"
+	intconnectors "github.com/open-navi/navi/internal/connectors"
+	"github.com/open-navi/navi/internal/intake"
+	navicore "github.com/open-navi/navi/internal/navi"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // GroupConfig holds per-group behavior. Key "*" sets defaults for all groups; a

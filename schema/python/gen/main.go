@@ -25,7 +25,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ceoai/navi/schema/codegen"
+	"github.com/open-navi/navi/schema/codegen"
 )
 
 // pythonKeywords are reserved words that may not be used as dataclass field names.

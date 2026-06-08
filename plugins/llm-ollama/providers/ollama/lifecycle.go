@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ceoai/navi/internal/llm"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 // ---------------------------------------------------------------------------

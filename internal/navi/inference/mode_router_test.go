@@ -3,8 +3,8 @@ package inference
 import (
 	"testing"
 
-	"github.com/ceoai/navi/internal/navi/orchestration"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func TestModeRouterRoutesExplicitClarifyAndBoundsSubmodes(t *testing.T) {

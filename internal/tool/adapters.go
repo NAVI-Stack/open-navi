@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/filetools"
-	"github.com/ceoai/navi/internal/navi/plugin"
-	"github.com/ceoai/navi/internal/navi/selfmod"
-	"github.com/ceoai/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/filetools"
+	"github.com/open-navi/navi/internal/navi/plugin"
+	"github.com/open-navi/navi/internal/navi/selfmod"
+	"github.com/open-navi/navi/internal/navi/skill"
 )
 
 // ExecutorFunc adapts a function into a ToolExecutor.

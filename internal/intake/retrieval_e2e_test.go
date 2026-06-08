@@ -6,12 +6,12 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ceoai/navi/internal/intake/distill"
-	"github.com/ceoai/navi/internal/intake/embed"
-	"github.com/ceoai/navi/internal/intake/retrieve"
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/intake/distill"
+	"github.com/open-navi/navi/internal/intake/embed"
+	"github.com/open-navi/navi/internal/intake/retrieve"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // secretRecord builds a secret-class intake record.

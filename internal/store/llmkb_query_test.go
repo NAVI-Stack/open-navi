@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/llmkb"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/llmkb"
 )
 
 func TestSQLiteLLMKBRepo_QuerySurface_UsesTypedGovernedData(t *testing.T) {

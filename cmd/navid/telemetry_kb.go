@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 func firstNonEmpty(values ...string) string {

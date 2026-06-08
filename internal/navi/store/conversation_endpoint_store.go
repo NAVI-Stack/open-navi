@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/navi"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/navi"
 )
 
 func (s *SQLiteStore) EnsureConsoleEndpoint(ctx context.Context, chatID string) (*navi.ConversationEndpoint, error) {

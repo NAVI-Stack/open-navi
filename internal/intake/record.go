@@ -6,7 +6,7 @@
 // internal/schema to avoid import cycles with internal/store.
 package intake
 
-import "github.com/ceoai/navi/internal/schema"
+import "github.com/open-navi/navi/internal/schema"
 
 // Type aliases so callers can use intake.IntakeRecord etc. without importing schema.
 type IntakeRecord = schema.IntakeRecord

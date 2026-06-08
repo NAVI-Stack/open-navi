@@ -11,13 +11,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi"
-	navistore "github.com/ceoai/navi/internal/navi/store"
-	"github.com/ceoai/navi/internal/onboarding"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi"
+	navistore "github.com/open-navi/navi/internal/navi/store"
+	"github.com/open-navi/navi/internal/onboarding"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 type onboardingFakeLLM struct {

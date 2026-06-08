@@ -5,9 +5,9 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/ceoai/navi/internal/navi"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	corestore "github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/navi"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	corestore "github.com/open-navi/navi/internal/store"
 )
 
 func TestMigrateSchemaCreatesConversationEndpointTables(t *testing.T) {

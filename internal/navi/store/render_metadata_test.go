@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	naviruntime "github.com/ceoai/navi/internal/runtime"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
 )
 
 func TestAssistantMessageMetadata_MergesToolPartsAndRenderPayload(t *testing.T) {

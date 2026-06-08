@@ -3,9 +3,9 @@ package diff
 import (
 	"testing"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/vault/projector"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/vault/projector"
 )
 
 func current() Current {

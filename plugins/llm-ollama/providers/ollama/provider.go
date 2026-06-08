@@ -16,7 +16,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 // Compile-time assertions: Provider must satisfy all four llm interfaces.

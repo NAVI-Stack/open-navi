@@ -2,7 +2,7 @@
 // NAVI's skill system (internal/navi/skill/) is the current capability surface.
 package orchestrator
 
-import "github.com/ceoai/navi/internal/llm"
+import "github.com/open-navi/navi/internal/llm"
 
 // DecomposeTasksTool is the structured output mechanism for generating tasks.
 var DecomposeTasksTool = llm.ToolDefinition{

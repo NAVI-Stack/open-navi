@@ -3,7 +3,7 @@ package handlers
 import (
 	"testing"
 
-	coreskill "github.com/ceoai/navi/internal/navi/skill"
+	coreskill "github.com/open-navi/navi/internal/navi/skill"
 )
 
 // TestRegisterProgrammerHandlersRegistersCoderAlias proves the run-validation

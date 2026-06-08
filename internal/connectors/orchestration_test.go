@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/connectors"
+	"github.com/open-navi/navi/connectors"
 )
 
 // orchMock implements Connector + TypingCapable + ReactionCapable +

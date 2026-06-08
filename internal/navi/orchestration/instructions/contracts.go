@@ -3,7 +3,7 @@ package instructions
 import (
 	"context"
 
-	"github.com/ceoai/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/navi/orchestration"
 )
 
 type CompileRequest struct {

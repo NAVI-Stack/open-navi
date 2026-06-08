@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func prepareContentForOperation(subtype string, op schema.ArtifactOperation, baseContent string, payload any) (string, error) {

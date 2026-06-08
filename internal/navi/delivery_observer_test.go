@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/ceoai/navi/internal/navi"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/navi"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
 )
 
 func TestAssistantDeliveryObserverRoutesRunOriginThroughDeliveryService(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/ceoai/navi/connectors"
+	"github.com/open-navi/navi/connectors"
 )
 
 // StartAll starts all stored connector instances. Call after Create for each desired connector.

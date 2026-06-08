@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ceoai/navi/connectors"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
+	"github.com/open-navi/navi/connectors"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
 )
 
 type ConnectorDispatcher interface {

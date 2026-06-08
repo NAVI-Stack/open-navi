@@ -1,8 +1,8 @@
 package governor
 
 import (
-	"github.com/ceoai/navi/internal/navi/skill"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // Hard floor reasons: when any of these apply, autonomy cannot upgrade RequiresConfirmation to Approved.

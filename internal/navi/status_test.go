@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func TestNewStatusTracker_StartsIdle(t *testing.T) {

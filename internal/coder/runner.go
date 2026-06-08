@@ -10,15 +10,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/cognitive"
-	"github.com/ceoai/navi/internal/command"
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/filetools"
-	"github.com/ceoai/navi/internal/prompts"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/cognitive"
+	"github.com/open-navi/navi/internal/command"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/filetools"
+	"github.com/open-navi/navi/internal/prompts"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // PathChecker is implemented by governor.Governor; used to validate paths before file I/O.

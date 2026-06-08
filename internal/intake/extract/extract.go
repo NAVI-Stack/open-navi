@@ -23,8 +23,8 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 const defaultTimeout = 30 * time.Second

@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // fixtureRecord is a realistic Telegram-style message containing a quoted reply,
@@ -197,9 +197,9 @@ func TestPipeline_NoLLMDependency(t *testing.T) {
 		t.Skip("go toolchain unavailable")
 	}
 	pkgs := []string{
-		"github.com/ceoai/navi/internal/intake/canonicalize",
-		"github.com/ceoai/navi/internal/intake/chunk",
-		"github.com/ceoai/navi/internal/intake/distill",
+		"github.com/open-navi/navi/internal/intake/canonicalize",
+		"github.com/open-navi/navi/internal/intake/chunk",
+		"github.com/open-navi/navi/internal/intake/distill",
 	}
 	for _, pkg := range pkgs {
 		out, err := exec.Command("go", "list", "-deps", pkg).Output()
@@ -207,7 +207,7 @@ func TestPipeline_NoLLMDependency(t *testing.T) {
 			t.Fatalf("go list -deps %s: %v", pkg, err)
 		}
 		for _, dep := range strings.Split(string(out), "\n") {
-			if strings.TrimSpace(dep) == "github.com/ceoai/navi/internal/llm" {
+			if strings.TrimSpace(dep) == "github.com/open-navi/navi/internal/llm" {
 				t.Errorf("%s must not depend on internal/llm (found in dep graph)", pkg)
 			}
 		}

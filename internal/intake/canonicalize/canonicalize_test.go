@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func rec(mime string, body string) schema.IntakeRecord {

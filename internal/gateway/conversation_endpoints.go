@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/ceoai/navi/internal/navi"
-	navistore "github.com/ceoai/navi/internal/navi/store"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/navi"
+	navistore "github.com/open-navi/navi/internal/navi/store"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func (s *Server) handleNaviListConversationEndpoints(w http.ResponseWriter, r *http.Request) {

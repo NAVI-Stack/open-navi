@@ -3,7 +3,7 @@ package llm
 import (
 	"testing"
 
-	"github.com/ceoai/navi/internal/config"
+	"github.com/open-navi/navi/internal/config"
 )
 
 func TestFromConfig_DefaultModelRoutesUseLegacyModels(t *testing.T) {

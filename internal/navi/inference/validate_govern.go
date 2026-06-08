@@ -6,10 +6,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/navi/proposals"
-	"github.com/ceoai/navi/internal/navi/skill"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/navi/proposals"
+	"github.com/open-navi/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // GovernResult is the deterministic outcome of Validate/Govern for a selected execution candidate.

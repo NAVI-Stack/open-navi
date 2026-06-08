@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	pkgconn "github.com/ceoai/navi/connectors"
+	pkgconn "github.com/open-navi/navi/connectors"
 )
 
 func TestWorkspaceConnectorLifecycleWithSubprocess(t *testing.T) {

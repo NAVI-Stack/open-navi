@@ -8,11 +8,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
-	"github.com/ceoai/navi/internal/vault/projector"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
+	"github.com/open-navi/navi/internal/vault/projector"
 )
 
 func newWorker(t *testing.T, opts governor.MutationPipelineOptions) *Worker {

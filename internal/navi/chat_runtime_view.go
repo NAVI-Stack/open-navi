@@ -3,7 +3,7 @@ package navi
 import (
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // ChatRuntimeView is the runtime executor's view of a chat conversation —

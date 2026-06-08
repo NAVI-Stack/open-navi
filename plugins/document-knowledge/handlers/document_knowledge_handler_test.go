@@ -10,9 +10,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/llm"
-	coreskill "github.com/ceoai/navi/internal/navi/skill"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/llm"
+	coreskill "github.com/open-navi/navi/internal/navi/skill"
+	"github.com/open-navi/navi/internal/store"
 )
 
 type SkillResult = coreskill.SkillResult

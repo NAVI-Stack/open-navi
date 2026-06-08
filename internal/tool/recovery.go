@@ -3,7 +3,7 @@ package tool
 import (
 	"strings"
 
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 // ToolCallRecoveryDisposition classifies the bounded repair path for a tool call

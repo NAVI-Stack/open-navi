@@ -10,12 +10,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	"github.com/ceoai/navi/internal/schema"
-	corestore "github.com/ceoai/navi/internal/store"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/schema"
+	corestore "github.com/open-navi/navi/internal/store"
 )
 
 func (s *SQLiteStore) AcceptMessage(ctx context.Context, runtimeSessionID string, item *naviruntime.InboxItem, experienceMode string) (*naviruntime.InboxItem, error) {

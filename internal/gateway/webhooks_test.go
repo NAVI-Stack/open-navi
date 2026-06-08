@@ -11,11 +11,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/bus"
-	"github.com/ceoai/navi/internal/cognitive"
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/navi"
-	navistore "github.com/ceoai/navi/internal/navi/store"
+	"github.com/open-navi/navi/internal/bus"
+	"github.com/open-navi/navi/internal/cognitive"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/navi"
+	navistore "github.com/open-navi/navi/internal/navi/store"
 )
 
 func TestWebhookRegistrationLifecycleAndIngress(t *testing.T) {
@@ -87,7 +87,7 @@ func TestWebhookRegistrationLifecycleAndIngress(t *testing.T) {
 		t.Fatalf("expected secret_configured=true, got %v", signature["secret_configured"])
 	}
 
-	payload := `{"ref":"refs/heads/main","repository":{"full_name":"ceoai/navi"}}`
+	payload := `{"ref":"refs/heads/main","repository":{"full_name":"open-navi/navi"}}`
 	mac := hmac.New(sha256.New, []byte("topsecret"))
 	mac.Write([]byte(payload))
 	req, _ := http.NewRequest(http.MethodPost, "/api/webhooks/github", strings.NewReader(payload))

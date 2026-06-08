@@ -4,8 +4,8 @@ import (
 	"context"
 	"log/slog"
 
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	"github.com/ceoai/navi/internal/schema"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 const (

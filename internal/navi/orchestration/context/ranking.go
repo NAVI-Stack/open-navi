@@ -3,7 +3,7 @@ package context
 import (
 	"sort"
 
-	"github.com/ceoai/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/navi/orchestration"
 )
 
 func rankItems(items []orchestration.ContextItem) []orchestration.ContextItem {

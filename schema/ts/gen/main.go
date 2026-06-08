@@ -24,7 +24,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ceoai/navi/schema/codegen"
+	"github.com/open-navi/navi/schema/codegen"
 )
 
 func main() {

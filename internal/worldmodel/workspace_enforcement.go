@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // WorkspaceValidationResult extends governor validation with workspace-specific details.

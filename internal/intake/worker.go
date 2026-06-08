@@ -11,11 +11,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ceoai/navi/internal/intake/policy"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
 	"github.com/google/uuid"
 	"github.com/nats-io/nats.go"
+	"github.com/open-navi/navi/internal/intake/policy"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 const workerConsumerName = "intake-worker"

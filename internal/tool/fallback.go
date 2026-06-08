@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // FallbackDiscoveryOutcome captures the discovery-only result of degradation

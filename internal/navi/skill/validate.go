@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ceoai/navi/internal/capability"
+	"github.com/open-navi/navi/internal/capability"
 )
 
 const (

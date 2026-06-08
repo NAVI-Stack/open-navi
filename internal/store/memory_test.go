@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func TestSaveMemory_UsesConfiguredKnowledgeEmbedder(t *testing.T) {

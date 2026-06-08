@@ -4,7 +4,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func TestRegistry_DefaultContractsCoverV1CoreTypes(t *testing.T) {

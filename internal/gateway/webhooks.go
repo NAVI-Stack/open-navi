@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	naviruntime "github.com/ceoai/navi/internal/runtime"
-	"github.com/ceoai/navi/internal/store"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/store"
 )
 
 const maxWebhookBodyBytes = 1 << 20

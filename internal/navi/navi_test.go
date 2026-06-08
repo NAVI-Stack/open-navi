@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	naviruntime "github.com/ceoai/navi/internal/runtime"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
 )
 
 // TestSendMessageInput_FailsWithoutRuntimeCoordinator verifies that a NAVI with

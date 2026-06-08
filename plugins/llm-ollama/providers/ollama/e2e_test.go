@@ -14,7 +14,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 func newIntegrationProvider(t *testing.T) *Provider {

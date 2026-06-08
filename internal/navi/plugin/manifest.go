@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/capability"
-	"github.com/ceoai/navi/internal/coderalias"
+	"github.com/open-navi/navi/internal/capability"
+	"github.com/open-navi/navi/internal/coderalias"
 )
 
 const (

@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 func TestInstall_FromCatalog(t *testing.T) {

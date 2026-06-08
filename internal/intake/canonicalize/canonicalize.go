@@ -19,7 +19,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // Document is the normalized output of the Canonicalize stage.

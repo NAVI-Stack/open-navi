@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/ceoai/navi/internal/navi/plugin"
+	"github.com/open-navi/navi/internal/navi/plugin"
 )
 
 func testPluginManifests() func() []plugin.Manifest {

@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/connectors"
 	"github.com/gorilla/websocket"
+	"github.com/open-navi/navi/connectors"
 )
 
 func writeMockTelegramEndpointResolve(t *testing.T, w http.ResponseWriter, r *http.Request, sessionsByExternalChat map[string]string) bool {

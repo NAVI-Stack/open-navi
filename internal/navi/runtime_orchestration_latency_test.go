@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/navi/orchestration"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/navi/orchestration"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
 )
 
 func TestBuildCanonicalRequestBaseSuppressesToolsForPlainReply(t *testing.T) {

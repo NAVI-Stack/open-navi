@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/llmkb"
+	"github.com/open-navi/navi/internal/llmkb"
 )
 
 func seedTestLLMProfile(t *testing.T, ctx context.Context, repo *SQLiteLLMKBRepo, llmID string, tech llmkb.TechnicalFeatures) {

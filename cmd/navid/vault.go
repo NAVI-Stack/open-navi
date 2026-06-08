@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/config"
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/vault"
+	"github.com/open-navi/navi/internal/config"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/vault"
 )
 
 // startVaultWorker constructs and starts the Memory Vault worker. The Vault root

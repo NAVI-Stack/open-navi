@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	artifactsvc "github.com/ceoai/navi/internal/artifact"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
 	"github.com/google/uuid"
+	artifactsvc "github.com/open-navi/navi/internal/artifact"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 type artifactExportRequest struct {

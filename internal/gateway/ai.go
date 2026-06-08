@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/ceoai/navi/internal/ai"
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/ai"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 type chatProviderService interface {

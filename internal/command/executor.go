@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ceoai/navi/internal/llm"
-	"github.com/ceoai/navi/internal/schema"
 	"github.com/google/uuid"
+	"github.com/open-navi/navi/internal/llm"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // Descriptor captures metadata about a command execution.

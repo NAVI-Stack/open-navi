@@ -3,7 +3,7 @@ package navi
 import (
 	"testing"
 
-	navitool "github.com/ceoai/navi/internal/tool"
+	navitool "github.com/open-navi/navi/internal/tool"
 	"github.com/stretchr/testify/assert"
 )
 

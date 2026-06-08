@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func TestConnectorSyncPolicyOverride_RoundTrip(t *testing.T) {

@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 func TestDefaultPolicy_Telegram(t *testing.T) {

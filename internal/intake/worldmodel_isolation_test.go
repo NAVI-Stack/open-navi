@@ -7,15 +7,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/intake/embed"
-	"github.com/ceoai/navi/internal/intake/extract"
-	"github.com/ceoai/navi/internal/intake/policy"
-	"github.com/ceoai/navi/internal/intake/retrieve"
-	"github.com/ceoai/navi/internal/intake/score"
-	"github.com/ceoai/navi/internal/intake/synthesize"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/intake/embed"
+	"github.com/open-navi/navi/internal/intake/extract"
+	"github.com/open-navi/navi/internal/intake/policy"
+	"github.com/open-navi/navi/internal/intake/retrieve"
+	"github.com/open-navi/navi/internal/intake/score"
+	"github.com/open-navi/navi/internal/intake/synthesize"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 // worldModelEntityTables enumerates every table that constitutes the World

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // ListConfigurationByScope returns configuration entries for a given scope and scope_id.

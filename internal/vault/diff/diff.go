@@ -17,9 +17,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/vault/projector"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/vault/projector"
 )
 
 // Current is the persisted snapshot of the entity a Vault file projects. The

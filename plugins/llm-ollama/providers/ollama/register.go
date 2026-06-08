@@ -3,8 +3,8 @@ package ollama
 import (
 	"fmt"
 
-	"github.com/ceoai/navi/internal/config"
-	"github.com/ceoai/navi/internal/llm"
+	"github.com/open-navi/navi/internal/config"
+	"github.com/open-navi/navi/internal/llm"
 )
 
 func init() {

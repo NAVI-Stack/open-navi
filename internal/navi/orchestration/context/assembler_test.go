@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/navi/orchestration"
+	"github.com/open-navi/navi/internal/navi/orchestration"
 )
 
 func TestAssemblerAssemblesPhaseOneSourcesWithProvenance(t *testing.T) {

@@ -13,8 +13,8 @@ import (
 	"io"
 	"time"
 
-	"github.com/ceoai/navi/internal/identity/keystore"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/identity/keystore"
+	"github.com/open-navi/navi/internal/store"
 )
 
 const keyTypeEd25519 = "ed25519"

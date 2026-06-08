@@ -4,7 +4,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/ceoai/navi/internal/config"
+	"github.com/open-navi/navi/internal/config"
 )
 
 // LLMModelInfo describes a single model exposed by a provider.

@@ -3,7 +3,7 @@ package proposals
 import (
 	"encoding/json"
 
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 const workspaceBoundaryActionType = "workspace_boundary_crossing"

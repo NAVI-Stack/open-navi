@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ceoai/navi/internal/governor"
-	"github.com/ceoai/navi/internal/intake/policy"
-	"github.com/ceoai/navi/internal/schema"
-	"github.com/ceoai/navi/internal/store"
+	"github.com/open-navi/navi/internal/governor"
+	"github.com/open-navi/navi/internal/intake/policy"
+	"github.com/open-navi/navi/internal/schema"
+	"github.com/open-navi/navi/internal/store"
 )
 
 func policyRecord(connectorID, sourceID, body string) IntakeRecord {

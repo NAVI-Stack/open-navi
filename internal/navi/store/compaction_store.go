@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ceoai/navi/internal/navi/compaction"
-	naviruntime "github.com/ceoai/navi/internal/runtime"
+	"github.com/open-navi/navi/internal/navi/compaction"
+	naviruntime "github.com/open-navi/navi/internal/runtime"
 )
 
 func (s *SQLiteStore) GetChatMemory(ctx context.Context, chatID string) (compaction.ChatMemory, error) {

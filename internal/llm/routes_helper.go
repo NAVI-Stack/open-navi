@@ -1,6 +1,6 @@
 package llm
 
-import "github.com/ceoai/navi/internal/config"
+import "github.com/open-navi/navi/internal/config"
 
 func EffectiveRoutes(cfg *config.LLMConfig) map[string]config.ModelRoute {
 	if cfg == nil {

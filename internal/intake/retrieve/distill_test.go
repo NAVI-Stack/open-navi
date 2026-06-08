@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ceoai/navi/internal/intake/distill"
-	"github.com/ceoai/navi/internal/schema"
+	"github.com/open-navi/navi/internal/intake/distill"
+	"github.com/open-navi/navi/internal/schema"
 )
 
 // TestDistillFn_IsSharedPrimitive proves the retrieval call site resolves to the

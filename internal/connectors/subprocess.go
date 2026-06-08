@@ -10,7 +10,7 @@ import (
 	"os/exec"
 	"sync"
 
-	"github.com/ceoai/navi/connectors"
+	"github.com/open-navi/navi/connectors"
 )
 
 // SubprocessConnector runs an out-of-process connector binary and communicates
