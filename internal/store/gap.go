@@ -13,11 +13,11 @@ import (
 type GapType string
 
 const (
-	GapTypeUnknown GapType = ""
-	GapTypeMissingSkill GapType = "A" // missing skill
-	GapTypeMissingConnector GapType = "B"
-	GapTypeMissingRuntime GapType = "C"
-	GapTypeMissingAuthConfig GapType = "D"
+	GapTypeUnknown            GapType = ""
+	GapTypeMissingSkill       GapType = "A" // missing skill
+	GapTypeMissingConnector   GapType = "B"
+	GapTypeMissingRuntime     GapType = "C"
+	GapTypeMissingAuthConfig  GapType = "D"
 	GapTypeMissingPolicyTrust GapType = "E"
 	GapTypeMissingComposition GapType = "F"
 )

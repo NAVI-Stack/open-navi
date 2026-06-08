@@ -313,13 +313,13 @@ func (r *SQLiteLLMKBRepo) EnsureRuntimeProfile(ctx context.Context, providerID, 
 	}
 	stubID := observedLLMProfileID(providerID, modelID)
 	if err := r.SaveProfile(ctx, llmkb.LLMProfile{
-		LLMID:             stubID,
-		CanonicalName:     modelID,
-		Aliases:           []string{modelID},
-		ProviderID:        providerID,
-		OperationalState:  llmkb.OperationalState{AvailabilityState: llmkb.AvailabilityStateAvailable},
-		Capabilities:      defaultLLMKBCapabilityProfile(),
-		Provenance:        defaultLLMKBProvenance(),
+		LLMID:            stubID,
+		CanonicalName:    modelID,
+		Aliases:          []string{modelID},
+		ProviderID:       providerID,
+		OperationalState: llmkb.OperationalState{AvailabilityState: llmkb.AvailabilityStateAvailable},
+		Capabilities:     defaultLLMKBCapabilityProfile(),
+		Provenance:       defaultLLMKBProvenance(),
 	}); err != nil {
 		return nil, err
 	}
@@ -723,7 +723,7 @@ func (r *SQLiteLLMKBRepo) SaveRuntimeInstance(ctx context.Context, instance llmk
 func (r *SQLiteLLMKBRepo) GetRuntimeInstance(ctx context.Context, instanceID string) (*llmkb.LLMRuntimeInstance, error) {
 	var item llmkb.LLMRuntimeInstance
 	var lastProbe sql.NullString
-		var provenanceJSON string
+	var provenanceJSON string
 	err := r.db.QueryRowContext(ctx, `
 		SELECT instance_id, llm_id, provider_id, runtime_backend, endpoint, local_path, ollama_tag,
 		       auth_config_key, connector_id, loaded_status, health_status, auth_status, last_probe_at, provenance_json
@@ -824,13 +824,13 @@ func (r *SQLiteLLMKBRepo) RefreshRuntimeInstancesFromCatalog(ctx context.Context
 			}
 			instanceID := fmt.Sprintf("%s:%s", provider.Key, name)
 			instance := llmkb.LLMRuntimeInstance{
-				InstanceID:        instanceID,
-				LLMID:             firstNonEmptyString(name, instanceID),
-				ProviderID:        provider.Key,
-				RuntimeBackend:    backend,
-				AuthStatus:        llmkb.AuthStatusUnknown,
-				HealthStatus:      llmkb.HealthStatusUnknown,
-				LoadedStatus:      llmkb.LoadedStatusUnknown,
+				InstanceID:     instanceID,
+				LLMID:          firstNonEmptyString(name, instanceID),
+				ProviderID:     provider.Key,
+				RuntimeBackend: backend,
+				AuthStatus:     llmkb.AuthStatusUnknown,
+				HealthStatus:   llmkb.HealthStatusUnknown,
+				LoadedStatus:   llmkb.LoadedStatusUnknown,
 			}
 			if profile != nil {
 				instance.LLMID = profile.LLMID

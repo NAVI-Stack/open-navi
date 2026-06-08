@@ -42,9 +42,9 @@ type ceremonyResponse struct {
 // Ceremony-V2 note: replace these with LLM-generated messages guided by ceremony system context,
 // allowing NAVI to ask naturally and follow up conversationally.
 const (
-	ceremonyOpeningMessage = "Good to meet you.\n\nBefore we begin, I’d like to learn a few simple few things about you so I may assist you properly and with due care and discretion. Nothing here is permanent — you may change it at any time.\n\nFirst, what should I call you?"
+	ceremonyOpeningMessage  = "Good to meet you.\n\nBefore we begin, I’d like to learn a few simple few things about you so I may assist you properly and with due care and discretion. Nothing here is permanent — you may change it at any time.\n\nFirst, what should I call you?"
 	ceremonyPresenceMessage = "How would you prefer I conduct myself while assisting you?\n\nFor example: quiet and concise, warm and conversational, direct and practical, careful and deliberate, or in some other manner?."
-	ceremonyTrustMessage = "Are there any matters where I should always ask for your permission before proceeding?\n\nor example: sending messages, changing files, making purchases, deleting anything, accessing sensitive information, or making decisions with real or lasting consequences."
+	ceremonyTrustMessage    = "Are there any matters where I should always ask for your permission before proceeding?\n\nor example: sending messages, changing files, making purchases, deleting anything, accessing sensitive information, or making decisions with real or lasting consequences."
 	ceremonyRememberMessage = "Is there anything you would like me to remember starting now?\n\nIt may be a preference, a goal, a boundary, or simply something that helps me serve you better."
 )
 
@@ -1188,9 +1188,9 @@ func boundariesFromMap(m map[string]bool) ceremonyTrustBoundaryDefaults {
 		ConfirmBeforeSendingMessages:             m["confirm_before_sending_messages"],
 		ConfirmBeforeChangingFiles:               m["confirm_before_changing_files"],
 		ConfirmBeforePurchases:                   m["confirm_before_purchases"],
-		ConfirmBeforeRememberingSensitiveDetails:  m["confirm_before_remembering_sensitive_details"],
-		ConfirmBeforeActingOnInferredPreferences:  m["confirm_before_acting_on_inferred_preferences"],
-		ConfirmBeforeInterruptingProactively:      m["confirm_before_interrupting_proactively"],
-		ConfirmBeforeExternalChanges:              m["confirm_before_external_changes"],
+		ConfirmBeforeRememberingSensitiveDetails: m["confirm_before_remembering_sensitive_details"],
+		ConfirmBeforeActingOnInferredPreferences: m["confirm_before_acting_on_inferred_preferences"],
+		ConfirmBeforeInterruptingProactively:     m["confirm_before_interrupting_proactively"],
+		ConfirmBeforeExternalChanges:             m["confirm_before_external_changes"],
 	}
 }

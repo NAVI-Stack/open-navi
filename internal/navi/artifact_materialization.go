@@ -57,17 +57,17 @@ func (l *AgentLoop) maybeMaterializeArtifactOutputs(ctx context.Context, chatID 
 		var materialized *worldmodel.MaterializedArtifact
 		exec := command.NewExecutor(l.cfg.SaveExecutionOutcome)
 		_, execErr := exec.Execute(ctx, command.Descriptor{
-			Type:          commandType,
-			CommandID:     commandID,
-			RuntimeSessionID:     chatID,
-			RunID:         req.SourceRunID,
-			CorrelationID: chatID,
-			ParentRunID:   req.SourceRunID,
-			SkillIDs:      artifactSkillIDs(registeredTool),
-			LLMProvider:   llmProviderFromRun(run),
-			LLMModel:      llmModelFromRun(run),
-			LLMTaskClass:  llmTaskClassFromRun(run),
-			LLMComplexity: llmComplexityFromRun(run),
+			Type:             commandType,
+			CommandID:        commandID,
+			RuntimeSessionID: chatID,
+			RunID:            req.SourceRunID,
+			CorrelationID:    chatID,
+			ParentRunID:      req.SourceRunID,
+			SkillIDs:         artifactSkillIDs(registeredTool),
+			LLMProvider:      llmProviderFromRun(run),
+			LLMModel:         llmModelFromRun(run),
+			LLMTaskClass:     llmTaskClassFromRun(run),
+			LLMComplexity:    llmComplexityFromRun(run),
 		}, func(execCtx context.Context) (any, error) {
 			var err error
 			materialized, err = l.cfg.WorldModel.MaterializeArtifact(execCtx, req)

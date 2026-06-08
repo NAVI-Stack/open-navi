@@ -22,8 +22,8 @@ type ContactMetadata struct {
 	PhotoURL     string         `json:"photo_url,omitempty"`
 
 	// Identity & interaction fields (folded in from navi.contacts.manager)
-	NaviID             string             `json:"navi_id,omitempty"`             // NAVI-to-NAVI identifier
-	LastInteraction    string             `json:"last_interaction,omitempty"`    // ISO 8601 timestamp
+	NaviID             string             `json:"navi_id,omitempty"`          // NAVI-to-NAVI identifier
+	LastInteraction    string             `json:"last_interaction,omitempty"` // ISO 8601 timestamp
 	InteractionCount   int                `json:"interaction_count,omitempty"`
 	InteractionHistory []InteractionEvent `json:"interaction_history,omitempty"` // capped at 50
 }
@@ -60,9 +60,9 @@ type Organization struct {
 // ParsedVCard is the result of parsing a single vCard block.
 type ParsedVCard struct {
 	// Name is the FN: value — used as schema.Contact.Name.
-	Name      string
-	Kind      string // always "person" from vCard; callers may override
-	Metadata  ContactMetadata
+	Name     string
+	Kind     string // always "person" from vCard; callers may override
+	Metadata ContactMetadata
 }
 
 // ContactToVCF converts a contact name + metadata to a vCard 3.0 string.

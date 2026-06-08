@@ -99,9 +99,9 @@ func (p *Pipeline) Normalize(ctx context.Context, req CompiledModelRequest, raw 
 	}
 	p.recordTrace(ctx, "model_response_normalized", CanonicalRunRequest{
 		Frame: ExecutionFrame{
-			TraceID:   req.Metadata["trace_id"],
-			ChatID:    req.Metadata["chat_id"],
-			RunID:     req.Metadata["run_id"],
+			TraceID: req.Metadata["trace_id"],
+			ChatID:  req.Metadata["chat_id"],
+			RunID:   req.Metadata["run_id"],
 		},
 	}, map[string]string{
 		"tool_calls":    itoa(len(resp.ToolCalls)),
@@ -134,9 +134,9 @@ func (p *Pipeline) recordFailure(ctx context.Context, failedStage string, req Ca
 func (p *Pipeline) recordCompiledFailure(ctx context.Context, failedStage string, req CompiledModelRequest, err error) {
 	p.recordTrace(ctx, "run_failed", CanonicalRunRequest{
 		Frame: ExecutionFrame{
-			TraceID:   req.Metadata["trace_id"],
-			ChatID:    req.Metadata["chat_id"],
-			RunID:     req.Metadata["run_id"],
+			TraceID: req.Metadata["trace_id"],
+			ChatID:  req.Metadata["chat_id"],
+			RunID:   req.Metadata["run_id"],
 		},
 	}, map[string]string{
 		"failed_stage": failedStage,

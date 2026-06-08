@@ -28,10 +28,10 @@ type Chat struct {
 	DeletedAt     *time.Time `json:"deletedAt,omitempty"`
 
 	// Branching and lineage.
-	RootChatID             *ID    `json:"rootChatId,omitempty"`
-	ParentChatID           *ID    `json:"parentChatId,omitempty"`
-	BranchedFromMessageID  *ID    `json:"branchedFromMessageId,omitempty"`
-	BranchReason           string `json:"branchReason,omitempty"`
+	RootChatID            *ID    `json:"rootChatId,omitempty"`
+	ParentChatID          *ID    `json:"parentChatId,omitempty"`
+	BranchedFromMessageID *ID    `json:"branchedFromMessageId,omitempty"`
+	BranchReason          string `json:"branchReason,omitempty"`
 
 	Participants []ChatParticipant `json:"participants,omitempty"`
 
@@ -50,7 +50,7 @@ type Chat struct {
 	LinkedProjects  []LinkedProject  `json:"linkedProjects,omitempty"`
 	LinkedTasks     []LinkedTask     `json:"linkedTasks,omitempty"`
 
-	MemoryPolicy  *ChatMemoryPolicy   `json:"memoryPolicy,omitempty"`
+	MemoryPolicy   *ChatMemoryPolicy   `json:"memoryPolicy,omitempty"`
 	ContextSources []ChatContextSource `json:"contextSources,omitempty"`
 
 	MessageCount          int                `json:"messageCount"`
@@ -137,7 +137,7 @@ type ChatAIConfig struct {
 	Temperature *float64 `json:"temperature,omitempty"`
 	MaxTokens   *int     `json:"maxTokens,omitempty"`
 
-	ToolsEnabled []string        `json:"toolsEnabled,omitempty"`
+	ToolsEnabled []string       `json:"toolsEnabled,omitempty"`
 	Metadata     map[string]any `json:"metadata,omitempty"`
 }
 

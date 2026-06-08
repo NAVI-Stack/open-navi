@@ -148,11 +148,10 @@ func TestVersionMismatchRejection(t *testing.T) {
 
 func TestStreamPersistenceAcrossReconnect(t *testing.T) {
 	s := startTestServer(t)
-	
+
 	// Open bus and close immediately after publishing
 	b1, _, _ := setupJSBus(t, s)
 	ctx := context.Background()
-
 
 	ev := schema.NewEvent(schema.FactDirectiveReplied, schema.EventKindFact, "persist-corr", schema.AgentNavi, schema.DirectiveRepliedPayload{
 		DirectiveID: "d1", MessageID: "m1",
@@ -161,7 +160,7 @@ func TestStreamPersistenceAcrossReconnect(t *testing.T) {
 	if err := b1.Publish(ctx, ev); err != nil {
 		t.Fatalf("publish: %v", err)
 	}
-	
+
 	// Small sleep to ensure JetStream acknowledges and persists before closing
 	time.Sleep(50 * time.Millisecond)
 	b1.Close()
@@ -191,7 +190,7 @@ func TestStreamPersistenceAcrossReconnect(t *testing.T) {
 
 func TestEnsureStreamsIdempotency(t *testing.T) {
 	s := startTestServer(t)
-	
+
 	nc, err := nats.Connect(s.ClientURL())
 	if err != nil {
 		t.Fatalf("connect: %v", err)

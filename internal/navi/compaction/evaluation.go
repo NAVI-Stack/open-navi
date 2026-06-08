@@ -8,7 +8,7 @@ type ScenarioEvidence struct {
 	TriggerReason         string                   `json:"trigger_reason,omitempty"`
 	Selection             CompactionSelection      `json:"selection"`
 	SelectedSpan          SourceSpanProvenance     `json:"selected_span"`
-	ChatFrame          ChatFrame             `json:"chat_frame"`
+	ChatFrame             ChatFrame                `json:"chat_frame"`
 	TaskFrames            []TaskFrame              `json:"task_frames,omitempty"`
 	RetrievalSpans        []RetrievalSpan          `json:"retrieval_spans,omitempty"`
 	RehydrationBeforeTrim RehydrationOutput        `json:"rehydration_before_trim"`
@@ -33,7 +33,7 @@ func BuildScenarioEvidence(name, class string, input RunInput, memory ChatMemory
 	}
 	beforeTrim := Rehydrator{}.Assemble(RehydrationInput{
 		PermanentInstructions: input.PermanentInstructions,
-		ChatFrame:          memory.ChatFrame,
+		ChatFrame:             memory.ChatFrame,
 		TaskFrames:            memory.TaskFrames,
 		ProposalRefs:          input.ProposalRefs,
 		FailureRefs:           input.FailureRefs,
@@ -54,7 +54,7 @@ func BuildScenarioEvidence(name, class string, input RunInput, memory ChatMemory
 		TriggerReason:         output.Inspection.TriggerReason,
 		Selection:             output.Inspection.Selection,
 		SelectedSpan:          output.Inspection.SelectedSpan,
-		ChatFrame:          memory.ChatFrame,
+		ChatFrame:             memory.ChatFrame,
 		TaskFrames:            append([]TaskFrame(nil), memory.TaskFrames...),
 		RetrievalSpans:        append([]RetrievalSpan(nil), memory.RetrievalSpans...),
 		RehydrationBeforeTrim: beforeTrim,

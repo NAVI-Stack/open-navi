@@ -25,19 +25,19 @@ type Descriptor struct {
 	UserFacing bool
 
 	// RuntimeSessionID, TaskID and Domain identify affected high-level entities.
-	RuntimeSessionID     string
-	TaskID        string
-	Domain        string
-	RunID         string
-	CorrelationID string
-	ParentRunID   string
-	SkillIDs      []string
-	ConnectorIDs  []string
-	ProposalID    string
-	LLMProvider   string
-	LLMModel      string
-	LLMTaskClass  string
-	LLMComplexity string
+	RuntimeSessionID string
+	TaskID           string
+	Domain           string
+	RunID            string
+	CorrelationID    string
+	ParentRunID      string
+	SkillIDs         []string
+	ConnectorIDs     []string
+	ProposalID       string
+	LLMProvider      string
+	LLMModel         string
+	LLMTaskClass     string
+	LLMComplexity    string
 
 	// ComposeMode is reserved for future multi-step compose semantics.
 	ComposeMode schema.ComposeFailureMode

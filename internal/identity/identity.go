@@ -20,9 +20,9 @@ import (
 const keyTypeEd25519 = "ed25519"
 
 var (
-	ErrNoActiveIdentity = errors.New("identity: no active identity")
+	ErrNoActiveIdentity   = errors.New("identity: no active identity")
 	ErrUnsupportedKeyType = errors.New("identity: unsupported key type")
-	ErrInvalidSignature = errors.New("identity: invalid signature")
+	ErrInvalidSignature   = errors.New("identity: invalid signature")
 )
 
 // Keypair is a generated Ed25519 keypair.
@@ -33,11 +33,11 @@ type Keypair struct {
 
 // SignedEnvelope holds a signed payload with identity metadata for transport or storage.
 type SignedEnvelope struct {
-	Payload       []byte
-	Signature     string
+	Payload        []byte
+	Signature      string
 	KeyFingerprint string
-	KeyType       string
-	CreatedAt     time.Time
+	KeyType        string
+	CreatedAt      time.Time
 }
 
 // GenerateKeypair generates an Ed25519 keypair using crypto/rand.
@@ -225,12 +225,12 @@ func RotateIdentity(ctx context.Context, db *sql.DB, ks keystore.Store) (oldID, 
 	linkSigB64 := base64.RawStdEncoding.EncodeToString(linkSig)
 
 	newIdentity := store.AgentIdentity{
-		ID:          newIDStr,
-		KeyType:     keyTypeEd25519,
-		PublicKey:   newPubB64,
-		Fingerprint: newFingerprint,
-		CreatedAt:   now,
-		Status:      store.AgentIdentityStatusActive,
+		ID:           newIDStr,
+		KeyType:      keyTypeEd25519,
+		PublicKey:    newPubB64,
+		Fingerprint:  newFingerprint,
+		CreatedAt:    now,
+		Status:       store.AgentIdentityStatusActive,
 		SupersedesID: oldID.ID,
 	}
 	if err := store.ApplyRotation(ctx, db, oldID.ID, linkSigB64, newIDStr, newIdentity); err != nil {

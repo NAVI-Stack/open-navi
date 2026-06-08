@@ -35,8 +35,8 @@ func TestCompileLayersPreservesCanonicalOrderAndOwnership(t *testing.T) {
 		ExecutionFrame: ExecutionFrameInput{
 			Frame: orchestration.ExecutionFrame{
 				ChatID: "sess-1",
-				RunID:     "run-1",
-				Mode:      orchestration.ExecutionModeRunExecute,
+				RunID:  "run-1",
+				Mode:   orchestration.ExecutionModeRunExecute,
 			},
 		},
 	})
@@ -107,9 +107,9 @@ func TestCompilerMapsExecutionFrameAndOutputContractIntoExistingRootFields(t *te
 			ExecutionFrame: ExecutionFrameInput{
 				Frame: orchestration.ExecutionFrame{
 					ChatID: "sess-42",
-					RunID:     "run-42",
-					Phase:     "contextualize",
-					Mode:      orchestration.ExecutionModeResume,
+					RunID:  "run-42",
+					Phase:  "contextualize",
+					Mode:   orchestration.ExecutionModeResume,
 					Scratchpad: map[string]string{
 						"current_user_message": "hello",
 					},
@@ -164,8 +164,8 @@ func TestCompilerDefaultRequestMapsCanonicalRequestWithoutResolver(t *testing.T)
 	req := orchestration.CanonicalRunRequest{
 		Frame: orchestration.ExecutionFrame{
 			ChatID: "sess-default",
-			RunID:     "run-default",
-			Mode:      orchestration.ExecutionModeRunExecute,
+			RunID:  "run-default",
+			Mode:   orchestration.ExecutionModeRunExecute,
 		},
 		UserMessage:    "inspect the repo",
 		ExperienceMode: "navi",

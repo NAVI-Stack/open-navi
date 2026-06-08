@@ -41,4 +41,3 @@ func ListPrioritiesByScope(ctx context.Context, db *sql.DB, scope, scopeID strin
 	}
 	return out, rows.Err()
 }
-

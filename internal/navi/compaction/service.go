@@ -20,7 +20,7 @@ type Service struct {
 }
 
 type RunInput struct {
-	ChatID             string
+	ChatID                string
 	Messages              []Message
 	PermanentInstructions []string
 	ProposalRefs          []string
@@ -70,17 +70,17 @@ func (s Service) Run(ctx context.Context, in RunInput) (RunOutput, error) {
 	mem, _ := s.Memory.GetChatMemory(ctx, in.ChatID)
 	if mem.ChatID == "" {
 		mem = ChatMemory{
-			ChatID:      in.ChatID,
+			ChatID:         in.ChatID,
 			SchemaVersion:  1,
 			MemoryVersion:  0,
-			ChatFrame:   ChatFrame{SchemaVersion: 1, ChatID: in.ChatID},
+			ChatFrame:      ChatFrame{SchemaVersion: 1, ChatID: in.ChatID},
 			RetrievalSpans: nil,
 		}
 	}
 	if trigger == "" {
 		out.Rehydration = s.Rehydrator.Assemble(RehydrationInput{
 			PermanentInstructions: in.PermanentInstructions,
-			ChatFrame:          mem.ChatFrame,
+			ChatFrame:             mem.ChatFrame,
 			TaskFrames:            mem.TaskFrames,
 			ProposalRefs:          in.ProposalRefs,
 			FailureRefs:           in.FailureRefs,
@@ -104,7 +104,7 @@ func (s Service) Run(ctx context.Context, in RunInput) (RunOutput, error) {
 	if !ok {
 		out.Rehydration = s.Rehydrator.Assemble(RehydrationInput{
 			PermanentInstructions: in.PermanentInstructions,
-			ChatFrame:          mem.ChatFrame,
+			ChatFrame:             mem.ChatFrame,
 			TaskFrames:            mem.TaskFrames,
 			ProposalRefs:          in.ProposalRefs,
 			FailureRefs:           in.FailureRefs,
@@ -142,13 +142,13 @@ func (s Service) Run(ctx context.Context, in RunInput) (RunOutput, error) {
 
 	cp := CompactionCheckpoint{
 		CheckpointID:            uuid.NewString(),
-		ChatID:               in.ChatID,
+		ChatID:                  in.ChatID,
 		EpochID:                 mem.CurrentEpochID,
 		TriggerClass:            trigger,
 		TriggerReason:           out.Inspection.TriggerReason,
 		CompactedMessageStartID: selection.Messages[0].ID,
 		CompactedMessageEndID:   selection.Messages[len(selection.Messages)-1].ID,
-		ChatFrameVersion:     mergedFrame.FrameVersion,
+		ChatFrameVersion:        mergedFrame.FrameVersion,
 		TaskFrameVersions:       taskFrameVersions(mem.TaskFrames),
 		SourceMessageIDs:        append([]string(nil), selectedSpan.SourceMessageIDs...),
 		SelectedSpan:            selectedSpan,
@@ -169,7 +169,7 @@ func (s Service) Run(ctx context.Context, in RunInput) (RunOutput, error) {
 	out.Inspection.SupportSpans = append([]RetrievalSpan(nil), supportSpans...)
 	out.Rehydration = s.Rehydrator.Assemble(RehydrationInput{
 		PermanentInstructions: in.PermanentInstructions,
-		ChatFrame:          mem.ChatFrame,
+		ChatFrame:             mem.ChatFrame,
 		TaskFrames:            mem.TaskFrames,
 		ProposalRefs:          in.ProposalRefs,
 		FailureRefs:           in.FailureRefs,
@@ -198,7 +198,7 @@ var (
 
 func buildIncomingChatFrame(existing ChatFrame, in RunInput, selected []Message, runs []RunSnapshot, selectedSpan SourceSpanProvenance) ChatFrame {
 	frame := ChatFrame{
-		ChatID:          in.ChatID,
+		ChatID:             in.ChatID,
 		CurrentEpochID:     existing.CurrentEpochID,
 		PrimaryObjective:   firstNonEmpty(existing.PrimaryObjective, strings.TrimSpace(in.NewInput), firstObjectiveFromRuns(runs), firstContentLine(joinSelectedContent(selected))),
 		ActiveArtifactRefs: artifactRefsForMessages(selected, runs),
@@ -435,7 +435,7 @@ func retrievalSpansFromSelection(chatID, checkpointID string, messages []Message
 		provenance := provenanceFromMessages(chatID, group, nil, nil, artifactRefsForMessages(group, runs))
 		out = append(out, RetrievalSpan{
 			SpanID:           fmt.Sprintf("%s:support:%d", firstNonEmpty(checkpointID, chatID), idx+1),
-			ChatID:        chatID,
+			ChatID:           chatID,
 			CheckpointID:     checkpointID,
 			Kind:             supportKindForGroup(group, runs),
 			SupportClass:     supportClassForGroup(group, runs),

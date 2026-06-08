@@ -160,10 +160,10 @@ routing_profile:
 
 	repo := NewSQLiteLLMKBRepo(db)
 	existing := llmkb.LLMProfile{
-		SchemaVersion:     2,
-		LLMID:             "openai.gpt-4o",
-		CanonicalName:     "Old GPT-4o Name",
-		ProviderID:        "openai",
+		SchemaVersion: 2,
+		LLMID:         "openai.gpt-4o",
+		CanonicalName: "Old GPT-4o Name",
+		ProviderID:    "openai",
 		Capabilities: llmkb.CapabilityProfile{
 			AgenticClass:              llmkb.AgenticClassStrong,
 			CodingClass:               llmkb.CodingClassElite,
@@ -379,10 +379,10 @@ routing_profile:
 
 	repo := NewSQLiteLLMKBRepo(db)
 	existing := llmkb.LLMProfile{
-		SchemaVersion:     0,
-		LLMID:             "anthropic.claude-sonnet",
-		CanonicalName:     "Claude Sonnet",
-		ProviderID:        "anthropic",
+		SchemaVersion: 0,
+		LLMID:         "anthropic.claude-sonnet",
+		CanonicalName: "Claude Sonnet",
+		ProviderID:    "anthropic",
 		Capabilities: llmkb.CapabilityProfile{
 			AgenticClass:              llmkb.AgenticClassCapable,
 			CodingClass:               llmkb.CodingClassStrong,
@@ -402,11 +402,11 @@ routing_profile:
 			AutonomyCeiling:    llmkb.AutonomyLevelChat,
 		},
 		Provenance: llmkb.Provenance{
-			Source:       llmkb.ProvenanceSourceCuratedSeed,
-			SourceDetail: "existing",
-			Confidence:   0.9,
-			AssertedAt:   parseTestTime(t, "2026-03-23T00:00:00Z"),
-			FieldClass:   llmkb.FieldClassGoverned,
+			Source:          llmkb.ProvenanceSourceCuratedSeed,
+			SourceDetail:    "existing",
+			Confidence:      0.9,
+			AssertedAt:      parseTestTime(t, "2026-03-23T00:00:00Z"),
+			FieldClass:      llmkb.FieldClassGoverned,
 			MutationHistory: []llmkb.MutationRecord{{FieldName: "seed_load", NewValue: "schema_version=0", ChangedAt: parseTestTime(t, "2026-03-23T00:00:00Z"), Source: llmkb.ProvenanceSourceCuratedSeed}},
 		},
 		CreatedAt: time.Now().UTC(),

@@ -191,16 +191,16 @@ func TestAgentTurnPayloadIsExplicitlyUnsupported(t *testing.T) {
 // pulling in the full navi session store.
 type recordingChatAppender struct {
 	calls []struct {
-		chatID string
-		content   string
+		chatID  string
+		content string
 	}
 	failWith error
 }
 
 func (a *recordingChatAppender) AppendAssistantMessage(_ context.Context, chatID, content string) error {
 	a.calls = append(a.calls, struct {
-		chatID string
-		content   string
+		chatID  string
+		content string
 	}{chatID, content})
 	return a.failWith
 }

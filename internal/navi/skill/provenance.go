@@ -36,7 +36,7 @@ func NewUntrustedEnvelope(source string, content string) DataEnvelope {
 }
 
 // SanitizeResult ensures tool outputs are treated as untrusted data.
-// In a full implementation, this might strip markdown instructions or 
+// In a full implementation, this might strip markdown instructions or
 // use a separate "content-only" channel in the prompt.
 func SanitizeResult(source string, raw string) DataEnvelope {
 	// Simple sanitization: just tag it.

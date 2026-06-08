@@ -135,7 +135,7 @@ func TestMaybeRecordExperienceSnapshotRecordsSessionStartAndMaterialDelta(t *tes
 
 	engine := NewEngine(nil)
 	rendered1, err := engine.Build(ctx, DefaultStandardProfile(), BuildRequest{
-		ChatID:       "sess-1",
+		ChatID:          "sess-1",
 		Mode:            "navi",
 		LastUserMessage: "hello",
 	})
@@ -143,7 +143,7 @@ func TestMaybeRecordExperienceSnapshotRecordsSessionStartAndMaterialDelta(t *tes
 		t.Fatalf("Build(rendered1): %v", err)
 	}
 	recorded, err := MaybeRecordExperienceSnapshot(ctx, db, rendered1, SnapshotRecordOptions{
-		ChatID:      "sess-1",
+		ChatID:         "sess-1",
 		OwnerID:        "owner-1",
 		ExperienceMode: "navi",
 		SessionStart:   true,
@@ -156,7 +156,7 @@ func TestMaybeRecordExperienceSnapshotRecordsSessionStartAndMaterialDelta(t *tes
 	}
 
 	recorded, err = MaybeRecordExperienceSnapshot(ctx, db, rendered1, SnapshotRecordOptions{
-		ChatID:      "sess-1",
+		ChatID:         "sess-1",
 		OwnerID:        "owner-1",
 		ExperienceMode: "navi",
 	})
@@ -168,7 +168,7 @@ func TestMaybeRecordExperienceSnapshotRecordsSessionStartAndMaterialDelta(t *tes
 	}
 
 	rendered2, err := engine.Build(ctx, DefaultStandardProfile(), BuildRequest{
-		ChatID:       "sess-1",
+		ChatID:          "sess-1",
 		Mode:            "navi",
 		LastUserMessage: "hello",
 		ExplicitSessionOverrides: ExplicitTurnInput{
@@ -179,7 +179,7 @@ func TestMaybeRecordExperienceSnapshotRecordsSessionStartAndMaterialDelta(t *tes
 		t.Fatalf("Build(rendered2): %v", err)
 	}
 	recorded, err = MaybeRecordExperienceSnapshot(ctx, db, rendered2, SnapshotRecordOptions{
-		ChatID:      "sess-1",
+		ChatID:         "sess-1",
 		OwnerID:        "owner-1",
 		ExperienceMode: "navi",
 	})
@@ -232,7 +232,7 @@ func TestRecordSessionEndExperienceSnapshotReusesLatestState(t *testing.T) {
 
 	engine := NewEngine(nil)
 	rendered, err := engine.Build(ctx, DefaultStandardProfile(), BuildRequest{
-		ChatID:       "sess-end",
+		ChatID:          "sess-end",
 		Mode:            "navi",
 		LastUserMessage: "wrap this up",
 	})
@@ -240,7 +240,7 @@ func TestRecordSessionEndExperienceSnapshotReusesLatestState(t *testing.T) {
 		t.Fatalf("Build(rendered): %v", err)
 	}
 	recorded, err := MaybeRecordExperienceSnapshot(ctx, db, rendered, SnapshotRecordOptions{
-		ChatID:      "sess-end",
+		ChatID:         "sess-end",
 		OwnerID:        "owner-1",
 		ExperienceMode: "navi",
 		SessionStart:   true,

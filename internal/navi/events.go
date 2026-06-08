@@ -128,13 +128,13 @@ func (l *AgentLoop) emitArtifactCreated(ctx context.Context, runtimeSessionID, r
 		runID,
 		schema.VisibilityUser,
 		schema.ArtifactCreatedPayload{
-			ArtifactID:       art.ID,
-			ChatID:           runtimeSessionID,
-			RunID:            runID,
-			Type:             string(art.Type),
-			Subtype:          art.Subtype,
-			Title:            firstNonEmpty(art.DisplayTitle, art.CanonicalTitle),
-			LifecycleState:   string(art.LifecycleState),
+			ArtifactID:     art.ID,
+			ChatID:         runtimeSessionID,
+			RunID:          runID,
+			Type:           string(art.Type),
+			Subtype:        art.Subtype,
+			Title:          firstNonEmpty(art.DisplayTitle, art.CanonicalTitle),
+			LifecycleState: string(art.LifecycleState),
 		},
 	)
 	if err := l.cfg.Bus.Publish(ctx, ev); err != nil {

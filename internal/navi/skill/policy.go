@@ -39,7 +39,7 @@ func (pe *PolicyEngine) Check(entry *SkillEntry) (PolicyResult, string) {
 			return PolicyConfirmRequired, fmt.Sprintf("Prototype Python skill %s is high risk and requires confirmation", spec.Display.Name)
 		}
 	}
-	
+
 	// Check risk tier
 	if spec.Effects.RiskTier == "high" {
 		return PolicyConfirmRequired, fmt.Sprintf("High-risk action: %s. This skill has side effects: %v", spec.Display.Name, spec.Effects.SideEffects)
@@ -50,6 +50,6 @@ func (pe *PolicyEngine) Check(entry *SkillEntry) (PolicyResult, string) {
 	}
 
 	// Future: check data access scopes (e.g., if secrets == "read", ensure user is admin)
-	
+
 	return PolicyAllow, ""
 }

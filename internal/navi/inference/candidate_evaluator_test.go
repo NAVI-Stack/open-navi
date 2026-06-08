@@ -14,7 +14,7 @@ func TestCandidateEvaluatorRanksExecuteAboveFallbacks(t *testing.T) {
 	result := evaluator.Evaluate(
 		InferenceInput{
 			Chat: ChatContext{
-				ChatID:   "sess-1",
+				ChatID:      "sess-1",
 				UserMessage: "make the change",
 			},
 			NCOS: orchestration.CanonicalRunRequest{
@@ -61,7 +61,7 @@ func TestCandidateEvaluatorRepresentsHardVetoAndStructuredRejection(t *testing.T
 	result := evaluator.Evaluate(
 		InferenceInput{
 			Chat: ChatContext{
-				ChatID:   "sess-2",
+				ChatID:      "sess-2",
 				UserMessage: "apply the change",
 			},
 			Governance: GovernanceState{
@@ -121,7 +121,7 @@ func TestCandidateEvaluatorBuildsBoundedSubsetWhenExactTargetIsNotJustified(t *t
 	result := evaluator.Evaluate(
 		InferenceInput{
 			Chat: ChatContext{
-				ChatID:   "sess-4",
+				ChatID:      "sess-4",
 				UserMessage: "use the coding tools",
 			},
 			NCOS: orchestration.CanonicalRunRequest{
@@ -162,7 +162,7 @@ func TestCandidateEvaluatorAllowsExplicitTwoCapabilitySetWhenBothAreViable(t *te
 	result := evaluator.Evaluate(
 		InferenceInput{
 			Chat: ChatContext{
-				ChatID:   "sess-5",
+				ChatID:      "sess-5",
 				UserMessage: "write the file and patch the code",
 			},
 			NCOS: orchestration.CanonicalRunRequest{
@@ -199,7 +199,7 @@ func TestCandidateEvaluatorExcludesUngovernedCapabilitiesFromExecutionPlan(t *te
 	result := evaluator.Evaluate(
 		InferenceInput{
 			Chat: ChatContext{
-				ChatID:   "sess-6",
+				ChatID:      "sess-6",
 				UserMessage: "make the change",
 			},
 			NCOS: orchestration.CanonicalRunRequest{

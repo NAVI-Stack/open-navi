@@ -26,9 +26,9 @@ type StatusTracker struct {
 	uptimeSince    time.Time
 	turnsProcessed atomic.Int64
 
-	mu              sync.RWMutex
+	mu                     sync.RWMutex
 	activeRuntimeSessionID string
-	currentDetail   string
+	currentDetail          string
 }
 
 // NewStatusTracker creates a tracker initialized to the idle state.
@@ -106,8 +106,8 @@ func (t *StatusTracker) Snapshot() schema.AgentStatusSnapshot {
 		UptimeSince:            t.uptimeSince,
 		ActiveRuntimeSessionID: activeRuntimeSessionID,
 		CurrentDetail:          detail,
-		TurnsProcessed:  t.turnsProcessed.Load(),
-		UpdatedAt:       now,
+		TurnsProcessed:         t.turnsProcessed.Load(),
+		UpdatedAt:              now,
 	}
 }
 

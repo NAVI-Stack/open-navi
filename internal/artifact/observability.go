@@ -98,12 +98,12 @@ func (s *Service) emitArtifactReflection(ctx context.Context, artifact *schema.A
 		return
 	}
 	payload := schema.ReflectionPayload{
-		ID:        uuid.New().String(),
+		ID:               uuid.New().String(),
 		RuntimeSessionID: strings.TrimSpace(runtimeSessionID),
-		Tier:      schema.ReflectionTierShallow,
-		Summary:   firstNonEmpty(summary, fmt.Sprintf("Artifact %s %s", artifact.ID, strings.TrimSpace(operation))),
-		Details:   string(raw),
-		CreatedAt: time.Now().UTC(),
+		Tier:             schema.ReflectionTierShallow,
+		Summary:          firstNonEmpty(summary, fmt.Sprintf("Artifact %s %s", artifact.ID, strings.TrimSpace(operation))),
+		Details:          string(raw),
+		CreatedAt:        time.Now().UTC(),
 	}
 	_ = s.reflectionPublisher(ctx, payload)
 }

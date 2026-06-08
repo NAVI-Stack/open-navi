@@ -43,7 +43,7 @@ func TestAssemblerAssemblesPhaseOneSourcesWithProvenance(t *testing.T) {
 	req := orchestration.CanonicalRunRequest{
 		Frame: orchestration.ExecutionFrame{
 			ChatID: "sess-1",
-			RunID:     "run-1",
+			RunID:  "run-1",
 		},
 		Conversation: []orchestration.ConversationTurn{
 			{ID: "m1", Role: "user", Content: "first", CreatedAt: time.Unix(1, 0).UTC()},

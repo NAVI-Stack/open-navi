@@ -13,7 +13,7 @@ func TestFocusArbiterSelectsRecoveryAsHardPreempt(t *testing.T) {
 
 	selection := arbiter.Select(InferenceInput{
 		Chat: ChatContext{
-			ChatID:   "sess-1",
+			ChatID:      "sess-1",
 			UserMessage: "keep going",
 		},
 		GoalStack: GoalStack{
@@ -43,7 +43,7 @@ func TestFocusArbiterAppliesAntiThrashHysteresis(t *testing.T) {
 
 	selection := arbiter.Select(InferenceInput{
 		Chat: ChatContext{
-			ChatID:   "sess-2",
+			ChatID:      "sess-2",
 			UserMessage: "quick update",
 		},
 		GoalStack: GoalStack{

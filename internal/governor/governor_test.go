@@ -38,8 +38,8 @@ func TestRecordActionExceedsBudget(t *testing.T) {
 		CostCeiling:        10.0,
 		AutonomousDuration: 1 * time.Minute,
 	}, ".")
-	g.RecordAction() // 1
-	g.RecordAction() // 2
+	g.RecordAction()        // 1
+	g.RecordAction()        // 2
 	err := g.RecordAction() // 3 — over budget
 	if err == nil {
 		t.Fatal("expected governor to trip on action budget")
@@ -60,7 +60,7 @@ func TestRecordRetryExceedsLimit(t *testing.T) {
 		CostCeiling:        10.0,
 		AutonomousDuration: 1 * time.Minute,
 	}, ".")
-	g.RecordRetry() // 1
+	g.RecordRetry()        // 1
 	err := g.RecordRetry() // 2 — over limit
 	if err == nil {
 		t.Fatal("expected governor to trip on retry limit")
@@ -182,8 +182,8 @@ func TestRecordRuntimeSessionActionExceedsBudget(t *testing.T) {
 		AutonomousDuration: 1 * time.Minute,
 	}, ".")
 	// Allow 2 actions per session
-	_, _ = g.RecordRuntimeSessionAction("session-1", 2) // 1
-	_, _ = g.RecordRuntimeSessionAction("session-1", 2) // 2
+	_, _ = g.RecordRuntimeSessionAction("session-1", 2)        // 1
+	_, _ = g.RecordRuntimeSessionAction("session-1", 2)        // 2
 	count, err := g.RecordRuntimeSessionAction("session-1", 2) // 3 — over budget
 	if err == nil {
 		t.Fatal("expected agent budget exceeded error")
@@ -233,7 +233,7 @@ func TestErrGovernorTrippedMessage(t *testing.T) {
 
 func TestCheckPathRestricted(t *testing.T) {
 	g := NewGovernor(GovernorConfig{RestrictToWorkspace: true}, ".")
-	
+
 	if err := g.CheckPath("valid/relative/path.txt"); err != nil {
 		t.Fatalf("unexpected error for valid relative path: %v", err)
 	}
@@ -251,7 +251,7 @@ func TestCheckPathRestricted(t *testing.T) {
 
 func TestCheckPathUnrestricted(t *testing.T) {
 	g := NewGovernor(GovernorConfig{RestrictToWorkspace: false}, ".")
-	
+
 	if err := g.CheckPath("valid/relative/path.txt"); err != nil {
 		t.Fatalf("unexpected error for valid relative path: %v", err)
 	}
@@ -328,5 +328,3 @@ func TestGovernorRepetitionDisabledOnNonPositiveLimit(t *testing.T) {
 		}
 	}
 }
-
-

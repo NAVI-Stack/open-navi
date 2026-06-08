@@ -26,9 +26,9 @@ type GatewayBridgeConnector struct {
 
 // BridgeConfig holds configuration for creating a bridge connector.
 type BridgeConfig struct {
-	Name            string
-	CallbackURL     string
-	Token           string
+	Name             string
+	CallbackURL      string
+	Token            string
 	MaxMessageLength int
 }
 
@@ -44,7 +44,7 @@ func NewGatewayBridgeConnector(cfg BridgeConfig) *GatewayBridgeConnector {
 }
 
 func (b *GatewayBridgeConnector) Name() string    { return b.name }
-func (b *GatewayBridgeConnector) IsRunning() bool  { return b.running.Load() }
+func (b *GatewayBridgeConnector) IsRunning() bool { return b.running.Load() }
 
 func (b *GatewayBridgeConnector) Start(_ context.Context) error {
 	b.running.Store(true)

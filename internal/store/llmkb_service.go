@@ -40,11 +40,11 @@ func NewLLMKBMaintenanceService(repo *SQLiteLLMKBRepo, builder func(ctx context.
 // Start begins the background maintenance loop.
 func (s *LLMKBMaintenanceService) Start(ctx context.Context) {
 	s.Logger.Info("llmkb: starting maintenance service", "interval", s.Interval)
-	
+
 	go func() {
 		ticker := time.NewTicker(s.Interval)
 		defer ticker.Stop()
-		
+
 		for {
 			select {
 			case <-ctx.Done():
@@ -65,17 +65,17 @@ func (s *LLMKBMaintenanceService) runOnce(ctx context.Context) {
 	}()
 
 	catalog := s.CatalogBuilder(ctx)
-	
+
 	// Phase 3: Health Refresh
 	if err := s.Repo.RefreshRuntimeInstancesFromCatalog(ctx, catalog); err != nil {
 		s.Logger.Debug("llmkb: health refresh failed", "error", err)
 	}
-	
+
 	// Phase 4: Stats Materialization
 	if err := s.Repo.MaterializeUsageStats(ctx); err != nil {
 		s.Logger.Debug("llmkb: stats materialization failed", "error", err)
 	}
-	
+
 	// Phase 5: Proposal Generation
 	if _, err := s.Repo.GenerateRoutingProposals(ctx, 0.8); err != nil {
 		s.Logger.Debug("llmkb: proposal generation failed", "error", err)

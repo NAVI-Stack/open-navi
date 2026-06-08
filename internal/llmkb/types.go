@@ -24,7 +24,7 @@ type CostEstimate struct {
 	OutputPer1M float64 `json:"output_per_1m,omitempty" yaml:"output_per_1m,omitempty"`
 	Currency    string  `json:"currency,omitempty" yaml:"currency,omitempty"`
 	// [Inferred]
-	Tier        CostTier `json:"tier,omitempty" yaml:"tier,omitempty"`
+	Tier CostTier `json:"tier,omitempty" yaml:"tier,omitempty"`
 }
 
 type QuotaState struct {
@@ -45,7 +45,7 @@ type Provenance struct {
 	AssertedBy      string           `json:"asserted_by,omitempty" yaml:"asserted_by,omitempty"`
 	MutationHistory []MutationRecord `json:"mutation_history,omitempty" yaml:"mutation_history,omitempty"`
 	// [Governed]
-	FieldClass      FieldClass       `json:"field_class,omitempty" yaml:"field_class,omitempty"`
+	FieldClass FieldClass `json:"field_class,omitempty" yaml:"field_class,omitempty"`
 }
 
 type MutationRecord struct {
@@ -116,8 +116,8 @@ type OperationalState struct {
 
 type EvaluationProfile struct {
 	// [Observed]
-	ObservedFailurePatterns []FailurePattern        `json:"observed_failure_patterns,omitempty" yaml:"observed_failure_patterns,omitempty"`
-	ObservedTaskFit         map[TaskClass]FitScore  `json:"observed_task_fit,omitempty" yaml:"observed_task_fit,omitempty"`
+	ObservedFailurePatterns []FailurePattern       `json:"observed_failure_patterns,omitempty" yaml:"observed_failure_patterns,omitempty"`
+	ObservedTaskFit         map[TaskClass]FitScore `json:"observed_task_fit,omitempty" yaml:"observed_task_fit,omitempty"`
 
 	// [Inferred]
 	InferredReliabilityTrend ReliabilityTrend `json:"inferred_reliability_trend,omitempty" yaml:"inferred_reliability_trend,omitempty"`
@@ -148,17 +148,17 @@ type UsageStats struct {
 	AccumulatedCost float64 `json:"accumulated_cost,omitempty" yaml:"accumulated_cost,omitempty"`
 
 	// [Observed]
-	FirstSeenAt             *time.Time              `json:"first_seen_at,omitempty" yaml:"first_seen_at,omitempty"`
-	LastUsedAt              *time.Time              `json:"last_used_at,omitempty" yaml:"last_used_at,omitempty"`
-	UseCountTotal           int                     `json:"use_count_total,omitempty" yaml:"use_count_total,omitempty"`
-	UseCount30d             int                     `json:"use_count_30d,omitempty" yaml:"use_count_30d,omitempty"`
-	SuccessRateTotal        float64                 `json:"success_rate_total,omitempty" yaml:"success_rate_total,omitempty"`
-	SuccessRateByTask       map[TaskClass]float64   `json:"success_rate_by_task,omitempty" yaml:"success_rate_by_task,omitempty"`
-	AverageUserRating       *float64                `json:"average_user_rating,omitempty" yaml:"average_user_rating,omitempty"`
-	AbortRate               float64                 `json:"abort_rate,omitempty" yaml:"abort_rate,omitempty"`
-	FallbackRate            float64                 `json:"fallback_rate,omitempty" yaml:"fallback_rate,omitempty"`
-	OverrideRate            float64                 `json:"override_rate,omitempty" yaml:"override_rate,omitempty"`
-	MostRecentFailureReason string                  `json:"most_recent_failure_reason,omitempty" yaml:"most_recent_failure_reason,omitempty"`
+	FirstSeenAt             *time.Time            `json:"first_seen_at,omitempty" yaml:"first_seen_at,omitempty"`
+	LastUsedAt              *time.Time            `json:"last_used_at,omitempty" yaml:"last_used_at,omitempty"`
+	UseCountTotal           int                   `json:"use_count_total,omitempty" yaml:"use_count_total,omitempty"`
+	UseCount30d             int                   `json:"use_count_30d,omitempty" yaml:"use_count_30d,omitempty"`
+	SuccessRateTotal        float64               `json:"success_rate_total,omitempty" yaml:"success_rate_total,omitempty"`
+	SuccessRateByTask       map[TaskClass]float64 `json:"success_rate_by_task,omitempty" yaml:"success_rate_by_task,omitempty"`
+	AverageUserRating       *float64              `json:"average_user_rating,omitempty" yaml:"average_user_rating,omitempty"`
+	AbortRate               float64               `json:"abort_rate,omitempty" yaml:"abort_rate,omitempty"`
+	FallbackRate            float64               `json:"fallback_rate,omitempty" yaml:"fallback_rate,omitempty"`
+	OverrideRate            float64               `json:"override_rate,omitempty" yaml:"override_rate,omitempty"`
+	MostRecentFailureReason string                `json:"most_recent_failure_reason,omitempty" yaml:"most_recent_failure_reason,omitempty"`
 }
 
 type RoutingCondition struct {
@@ -391,16 +391,16 @@ const (
 
 type LLMEvaluation struct {
 	// [Observed, Inferred, Governed]
-	EvalID        string       `json:"eval_id" yaml:"eval_id"`
-	LLMID         string       `json:"llm_id" yaml:"llm_id"`
-	EvalType      EvalType     `json:"eval_type" yaml:"eval_type"`
-	Assessor      string       `json:"assessor,omitempty" yaml:"assessor,omitempty"`
-	TaskClass     TaskClass    `json:"task_class" yaml:"task_class"`
-	Score         float64      `json:"score" yaml:"score"`
-	Confidence    float64      `json:"confidence" yaml:"confidence"`
-	SampleSize    *int         `json:"sample_size,omitempty" yaml:"sample_size,omitempty"`
-	Remarks       string       `json:"remarks,omitempty" yaml:"remarks,omitempty"`
-	EvidenceLinks []string     `json:"evidence_links,omitempty" yaml:"evidence_links,omitempty"`
+	EvalID        string    `json:"eval_id" yaml:"eval_id"`
+	LLMID         string    `json:"llm_id" yaml:"llm_id"`
+	EvalType      EvalType  `json:"eval_type" yaml:"eval_type"`
+	Assessor      string    `json:"assessor,omitempty" yaml:"assessor,omitempty"`
+	TaskClass     TaskClass `json:"task_class" yaml:"task_class"`
+	Score         float64   `json:"score" yaml:"score"`
+	Confidence    float64   `json:"confidence" yaml:"confidence"`
+	SampleSize    *int      `json:"sample_size,omitempty" yaml:"sample_size,omitempty"`
+	Remarks       string    `json:"remarks,omitempty" yaml:"remarks,omitempty"`
+	EvidenceLinks []string  `json:"evidence_links,omitempty" yaml:"evidence_links,omitempty"`
 
 	FieldClass FieldClass  `json:"field_class" yaml:"field_class"`
 	Attributes []Attribute `json:"attributes,omitempty" yaml:"attributes,omitempty"`

@@ -30,10 +30,10 @@ func seedTestLLMProfile(t *testing.T, ctx context.Context, repo *SQLiteLLMKBRepo
 		t.Fatalf("SaveProvider: %v", err)
 	}
 	profile := llmkb.LLMProfile{
-		SchemaVersion:     1,
-		LLMID:             llmID,
-		CanonicalName:     "test/" + llmID,
-		ProviderID:        "test",
+		SchemaVersion: 1,
+		LLMID:         llmID,
+		CanonicalName: "test/" + llmID,
+		ProviderID:    "test",
 		Capabilities: llmkb.CapabilityProfile{
 			AgenticClass:              llmkb.AgenticClassCapable,
 			CodingClass:               llmkb.CodingClassStrong,
@@ -52,11 +52,11 @@ func seedTestLLMProfile(t *testing.T, ctx context.Context, repo *SQLiteLLMKBRepo
 			HealthStatus:      llmkb.HealthStatusHealthy,
 		},
 		Routing: llmkb.RoutingProfile{
-			PreferredFor:    []llmkb.TaskClass{llmkb.TaskClassChat},
-			CostTier:        llmkb.CostTierCheap,
-			LatencyTier:     llmkb.LatencyTierMedium,
+			PreferredFor:       []llmkb.TaskClass{llmkb.TaskClassChat},
+			CostTier:           llmkb.CostTierCheap,
+			LatencyTier:        llmkb.LatencyTierMedium,
 			MaxRiskTierAllowed: llmkb.RiskTierLow,
-			AutonomyCeiling: llmkb.AutonomyLevelAssistive,
+			AutonomyCeiling:    llmkb.AutonomyLevelAssistive,
 		},
 		Provenance: prov,
 		CreatedAt:  now,
@@ -99,11 +99,11 @@ func TestSQLiteLLMKBRepo_RoundTrip(t *testing.T) {
 	}
 
 	profile := llmkb.LLMProfile{
-		SchemaVersion:     1,
-		LLMID:             "anthropic.claude-sonnet",
-		CanonicalName:     "anthropic/claude-sonnet",
-		Aliases:           []string{"claude-sonnet", "sonnet"},
-		ProviderID:        provider.ProviderID,
+		SchemaVersion: 1,
+		LLMID:         "anthropic.claude-sonnet",
+		CanonicalName: "anthropic/claude-sonnet",
+		Aliases:       []string{"claude-sonnet", "sonnet"},
+		ProviderID:    provider.ProviderID,
 		Capabilities: llmkb.CapabilityProfile{
 			AgenticClass:              llmkb.AgenticClassCapable,
 			CodingClass:               llmkb.CodingClassStrong,
@@ -117,9 +117,9 @@ func TestSQLiteLLMKBRepo_RoundTrip(t *testing.T) {
 		},
 		Features: llmkb.TechnicalFeatures{SupportsTools: true, SupportsStreaming: true, ContextWindowTokens: 200000},
 		OperationalState: llmkb.OperationalState{
-			AvailabilityState: llmkb.AvailabilityStateAvailable,
-			RuntimeBackend:    llmkb.RuntimeBackendAnthropic,
-			HealthStatus:      llmkb.HealthStatusHealthy,
+			AvailabilityState:   llmkb.AvailabilityStateAvailable,
+			RuntimeBackend:      llmkb.RuntimeBackendAnthropic,
+			HealthStatus:        llmkb.HealthStatusHealthy,
 			CurrentCostEstimate: &llmkb.CostEstimate{InputPer1M: 3, OutputPer1M: 15, Currency: "USD", Tier: llmkb.CostTierExpensive},
 		},
 		Evaluation: llmkb.EvaluationProfile{ObservedFailurePatterns: []llmkb.FailurePattern{llmkb.FailurePatternTimeout}},
@@ -151,15 +151,15 @@ func TestSQLiteLLMKBRepo_RoundTrip(t *testing.T) {
 	}
 
 	instance := llmkb.LLMRuntimeInstance{
-		InstanceID:        "runtime-1",
-		LLMID:             profile.LLMID,
-		ProviderID:        provider.ProviderID,
-		RuntimeBackend:    llmkb.RuntimeBackendAnthropic,
-		AuthStatus:        llmkb.AuthStatusAuthenticated,
-		HealthStatus:      llmkb.HealthStatusHealthy,
-		LoadedStatus:      llmkb.LoadedStatusLoaded,
-		Endpoint:          provider.EndpointBase,
-		LastProbeAt:       &now,
+		InstanceID:     "runtime-1",
+		LLMID:          profile.LLMID,
+		ProviderID:     provider.ProviderID,
+		RuntimeBackend: llmkb.RuntimeBackendAnthropic,
+		AuthStatus:     llmkb.AuthStatusAuthenticated,
+		HealthStatus:   llmkb.HealthStatusHealthy,
+		LoadedStatus:   llmkb.LoadedStatusLoaded,
+		Endpoint:       provider.EndpointBase,
+		LastProbeAt:    &now,
 	}
 	if err := repo.SaveRuntimeInstance(ctx, instance); err != nil {
 		t.Fatalf("SaveRuntimeInstance: %v", err)
@@ -292,12 +292,12 @@ func TestSQLiteLLMKBRepo_MaterializeUsageStats_Cost(t *testing.T) {
 	repo := NewSQLiteLLMKBRepo(db)
 
 	seedTestLLMProfile(t, ctx, repo, "test.cost.model", llmkb.TechnicalFeatures{
-		SupportsTools:    true,
+		SupportsTools: true,
 	})
 	// Add context for OperationalState for pricing testing
 	opProf, _ := repo.GetProfile(ctx, "test.cost.model")
 	opProf.OperationalState.CurrentCostEstimate = &llmkb.CostEstimate{
-		InputPer1M: 50.0,  // 0.05 per 1k = 50 per 1M
+		InputPer1M:  50.0,  // 0.05 per 1k = 50 per 1M
 		OutputPer1M: 100.0, // 0.10 per 1k = 100 per 1M
 	}
 	repo.SaveProfile(ctx, *opProf)

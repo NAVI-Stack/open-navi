@@ -46,7 +46,7 @@ func manifestMatchesCapabilityGap(m Manifest, gap string) bool {
 // InstallOptions configures how a plugin is installed (deps, permissions, path).
 type InstallOptions struct {
 	Path        string            // optional path or URL for the plugin bundle
-	Permissions []string           // requested permission scopes
+	Permissions []string          // requested permission scopes
 	Deps        map[string]string // optional dependency overrides
 }
 

@@ -49,7 +49,7 @@ func DefaultGovernorConfig() GovernorConfig {
 		MaxRetries:          3,
 		CostCeiling:         1.0,
 		AutonomousDuration:  100 * time.Millisecond,
-		MaxRepetitions:      3, // Default: trip after 3 identical consecutive responses
+		MaxRepetitions:      3,    // Default: trip after 3 identical consecutive responses
 		RestrictToWorkspace: true, // Default to secure workspace sandboxing
 	}
 }

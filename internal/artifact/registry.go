@@ -37,19 +37,19 @@ type RendererDescriptor struct {
 
 // EditorDescriptor describes how a client should edit an artifact subtype.
 type EditorDescriptor struct {
-	Type              schema.ArtifactType `json:"type"`
-	Subtype           string              `json:"subtype"`
-	EditorID          string              `json:"editor_id"` // Frontend editor component name
-	DiffViewerID      string              `json:"diff_viewer_id,omitempty"`
-	Features          []string            `json:"features,omitempty"`         // e.g. "syntax_highlighting", "autocomplete"
-	ParseFormats      []string            `json:"parse_formats,omitempty"`    // e.g. "markdown", "json", "csv"
-	ExportFormats     []string            `json:"export_formats,omitempty"`   // e.g. "md", "pdf"
-	PatchStrategies   []string            `json:"patch_strategies,omitempty"` // ordered by preference
-	ValidateStrategy  string              `json:"validate_strategy,omitempty"`
-	SupportsPatch     bool                `json:"supports_patch"`
-	SupportsReplace   bool                `json:"supports_replace"`
-	SupportsPreview   bool                `json:"supports_preview"`
-	SupportsStructured bool               `json:"supports_structured"`
+	Type               schema.ArtifactType `json:"type"`
+	Subtype            string              `json:"subtype"`
+	EditorID           string              `json:"editor_id"` // Frontend editor component name
+	DiffViewerID       string              `json:"diff_viewer_id,omitempty"`
+	Features           []string            `json:"features,omitempty"`         // e.g. "syntax_highlighting", "autocomplete"
+	ParseFormats       []string            `json:"parse_formats,omitempty"`    // e.g. "markdown", "json", "csv"
+	ExportFormats      []string            `json:"export_formats,omitempty"`   // e.g. "md", "pdf"
+	PatchStrategies    []string            `json:"patch_strategies,omitempty"` // ordered by preference
+	ValidateStrategy   string              `json:"validate_strategy,omitempty"`
+	SupportsPatch      bool                `json:"supports_patch"`
+	SupportsReplace    bool                `json:"supports_replace"`
+	SupportsPreview    bool                `json:"supports_preview"`
+	SupportsStructured bool                `json:"supports_structured"`
 }
 
 // Registry manages the mapping of artifact subtypes to renderers and editors.

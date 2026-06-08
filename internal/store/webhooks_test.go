@@ -10,9 +10,9 @@ func TestWebhookRegistrationsRoundTripAndDefaults(t *testing.T) {
 	ctx := context.Background()
 
 	if err := UpsertWebhookRegistration(ctx, db, WebhookRegistration{
-		Source:    "GitHub",
-		ChatID: "sess-webhook",
-		Enabled:   true,
+		Source:  "GitHub",
+		ChatID:  "sess-webhook",
+		Enabled: true,
 		Signature: WebhookSignatureConfig{
 			Type:   WebhookSignatureHMACSHA256,
 			Secret: "topsecret",
@@ -53,9 +53,9 @@ func TestWebhookRegistrationsDelete(t *testing.T) {
 	ctx := context.Background()
 
 	if err := UpsertWebhookRegistration(ctx, db, WebhookRegistration{
-		Source:    "buildkite",
-		ChatID: "sess-buildkite",
-		Enabled:   true,
+		Source:  "buildkite",
+		ChatID:  "sess-buildkite",
+		Enabled: true,
 	}); err != nil {
 		t.Fatalf("UpsertWebhookRegistration: %v", err)
 	}

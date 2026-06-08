@@ -42,11 +42,11 @@ func (r *SQLiteLLMKBRepo) computeStatsForProfile(ctx context.Context, profile *l
 		FROM llm_execution_records
 		WHERE llm_id = ?
 	`
-	
+
 	var total int
 	var successRate, avgDuration, avgInput, avgOutput float64
 	var sumInput, sumOutput int
-	
+
 	err := r.db.QueryRowContext(ctx, query, profile.LLMID).Scan(&total, &successRate, &avgDuration, &avgInput, &avgOutput, &sumInput, &sumOutput)
 	if err != nil {
 		return nil, err

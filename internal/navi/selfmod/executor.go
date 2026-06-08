@@ -25,7 +25,7 @@ func (e *Executor) RunGoCommand(ctx context.Context, args ...string) (string, er
 
 	cmd := exec.CommandContext(ctx, "go", args...)
 	cmd.Dir = e.WorkspaceDir
-	
+
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return string(output), fmt.Errorf("go %s failed: %w", strings.Join(args, " "), err)

@@ -13,8 +13,8 @@ const (
 type WakeMode string
 
 const (
-	WakeNow            WakeMode = "now"
-	WakeNextHeartbeat  WakeMode = "next-heartbeat"
+	WakeNow           WakeMode = "now"
+	WakeNextHeartbeat WakeMode = "next-heartbeat"
 )
 
 // SessionTarget selects execution plane. Any value starting with
@@ -32,8 +32,8 @@ const (
 type PayloadKind string
 
 const (
-	PayloadSystemEvent     PayloadKind = "systemEvent"
-	PayloadAgentTurn       PayloadKind = "agentTurn"
+	PayloadSystemEvent      PayloadKind = "systemEvent"
+	PayloadAgentTurn        PayloadKind = "agentTurn"
 	PayloadAssistantMessage PayloadKind = "assistantMessage"
 )
 

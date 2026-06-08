@@ -27,8 +27,10 @@ type mockExecutionThresholdResolver struct {
 	threshold string
 }
 
-func (m *mockExecutionThresholdResolver) EffectivePreset(domain string) string       { return m.preset }
-func (m *mockExecutionThresholdResolver) EffectiveExecutionThreshold(domain string) string { return m.threshold }
+func (m *mockExecutionThresholdResolver) EffectivePreset(domain string) string { return m.preset }
+func (m *mockExecutionThresholdResolver) EffectiveExecutionThreshold(domain string) string {
+	return m.threshold
+}
 
 func TestApplyAutonomy_UsesExecutionThresholdWhenResolverImplementsIt(t *testing.T) {
 	baseResult := ValidationResult{Outcome: ValidationRequiresConfirmation}
@@ -112,5 +114,3 @@ func TestApplyAutonomyForAction_RespectsPresetAndHardFloors(t *testing.T) {
 		t.Fatalf("expected hard floor to prevent auto-approval, got outcome=%v", res.Outcome)
 	}
 }
-
-

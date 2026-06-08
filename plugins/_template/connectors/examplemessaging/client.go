@@ -9,7 +9,7 @@ import (
 )
 
 type Client struct {
-	apiKey string
+	apiKey  string
 	baseURL string
 	http    *http.Client
 }
@@ -21,9 +21,9 @@ func NewClient(config Config) *Client {
 	}
 
 	return &Client{
-		apiKey: config.APIKey,
+		apiKey:  config.APIKey,
 		baseURL: baseURL,
-		http: &http.Client{Timeout: 8 * time.Second},
+		http:    &http.Client{Timeout: 8 * time.Second},
 	}
 }
 

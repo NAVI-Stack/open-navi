@@ -21,24 +21,24 @@ const (
 	ActivityConnectorRecovered ActivityType = "connector_recovered"
 	ActivityGovernorTripped    ActivityType = "governor_tripped"
 	ActivityGovernorRecovered  ActivityType = "governor_recovered"
-	ActivityMessageSent       ActivityType = "message_sent"
+	ActivityMessageSent        ActivityType = "message_sent"
 	ActivityMessageReceived    ActivityType = "message_received"
 	ActivityDirectiveExecuted  ActivityType = "directive_executed"
 )
 
 // ActivityEntry is the locked schema for a single activity feed item (operator-facing).
 type ActivityEntry struct {
-	At             string   `json:"at"`
-	Type           string   `json:"type"`
-	Summary        string   `json:"summary"`
-	CorrelationID  string   `json:"correlation_id"`
-	ID             string   `json:"id,omitempty"`
-	ChatID         string   `json:"chat_id,omitempty"`
-	ProposalID     string   `json:"proposal_id,omitempty"`
-	RunID          string   `json:"run_id,omitempty"`
-	DirectiveID    string   `json:"directive_id,omitempty"`
-	ConnectorID    string   `json:"connector_id,omitempty"`
-	EventSeq       int64    `json:"event_seq,omitempty"`
+	At            string `json:"at"`
+	Type          string `json:"type"`
+	Summary       string `json:"summary"`
+	CorrelationID string `json:"correlation_id"`
+	ID            string `json:"id,omitempty"`
+	ChatID        string `json:"chat_id,omitempty"`
+	ProposalID    string `json:"proposal_id,omitempty"`
+	RunID         string `json:"run_id,omitempty"`
+	DirectiveID   string `json:"directive_id,omitempty"`
+	ConnectorID   string `json:"connector_id,omitempty"`
+	EventSeq      int64  `json:"event_seq,omitempty"`
 }
 
 // MapEventToActivity maps a store event to an activity entry and summary per the deterministic template table.

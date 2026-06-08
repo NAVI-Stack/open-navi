@@ -64,7 +64,7 @@ func TestHubClientSearch(t *testing.T) {
 			t.Fatalf("expected empty, got %v", res)
 		}
 	})
-	
+
 	t.Run("AllOnEmptyQuery", func(t *testing.T) {
 		res, err := client.Search(ctx, "")
 		if err != nil {

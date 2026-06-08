@@ -412,11 +412,11 @@ const (
 type ResolutionType string
 
 const (
-	ResolutionTypeNA             ResolutionType = "na"
-	ResolutionTypeApprovedOnce   ResolutionType = "approved_once"
-	ResolutionTypeApprovedAlways ResolutionType = "approved_always"
+	ResolutionTypeNA                ResolutionType = "na"
+	ResolutionTypeApprovedOnce      ResolutionType = "approved_once"
+	ResolutionTypeApprovedAlways    ResolutionType = "approved_always"
 	ResolutionTypeSwitchedWorkspace ResolutionType = "switched_workspace"
-	ResolutionTypeDenied         ResolutionType = "denied"
+	ResolutionTypeDenied            ResolutionType = "denied"
 )
 
 // Proposal models a queued action that requires owner or system resolution

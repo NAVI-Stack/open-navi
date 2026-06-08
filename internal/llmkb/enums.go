@@ -268,11 +268,11 @@ const (
 	EndpointTypeCustom       EndpointType = "custom"
 	EndpointTypeOllamaLocal  EndpointType = "ollama_local"
 
-	PricingModelPerToken    PricingModel = "per_token"
-	PricingModelPerRequest  PricingModel = "per_request"
+	PricingModelPerToken     PricingModel = "per_token"
+	PricingModelPerRequest   PricingModel = "per_request"
 	PricingModelSubscription PricingModel = "subscription"
-	PricingModelFree        PricingModel = "free"
-	PricingModelSelfHosted  PricingModel = "self_hosted"
+	PricingModelFree         PricingModel = "free"
+	PricingModelSelfHosted   PricingModel = "self_hosted"
 
 	AvailabilityStateUnknown     AvailabilityState = "unknown"
 	AvailabilityStateAvailable   AvailabilityState = "available"
@@ -324,9 +324,9 @@ const (
 	DeprecationStatusSunsetting   DeprecationStatus = "sunsetting"
 	DeprecationStatusDiscontinued DeprecationStatus = "discontinued"
 
-	HostingModeCloudAPI    HostingMode = "cloud_api"
-	HostingModeLocal       HostingMode = "local"
-	HostingModeSelfHosted  HostingMode = "self_hosted"
+	HostingModeCloudAPI     HostingMode = "cloud_api"
+	HostingModeLocal        HostingMode = "local"
+	HostingModeSelfHosted   HostingMode = "self_hosted"
 	HostingModeCloudManaged HostingMode = "cloud_managed"
 
 	ReliabilityTrendUnknown   ReliabilityTrend = "unknown"

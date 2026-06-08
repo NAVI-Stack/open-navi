@@ -64,11 +64,11 @@ func TestEntityValidation(t *testing.T) {
 		FieldClass:   FieldClassObserved,
 	}
 	profile := LLMProfile{
-		SchemaVersion:     1,
-		LLMID:             "anthropic.claude-sonnet",
-		CanonicalName:     "anthropic/claude-sonnet",
-		ProviderID:        "anthropic",
-		CreatedAt:         now,
+		SchemaVersion: 1,
+		LLMID:         "anthropic.claude-sonnet",
+		CanonicalName: "anthropic/claude-sonnet",
+		ProviderID:    "anthropic",
+		CreatedAt:     now,
 		Capabilities: CapabilityProfile{
 			AgenticClass:              AgenticClassCapable,
 			CodingClass:               CodingClassStrong,

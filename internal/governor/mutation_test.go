@@ -15,8 +15,8 @@ func (f fixedPresetResolver) EffectivePreset(string) string { return f.preset }
 
 func baseMutation(kind MutationKind) MutationDescriptor {
 	return MutationDescriptor{
-		Kind:         kind,
-		TargetType:   "contact",
+		Kind:       kind,
+		TargetType: "contact",
 		SourceRecords: []schema.IntakeRecordRef{{
 			RecordID:    "rec-1",
 			ConnectorID: "telegram:acct-1",

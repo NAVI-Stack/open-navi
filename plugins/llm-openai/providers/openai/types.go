@@ -30,9 +30,9 @@ type streamOptions struct {
 // Content is polymorphic: plain string for text, or []oaiContentBlock for
 // multi-modal messages (images, etc.).
 type oaiMessage struct {
-	Role       string `json:"role"`
-	Content    any    `json:"content"` // string or []oaiContentBlock
-	ToolCallID string `json:"tool_call_id,omitempty"`
+	Role       string        `json:"role"`
+	Content    any           `json:"content"` // string or []oaiContentBlock
+	ToolCallID string        `json:"tool_call_id,omitempty"`
 	ToolCalls  []oaiToolCall `json:"tool_calls,omitempty"`
 }
 
@@ -118,8 +118,8 @@ type streamChoice struct {
 }
 
 type streamDelta struct {
-	Content   string              `json:"content"`
-	ToolCalls []streamDeltaTC     `json:"tool_calls,omitempty"`
+	Content   string          `json:"content"`
+	ToolCalls []streamDeltaTC `json:"tool_calls,omitempty"`
 }
 
 // streamDeltaTC represents an incremental tool call delta in SSE streaming.

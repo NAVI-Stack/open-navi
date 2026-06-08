@@ -25,7 +25,7 @@ func TestControllerDecideAssemblesMinimalRespondRationale(t *testing.T) {
 
 	decision, err := controller.Decide(context.Background(), InferenceInput{
 		Chat: ChatContext{
-			ChatID:   "sess-1",
+			ChatID:      "sess-1",
 			UserMessage: "help me outline the next step",
 		},
 		Posture: PostureState{
@@ -233,7 +233,7 @@ func TestControllerDecide_DoesNotRunGovernanceValidation(t *testing.T) {
 
 	synthesis, err := controller.Decide(context.Background(), InferenceInput{
 		Chat: ChatContext{
-			ChatID:   "sess-governance-free",
+			ChatID:      "sess-governance-free",
 			UserMessage: "execute runtime echo",
 		},
 		NCOS: orchestration.CanonicalRunRequest{
@@ -338,7 +338,7 @@ func TestControllerDecideAppliesModeRouterAndTraceForExecute(t *testing.T) {
 
 	decision, err := controller.Decide(context.Background(), InferenceInput{
 		Chat: ChatContext{
-			ChatID:   "sess-4",
+			ChatID:      "sess-4",
 			UserMessage: "apply the change",
 		},
 		GoalStack: GoalStack{
@@ -880,7 +880,7 @@ func TestControllerDecide_ExecutableTargetUsesCapabilityInsteadOfRunOrSessionFal
 
 	decision, err := controller.Decide(context.Background(), InferenceInput{
 		Chat: ChatContext{
-			ChatID:   "sess-target",
+			ChatID:      "sess-target",
 			UserMessage: "execute runtime echo",
 		},
 		Runtime: RuntimeContext{
@@ -912,7 +912,7 @@ func TestControllerDecide_ExecutableScopeAvoidsSessionFallback(t *testing.T) {
 
 	decision, err := controller.Decide(context.Background(), InferenceInput{
 		Chat: ChatContext{
-			ChatID:   "sess-scope",
+			ChatID:      "sess-scope",
 			UserMessage: "execute runtime echo",
 		},
 		NCOS: orchestration.CanonicalRunRequest{

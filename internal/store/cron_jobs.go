@@ -175,7 +175,7 @@ type CronJobOutcome struct {
 	LastRunAtMS        sql.NullInt64
 	LastRunStatus      sql.NullString
 	LastError          sql.NullString
-	LastDurationMS    sql.NullInt64
+	LastDurationMS     sql.NullInt64
 	ConsecutiveErrors  int64
 	ScheduleErrorCount int64
 	LastFailureAlertMS sql.NullInt64

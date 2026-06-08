@@ -71,7 +71,7 @@ func TestEngineBuild_AppliesSessionPreferenceOverrides(t *testing.T) {
 	}})
 	engine := NewEngine(nil)
 	rendered, err := engine.Build(context.Background(), DefaultStandardProfile(), BuildRequest{
-		ChatID:                "sess-1",
+		ChatID:                   "sess-1",
 		Mode:                     "navi",
 		LastUserMessage:          "Thanks.",
 		ExplicitSessionOverrides: overrides,

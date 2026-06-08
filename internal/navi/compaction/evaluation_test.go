@@ -23,7 +23,7 @@ func TestEvaluationHarness_ScenariosProduceInspectableEvidence(t *testing.T) {
 			name:  "social continuity",
 			class: "simple_social_continuity",
 			input: RunInput{
-				ChatID:             "social-1",
+				ChatID:                "social-1",
 				Messages:              []Message{{ID: "m0", Role: "user", Content: strings.Repeat("We talked about coffee and training. ", 220)}, {ID: "m1", Role: "navi", Content: strings.Repeat("I kept the tone warm and supportive. ", 120)}, {ID: "m2", Role: "user", Content: "We were talking about marathon pacing"}, {ID: "m3", Role: "navi", Content: "You were leaning toward shorter intervals"}, {ID: "m4", Role: "user", Content: "Let's pick this up tomorrow"}},
 				NewInput:              "Keep the conversation warm and remember the marathon pacing thread.",
 				MaxContextTokens:      180,
@@ -235,7 +235,7 @@ func TestEvaluationHarness_DegradationQuality_OnCheckpointFailure(t *testing.T) 
 		failCheckpoint: true,
 		wantErr:        true,
 		input: RunInput{
-			ChatID:            "fail-1",
+			ChatID:               "fail-1",
 			Messages:             []Message{{ID: "m0", Role: "user", Content: strings.Repeat("older context ", 240)}, {ID: "m1", Role: "navi", Content: "older reply"}, {ID: "m2", Role: "user", Content: "tail"}, {ID: "m3", Role: "navi", Content: "tail2"}},
 			NewInput:             "Continue the session without surfacing a compaction-specific error.",
 			MaxContextTokens:     220,

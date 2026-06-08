@@ -26,11 +26,11 @@ type experienceModuleRegistryResponse struct {
 }
 
 type experienceInspectResponse struct {
-	OwnerID         string                           `json:"owner_id"`
-	StoredConfig    experience.ConfigurationSnapshot `json:"stored_config"`
-	EffectiveState  experience.EffectivePersonaState `json:"effective_state"`
+	OwnerID         string                            `json:"owner_id"`
+	StoredConfig    experience.ConfigurationSnapshot  `json:"stored_config"`
+	EffectiveState  experience.EffectivePersonaState  `json:"effective_state"`
 	CompiledPayload experience.CompiledPersonaPayload `json:"compiled_payload"`
-	SnapshotHistory []schema.Event                  `json:"snapshot_history"`
+	SnapshotHistory []schema.Event                    `json:"snapshot_history"`
 }
 
 type putExperienceCoreIdentityRequest struct {

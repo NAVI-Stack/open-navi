@@ -15,15 +15,15 @@ import (
 
 func e2eRecord(sourceID, body string) IntakeRecord {
 	return IntakeRecord{
-		ConnectorID:  "telegram:acct-1",
-		SourceKind:   "message",
-		SourceID:     sourceID,
-		Cursor:       sourceID,
-		FetchedAt:    time.Now().UTC(),
-		Trust:        TrustExternalUntrusted,
-		Raw:          []byte(body),
-		RawMIME:      "text/plain",
-		Provenance:   Provenance{ConnectorID: "telegram:acct-1", AccountID: "acct-1"},
+		ConnectorID: "telegram:acct-1",
+		SourceKind:  "message",
+		SourceID:    sourceID,
+		Cursor:      sourceID,
+		FetchedAt:   time.Now().UTC(),
+		Trust:       TrustExternalUntrusted,
+		Raw:         []byte(body),
+		RawMIME:     "text/plain",
+		Provenance:  Provenance{ConnectorID: "telegram:acct-1", AccountID: "acct-1"},
 	}
 }
 

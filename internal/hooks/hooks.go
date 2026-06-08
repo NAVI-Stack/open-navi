@@ -16,7 +16,7 @@ const (
 	ConnectorStopped  HookName = "connector_stopped"
 	ConnectorError    HookName = "connector_error"
 	MessageReceived   HookName = "message_received"
-	MessageSending    HookName = "message_sending"    // MUTABLE — can modify content or cancel
+	MessageSending    HookName = "message_sending" // MUTABLE — can modify content or cancel
 	MessageSent       HookName = "message_sent"
 	MessageSendFailed HookName = "message_send_failed"
 	HealthChanged     HookName = "health_changed"

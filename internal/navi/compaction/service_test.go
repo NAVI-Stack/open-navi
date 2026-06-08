@@ -71,8 +71,8 @@ func TestService_TaskContinuity_SurvivesCompactionAndRehydration(t *testing.T) {
 	c := &cpStore{}
 	svc := Service{Budget: NewBudgetManager(nil, BudgetConfig{}), Selector: SegmentSelector{DefaultProtectedRecentWindow: 2, MinimumProtectedRecentWindow: 1}, Rehydrator: Rehydrator{}, Memory: m, Checkpoint: c}
 	out, err := svc.Run(context.Background(), RunInput{
-		ChatID: "s1",
-		Messages:  []Message{{ID: "0", Role: "user", Content: strings.Repeat("old ", 500)}, {ID: "0b", Role: "navi", Content: strings.Repeat("older reply ", 300)}, {ID: "1", RunID: "task-1", Role: "user", Content: "[task:task-1] Build release plan", MessageKind: "task_active"}, {ID: "2", RunID: "task-1", Role: "navi", Content: "BLOCKER: waiting on review\nNext step: get approval", MessageKind: "task_blocked"}, {ID: "3", Role: "user", Content: "tail"}, {ID: "4", Role: "navi", Content: "tail2"}},
+		ChatID:   "s1",
+		Messages: []Message{{ID: "0", Role: "user", Content: strings.Repeat("old ", 500)}, {ID: "0b", Role: "navi", Content: strings.Repeat("older reply ", 300)}, {ID: "1", RunID: "task-1", Role: "user", Content: "[task:task-1] Build release plan", MessageKind: "task_active"}, {ID: "2", RunID: "task-1", Role: "navi", Content: "BLOCKER: waiting on review\nNext step: get approval", MessageKind: "task_blocked"}, {ID: "3", Role: "user", Content: "tail"}, {ID: "4", Role: "navi", Content: "tail2"}},
 		RuntimeSnapshots: []RunSnapshot{{
 			RunID:                 "task-1",
 			Status:                "running",

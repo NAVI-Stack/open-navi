@@ -39,7 +39,7 @@ func TestSkillBuilderBuildInstallsSkillAndClosesGap(t *testing.T) {
 		Type:   store.GapTypeMissingSkill,
 		Status: store.GapStatusClassified,
 		Evidence: store.GapEvidence{
-			ChatID:  "sess-1",
+			ChatID:     "sess-1",
 			ToolError:  "tool not found: generated_gap_closer_run",
 			RawContext: "user asked to run a missing skill",
 		},
@@ -72,7 +72,7 @@ func TestSkillBuilderBuildInstallsSkillAndClosesGap(t *testing.T) {
 	result, err := builder.Build(ctx, BuildRequest{
 		Gap:         gap,
 		UserContext: "Create the missing generated gap closer skill",
-		ChatID:   "sess-1",
+		ChatID:      "sess-1",
 	})
 	if err != nil {
 		t.Fatalf("Build: %v", err)
@@ -152,7 +152,7 @@ func TestSkillBuilderBuildReturnsGovernedPauseWhenApprovalIsPending(t *testing.T
 	)
 
 	result, err := builder.Build(ctx, BuildRequest{
-		Gap:       gap,
+		Gap:    gap,
 		ChatID: "sess-2",
 	})
 	if err != nil {
@@ -191,7 +191,7 @@ func TestSkillBuilderBuildScaffoldsConnectorAndClosesGap(t *testing.T) {
 		Type:   store.GapTypeMissingConnector,
 		Status: store.GapStatusClassified,
 		Evidence: store.GapEvidence{
-			ChatID:  "sess-3",
+			ChatID:     "sess-3",
 			ToolError:  "connector not configured",
 			RawContext: "user asked to send a message through a missing connector",
 		},
@@ -227,7 +227,7 @@ func TestSkillBuilderBuildScaffoldsConnectorAndClosesGap(t *testing.T) {
 	result, err := builder.Build(ctx, BuildRequest{
 		Gap:         gap,
 		UserContext: "Create the missing messaging connector",
-		ChatID:   "sess-3",
+		ChatID:      "sess-3",
 	})
 	if err != nil {
 		t.Fatalf("Build: %v", err)
@@ -319,7 +319,7 @@ func TestSkillBuilderBuildCommunityHubSkillUsesCentralGovernanceSeam(t *testing.
 	)
 
 	result, err := builder.Build(ctx, BuildRequest{
-		Gap:       gap,
+		Gap:    gap,
 		ChatID: "sess-community",
 	})
 	if err != nil {

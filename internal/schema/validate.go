@@ -33,12 +33,12 @@ var kindForEventType = map[EventType]EventKind{
 	FactRunPhaseChanged:        EventKindFact,
 	FactInferenceDecisionTrace: EventKindFact,
 	FactRunPaused:              EventKindFact,
-	FactRunResumed:       EventKindFact,
-	FactRunCompleted:     EventKindFact,
-	FactRunFailed:        EventKindFact,
-	FactRunCancelled:     EventKindFact,
-	FactInterruptRaised:  EventKindFact,
-	FactInterruptApplied: EventKindFact,
+	FactRunResumed:             EventKindFact,
+	FactRunCompleted:           EventKindFact,
+	FactRunFailed:              EventKindFact,
+	FactRunCancelled:           EventKindFact,
+	FactInterruptRaised:        EventKindFact,
+	FactInterruptApplied:       EventKindFact,
 
 	// Tool call lifecycle facts
 	FactToolCallStarted:   EventKindFact,

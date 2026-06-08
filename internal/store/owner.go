@@ -11,14 +11,14 @@ import (
 
 // Owner represents the single owner of a NAVI instance.
 type Owner struct {
-	ID                   string    // uuid-style hex
-	InstanceID           string    // stable per-install identifier
-	Name                 string    // display name ("Eric")
-	Handle               string    // short handle ("evirg")
-	DeviceName           string    // optional ("Eric's Mac")
-	SecretFingerprint    string    // first 8 chars of owner secret hash — safe to display
-	CreatedAt            time.Time
-	Timezone             string    // IANA timezone name (e.g. "America/New_York")
+	ID                string // uuid-style hex
+	InstanceID        string // stable per-install identifier
+	Name              string // display name ("Eric")
+	Handle            string // short handle ("evirg")
+	DeviceName        string // optional ("Eric's Mac")
+	SecretFingerprint string // first 8 chars of owner secret hash — safe to display
+	CreatedAt         time.Time
+	Timezone          string // IANA timezone name (e.g. "America/New_York")
 }
 
 // CreateOwner inserts the owner record. Fails if an owner already exists.

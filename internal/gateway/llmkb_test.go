@@ -25,14 +25,14 @@ func TestGatewayDebugLLMKBProfilesEndpoints(t *testing.T) {
 	}
 	now := time.Now().UTC().Truncate(time.Second)
 	if err := repo.SaveRuntimeInstance(context.Background(), llmkb.LLMRuntimeInstance{
-		InstanceID:        "ollama-runtime-1",
-		LLMID:             "meta.llama-3-2-3b",
-		ProviderID:        "ollama",
-		RuntimeBackend:    llmkb.RuntimeBackendOllama,
-		HealthStatus:      llmkb.HealthStatusHealthy,
-		AuthStatus:        llmkb.AuthStatusAuthenticated,
-		LoadedStatus:      llmkb.LoadedStatusLoaded,
-		LastProbeAt:       &now,
+		InstanceID:     "ollama-runtime-1",
+		LLMID:          "meta.llama-3-2-3b",
+		ProviderID:     "ollama",
+		RuntimeBackend: llmkb.RuntimeBackendOllama,
+		HealthStatus:   llmkb.HealthStatusHealthy,
+		AuthStatus:     llmkb.AuthStatusAuthenticated,
+		LoadedStatus:   llmkb.LoadedStatusLoaded,
+		LastProbeAt:    &now,
 	}); err != nil {
 		t.Fatalf("SaveRuntimeInstance: %v", err)
 	}
@@ -97,20 +97,20 @@ func TestGatewayDebugLLMKBProfileAliasAmbiguity(t *testing.T) {
 	repo := store.NewSQLiteLLMKBRepo(db)
 	for _, profile := range []llmkb.LLMProfile{
 		{
-			LLMID:             "provider-a.chat-pro",
-			CanonicalName:     "Chat Pro A",
-			Aliases:           []string{"chat-pro"},
-			ProviderID:        "provider-a",
-			OperationalState:  llmkb.OperationalState{AvailabilityState: llmkb.AvailabilityStateAvailable},
-			CreatedAt:         time.Now().UTC(),
+			LLMID:            "provider-a.chat-pro",
+			CanonicalName:    "Chat Pro A",
+			Aliases:          []string{"chat-pro"},
+			ProviderID:       "provider-a",
+			OperationalState: llmkb.OperationalState{AvailabilityState: llmkb.AvailabilityStateAvailable},
+			CreatedAt:        time.Now().UTC(),
 		},
 		{
-			LLMID:             "provider-b.chat-pro",
-			CanonicalName:     "Chat Pro B",
-			Aliases:           []string{"chat-pro"},
-			ProviderID:        "provider-b",
-			OperationalState:  llmkb.OperationalState{AvailabilityState: llmkb.AvailabilityStateAvailable},
-			CreatedAt:         time.Now().UTC(),
+			LLMID:            "provider-b.chat-pro",
+			CanonicalName:    "Chat Pro B",
+			Aliases:          []string{"chat-pro"},
+			ProviderID:       "provider-b",
+			OperationalState: llmkb.OperationalState{AvailabilityState: llmkb.AvailabilityStateAvailable},
+			CreatedAt:        time.Now().UTC(),
 		},
 	} {
 		if err := repo.SaveProfile(context.Background(), profile); err != nil {

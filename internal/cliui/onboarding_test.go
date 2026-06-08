@@ -9,10 +9,10 @@ import (
 
 func TestOnboardingStateStructure(t *testing.T) {
 	state := NewOnboardingState()
-	
+
 	// Ensure fields exist and match requirements
 	v := reflect.ValueOf(*state)
-	
+
 	// Must have:
 	fields := []string{
 		"BeginSetup",
@@ -23,11 +23,11 @@ func TestOnboardingStateStructure(t *testing.T) {
 		"SelectedConnector",
 		"ConnectorParams",
 	}
-	
+
 	for _, f := range fields {
 		assert.NotNil(t, v.FieldByName(f), "Field %s should exist", f)
 	}
-	
+
 	// Must NOT have:
 	assert.False(t, v.FieldByName("OwnerHandle").IsValid(), "OwnerHandle should no longer exist")
 	assert.False(t, v.FieldByName("SecurityMode").IsValid(), "SecurityMode should no longer exist")

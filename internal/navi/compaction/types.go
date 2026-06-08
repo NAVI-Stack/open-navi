@@ -13,7 +13,7 @@ const (
 
 type ChatFrame struct {
 	SchemaVersion      int                    `json:"schema_version"`
-	ChatID          string                 `json:"chat_id"`
+	ChatID             string                 `json:"chat_id"`
 	FrameVersion       int                    `json:"frame_version"`
 	CurrentEpochID     string                 `json:"current_epoch_id"`
 	PrimaryObjective   string                 `json:"primary_objective"`
@@ -57,7 +57,7 @@ type TaskFrame struct {
 
 type RetrievalSpan struct {
 	SpanID           string               `json:"span_id"`
-	ChatID        string               `json:"chat_id"`
+	ChatID           string               `json:"chat_id"`
 	CheckpointID     string               `json:"checkpoint_id"`
 	Kind             string               `json:"kind"`
 	SupportClass     string               `json:"support_class,omitempty"`
@@ -73,13 +73,13 @@ type RetrievalSpan struct {
 
 type CompactionCheckpoint struct {
 	CheckpointID            string               `json:"checkpoint_id"`
-	ChatID               string               `json:"chat_id"`
+	ChatID                  string               `json:"chat_id"`
 	EpochID                 string               `json:"epoch_id"`
 	TriggerClass            TriggerClass         `json:"trigger_class"`
 	TriggerReason           string               `json:"trigger_reason,omitempty"`
 	CompactedMessageStartID string               `json:"compacted_message_start_id"`
 	CompactedMessageEndID   string               `json:"compacted_message_end_id"`
-	ChatFrameVersion     int                  `json:"chat_frame_version"`
+	ChatFrameVersion        int                  `json:"chat_frame_version"`
 	TaskFrameVersions       map[string]int       `json:"task_frame_versions"`
 	SourceMessageIDs        []string             `json:"source_message_ids"`
 	SelectedSpan            SourceSpanProvenance `json:"selected_span,omitempty"`
@@ -91,11 +91,11 @@ type CompactionCheckpoint struct {
 }
 
 type ChatMemory struct {
-	ChatID      string
+	ChatID         string
 	SchemaVersion  int
 	MemoryVersion  int
 	CurrentEpochID string
-	ChatFrame   ChatFrame
+	ChatFrame      ChatFrame
 	TaskFrames     []TaskFrame
 	RetrievalSpans []RetrievalSpan
 	UpdatedAt      time.Time
@@ -131,7 +131,7 @@ type SelectionResult struct {
 
 type RehydrationInput struct {
 	PermanentInstructions []string
-	ChatFrame          ChatFrame
+	ChatFrame             ChatFrame
 	TaskFrames            []TaskFrame
 	ProposalRefs          []string
 	FailureRefs           []string

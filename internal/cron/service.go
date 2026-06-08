@@ -31,11 +31,11 @@ type Deps struct {
 	// their payload as an assistant message into that session instead of
 	// creating a new directive. This is the durable backing for promoted
 	// send_reply messages whose delay exceeds the in-process scheduler cap.
-	ChatAppender ChatAppender
-	Log             *slog.Logger
-	Cron            config.CronConfig
-	Now             func() time.Time
-	OnFailureAlert  func(ctx context.Context, job Job, text string)
+	ChatAppender   ChatAppender
+	Log            *slog.Logger
+	Cron           config.CronConfig
+	Now            func() time.Time
+	OnFailureAlert func(ctx context.Context, job Job, text string)
 }
 
 // Service persists and executes cron_jobs on a dynamic timer loop.

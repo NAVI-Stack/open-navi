@@ -52,13 +52,13 @@ type llmSeedDocument struct {
 		MultimodalClass           string   `yaml:"multimodal_class"`
 	} `yaml:"capabilities"`
 	TechnicalProfile struct {
-		SupportsTools         bool `yaml:"supports_tools"`
-		SupportsParallelTools bool `yaml:"supports_parallel_tools"`
-		SupportsJSONSchema    bool `yaml:"supports_json_schema"`
-		SupportsStreaming     bool `yaml:"supports_streaming"`
-		SupportsVision        bool `yaml:"supports_vision"`
-		SupportsAudioIn       bool `yaml:"supports_audio_in"`
-		SupportsAudioOut      bool `yaml:"supports_audio_out"`
+		SupportsTools         bool    `yaml:"supports_tools"`
+		SupportsParallelTools bool    `yaml:"supports_parallel_tools"`
+		SupportsJSONSchema    bool    `yaml:"supports_json_schema"`
+		SupportsStreaming     bool    `yaml:"supports_streaming"`
+		SupportsVision        bool    `yaml:"supports_vision"`
+		SupportsAudioIn       bool    `yaml:"supports_audio_in"`
+		SupportsAudioOut      bool    `yaml:"supports_audio_out"`
 		MaxOutputTokens       int     `yaml:"max_output_tokens"`
 		InputPricePer1k       float64 `yaml:"input_price_per_1k"`
 		OutputPricePer1k      float64 `yaml:"output_price_per_1k"`
@@ -67,13 +67,13 @@ type llmSeedDocument struct {
 		} `yaml:"context_window"`
 	} `yaml:"technical_profile"`
 	RoutingProfile struct {
-		PreferredFor         []string `yaml:"preferred_for"`
-		PreferredUseCases    []string `yaml:"preferred_use_cases"`
-		CostTier             string   `yaml:"cost_tier"`
-		LatencyTier          string   `yaml:"latency_tier"`
-		MaxRiskTierAllowed   string   `yaml:"max_risk_tier_allowed"`
-		AutonomyCeiling      string   `yaml:"autonomy_ceiling"`
-		SurfacingLevel       string   `yaml:"surfacing_level"`
+		PreferredFor       []string `yaml:"preferred_for"`
+		PreferredUseCases  []string `yaml:"preferred_use_cases"`
+		CostTier           string   `yaml:"cost_tier"`
+		LatencyTier        string   `yaml:"latency_tier"`
+		MaxRiskTierAllowed string   `yaml:"max_risk_tier_allowed"`
+		AutonomyCeiling    string   `yaml:"autonomy_ceiling"`
+		SurfacingLevel     string   `yaml:"surfacing_level"`
 	} `yaml:"routing_profile"`
 }
 
@@ -218,7 +218,7 @@ func buildProfileFromSeed(path string, seed llmSeedDocument) (llmkb.LLMProvider,
 	now := time.Now().UTC()
 	providerID := strings.ToLower(strings.TrimSpace(seed.Identity.Provider))
 	// hostingMode, runtimeBackend := deriveProviderRuntime(providerID, seed.Identity.HostingModesSupported) // deprecated, not used directly here anymore.
-	
+
 	provenance := llmkb.Provenance{
 		Source:       llmkb.ProvenanceSourceCuratedSeed,
 		SourceDetail: path,
@@ -256,20 +256,20 @@ func buildProfileFromSeed(path string, seed llmSeedDocument) (llmkb.LLMProvider,
 	multimodalClass, _ := llmkb.ParseClassLevel(seed.Capabilities.MultimodalClass)
 
 	provider := llmkb.LLMProvider{
-		ProviderID:     providerID,
-		CanonicalName:  firstNonEmpty(strings.TrimSpace(seed.Identity.Publisher), providerDisplayName(providerID)),
-		Provenance:     provenance,
-		CreatedAt:      now,
-		UpdatedAt:      now,
+		ProviderID:    providerID,
+		CanonicalName: firstNonEmpty(strings.TrimSpace(seed.Identity.Publisher), providerDisplayName(providerID)),
+		Provenance:    provenance,
+		CreatedAt:     now,
+		UpdatedAt:     now,
 	}
 	profile := llmkb.LLMProfile{
-		SchemaVersion:     seed.SchemaVersion,
-		LLMID:             strings.TrimSpace(seed.LLMID),
-		ProviderModelID:   strings.TrimSpace(seed.LLMID), // assuming llm_id is provider model ID in YAML
-		CanonicalName:     strings.TrimSpace(seed.CanonicalName),
-		Aliases:           seed.Aliases,
-		ProviderID:        providerID,
-		ReleaseChannel:    releaseChannel,
+		SchemaVersion:   seed.SchemaVersion,
+		LLMID:           strings.TrimSpace(seed.LLMID),
+		ProviderModelID: strings.TrimSpace(seed.LLMID), // assuming llm_id is provider model ID in YAML
+		CanonicalName:   strings.TrimSpace(seed.CanonicalName),
+		Aliases:         seed.Aliases,
+		ProviderID:      providerID,
+		ReleaseChannel:  releaseChannel,
 		Capabilities: llmkb.CapabilityProfile{
 			AgenticClass:              agenticClass,
 			CodingClass:               codingClass,
@@ -282,23 +282,23 @@ func buildProfileFromSeed(path string, seed llmSeedDocument) (llmkb.LLMProvider,
 			InteractionModes:          interactionModes,
 		},
 		Features: llmkb.TechnicalFeatures{
-			SupportsTools:             seed.TechnicalProfile.SupportsTools,
-			SupportsStreaming:         seed.TechnicalProfile.SupportsStreaming,
-			SupportsVision:            seed.TechnicalProfile.SupportsVision,
-			SupportsAudioIn:           seed.TechnicalProfile.SupportsAudioIn,
-			SupportsAudioOut:          seed.TechnicalProfile.SupportsAudioOut,
-			SupportsJSONSchema:        seed.TechnicalProfile.SupportsJSONSchema,
-			SupportsParallelTools:     seed.TechnicalProfile.SupportsParallelTools,
-			ContextWindowTokens:       seed.TechnicalProfile.ContextWindow.InputTokens,
-			MaxOutputTokens:           seed.TechnicalProfile.MaxOutputTokens,
+			SupportsTools:         seed.TechnicalProfile.SupportsTools,
+			SupportsStreaming:     seed.TechnicalProfile.SupportsStreaming,
+			SupportsVision:        seed.TechnicalProfile.SupportsVision,
+			SupportsAudioIn:       seed.TechnicalProfile.SupportsAudioIn,
+			SupportsAudioOut:      seed.TechnicalProfile.SupportsAudioOut,
+			SupportsJSONSchema:    seed.TechnicalProfile.SupportsJSONSchema,
+			SupportsParallelTools: seed.TechnicalProfile.SupportsParallelTools,
+			ContextWindowTokens:   seed.TechnicalProfile.ContextWindow.InputTokens,
+			MaxOutputTokens:       seed.TechnicalProfile.MaxOutputTokens,
 		},
 		OperationalState: llmkb.OperationalState{
 			AvailabilityState: llmkb.AvailabilityStateAvailable,
 			InstalledLocally:  contains(seed.Identity.HostingModesSupported, "local"),
-			RuntimeBackend:   llmkb.RuntimeBackend(providerID), // simplified for now
+			RuntimeBackend:    llmkb.RuntimeBackend(providerID), // simplified for now
 		},
 		Routing: llmkb.RoutingProfile{
-			PreferredFor:         preferredFor,
+			PreferredFor: preferredFor,
 		},
 		Provenance:     provenance,
 		CreatedAt:      now,
@@ -331,13 +331,13 @@ func mergeSeedProfile(existing *llmkb.LLMProfile, seeded llmkb.LLMProfile, logge
 		return seeded
 	}
 	merged := *existing
-	
+
 	// Always update basic metadata from seed
 	merged.SchemaVersion = max(existing.SchemaVersion, seeded.SchemaVersion)
 	merged.CanonicalName = seeded.CanonicalName
 	merged.Aliases = seeded.Aliases
 	merged.ProviderID = seeded.ProviderID
-	
+
 	// Update Governed Capabilities
 	merged.Capabilities.AgenticClass = seeded.Capabilities.AgenticClass
 	merged.Capabilities.CodingClass = seeded.Capabilities.CodingClass
@@ -346,10 +346,10 @@ func mergeSeedProfile(existing *llmkb.LLMProfile, seeded llmkb.LLMProfile, logge
 	merged.Capabilities.ToolDisciplineClass = seeded.Capabilities.ToolDisciplineClass
 	merged.Capabilities.SchemaReliabilityClass = seeded.Capabilities.SchemaReliabilityClass
 	merged.Capabilities.MultimodalClass = seeded.Capabilities.MultimodalClass
-	
+
 	// Update Features (Governed)
 	merged.Features = seeded.Features
-	
+
 	// Provenance of the *current* version
 	merged.Provenance.Source = seeded.Provenance.Source
 	merged.Provenance.SourceDetail = seeded.Provenance.SourceDetail
@@ -362,7 +362,7 @@ func mergeSeedProfile(existing *llmkb.LLMProfile, seeded llmkb.LLMProfile, logge
 		merged.Capabilities.PrimaryUseCases = seeded.Capabilities.PrimaryUseCases
 		merged.Capabilities.InteractionModes = seeded.Capabilities.InteractionModes
 		merged.Routing = seeded.Routing
-		
+
 		merged.Provenance.MutationHistory = append(merged.Provenance.MutationHistory, llmkb.MutationRecord{
 			FieldName: "seed_reload",
 			OldValue:  fmt.Sprintf("schema_version=%d", existing.SchemaVersion),
@@ -383,7 +383,7 @@ func mergeSeedProfile(existing *llmkb.LLMProfile, seeded llmkb.LLMProfile, logge
 	if isZeroRoutingProfile(existing.Routing) {
 		merged.Routing = seeded.Routing
 	}
-	
+
 	// No version bump + same data = no history record to keep it clean
 	return merged
 }

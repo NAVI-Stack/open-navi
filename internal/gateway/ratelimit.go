@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	authTokenLimit = 5           // requests
-	authTokenBurst = 5           // per window
+	authTokenLimit  = 5 // requests
+	authTokenBurst  = 5 // per window
 	authTokenWindow = time.Minute
 )
 

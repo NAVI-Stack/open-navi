@@ -16,7 +16,7 @@ type API struct {
 	Registry          *Registry
 	Bus               bus.Bus
 	Logger            *slog.Logger
-	ConnectorRegistry  *connreg.Registry
+	ConnectorRegistry *connreg.Registry
 }
 
 // NewAPI creates a plugin API that writes to the given registry.

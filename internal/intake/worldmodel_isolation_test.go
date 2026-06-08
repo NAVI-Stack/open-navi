@@ -129,15 +129,15 @@ func TestOnlySynthesizeWritesWorldModel(t *testing.T) {
 	baseline := snapshotCounts(t, db) // empty DB — all zero
 
 	rec := IntakeRecord{
-		ConnectorID:  "telegram:acct-1",
-		SourceKind:   "message",
-		SourceID:     "999:7001",
-		Cursor:       "999:7001",
-		FetchedAt:    time.Now().UTC(),
-		Trust:        TrustExternalUntrusted,
-		Raw:          []byte("Met Alex Rivera at the summit; email alex@example.com."),
-		RawMIME:      "text/plain",
-		Provenance:   Provenance{ConnectorID: "telegram:acct-1", AccountID: "acct-1"},
+		ConnectorID: "telegram:acct-1",
+		SourceKind:  "message",
+		SourceID:    "999:7001",
+		Cursor:      "999:7001",
+		FetchedAt:   time.Now().UTC(),
+		Trust:       TrustExternalUntrusted,
+		Raw:         []byte("Met Alex Rivera at the summit; email alex@example.com."),
+		RawMIME:     "text/plain",
+		Provenance:  Provenance{ConnectorID: "telegram:acct-1", AccountID: "acct-1"},
 	}
 
 	// Phase 1: Admit + Canonicalize + Chunk + Distill (P1+P2, no synthesis).

@@ -83,14 +83,14 @@ type UserPresencePayload struct {
 
 // NaviPresencePayload is the payload for subject_type = navi.
 type NaviPresencePayload struct {
-	PublicStatus    string            `json:"public_status"`
-	InternalStatus  string            `json:"internal_status"`
-	StatusText      string            `json:"status_text,omitempty"`
-	Subtext         string            `json:"subtext,omitempty"`
+	PublicStatus           string            `json:"public_status"`
+	InternalStatus         string            `json:"internal_status"`
+	StatusText             string            `json:"status_text,omitempty"`
+	Subtext                string            `json:"subtext,omitempty"`
 	ActiveRuntimeSessionID string            `json:"active_runtime_session_id,omitempty"`
-	CurrentDetail   string            `json:"current_detail,omitempty"`
-	Attention       PresenceAttention `json:"attention"`
-	Health          PresenceHealth    `json:"health"`
+	CurrentDetail          string            `json:"current_detail,omitempty"`
+	Attention              PresenceAttention `json:"attention"`
+	Health                 PresenceHealth    `json:"health"`
 }
 
 // PresenceAttention describes the attention state of NAVI.

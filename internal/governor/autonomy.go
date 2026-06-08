@@ -122,4 +122,3 @@ func ApplyAutonomyForAction(result ValidationResult, resolver AutonomyPresetReso
 	resolvedDomain := DomainForCommand(cmdType, domain)
 	return ApplyAutonomy(result, resolver, resolvedDomain, entry)
 }
-

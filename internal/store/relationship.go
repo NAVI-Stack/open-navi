@@ -104,8 +104,8 @@ func ListRelationships(ctx context.Context, db *sql.DB, fromEntityID string, lim
 	var out []schema.Relationship
 	for rows.Next() {
 		var (
-			rel      schema.Relationship
-			recency  string
+			rel     schema.Relationship
+			recency string
 		)
 		if err := rows.Scan(
 			&rel.ID,
@@ -214,5 +214,3 @@ func DeleteRelationship(ctx context.Context, db *sql.DB, id string) error {
 	}
 	return nil
 }
-
-

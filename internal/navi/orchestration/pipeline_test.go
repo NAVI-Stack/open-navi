@@ -176,9 +176,9 @@ func TestPipelineCompileAndNormalize(t *testing.T) {
 	}
 	compiledReq := CompiledModelRequest{
 		Metadata: map[string]string{
-			"trace_id":   "trace-123",
-			"chat_id":    "sess-123",
-			"run_id":     "run-123",
+			"trace_id": "trace-123",
+			"chat_id":  "sess-123",
+			"run_id":   "run-123",
 		},
 	}
 	normalizedResp := NormalizedModelResponse{

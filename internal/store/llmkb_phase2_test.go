@@ -20,7 +20,7 @@ func TestSQLiteLLMKBRepo_GenerateRoutingProposals_ObeysPromotionConstraints(t *t
 	}
 
 	repo := NewSQLiteLLMKBRepo(db)
-	
+
 	// Create a profile with strict promotion constraints
 	profile := llmkb.LLMProfile{
 		LLMID:         "provider-x.strict-model",
@@ -33,7 +33,7 @@ func TestSQLiteLLMKBRepo_GenerateRoutingProposals_ObeysPromotionConstraints(t *t
 		},
 		UsageStats: llmkb.UsageStats{
 			FirstSeenAt:  ptr(time.Now().Add(-2 * 24 * time.Hour)), // Only 2 days old
-			FallbackRate: 0.1,                                   // Needed to trigger delta < 0
+			FallbackRate: 0.1,                                      // Needed to trigger delta < 0
 		},
 		OperationalState: llmkb.OperationalState{AvailabilityState: llmkb.AvailabilityStateAvailable},
 		CreatedAt:        time.Now().UTC(),
@@ -82,12 +82,12 @@ func TestSQLiteLLMKBRepo_GenerateRoutingProposals_ObeysPromotionConstraints(t *t
 	// Case 3: Pass all limits
 	profile.UsageStats.FirstSeenAt = ptr(time.Now().Add(-10 * 24 * time.Hour))
 	repo.SaveProfile(ctx, profile)
-	
+
 	proposals, _ = repo.GenerateRoutingProposals(ctx, 0.8)
 	if len(proposals) != 1 {
 		t.Errorf("expected 1 proposal after passing all constraints, got %d", len(proposals))
 	}
-	
+
 	got := proposals[0]
 	if got.ProbationElapsedDays < 10 {
 		t.Errorf("expected ProbationElapsedDays >= 10, got %d", got.ProbationElapsedDays)

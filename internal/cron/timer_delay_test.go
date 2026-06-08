@@ -23,7 +23,7 @@ func TestClampCronTimerDelay(t *testing.T) {
 		}
 	})
 	t.Run("clamps_to_max_when_delay_huge", func(t *testing.T) {
-		future := now + int64(maxD/time.Millisecond)+5_000
+		future := now + int64(maxD/time.Millisecond) + 5_000
 		d := clampCronTimerDelay(now, future, minG, maxD)
 		if d != maxD {
 			t.Fatalf("got %v want %v", d, maxD)

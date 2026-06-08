@@ -22,23 +22,23 @@ func TestSQLiteLLMKBRepo_GenerateRoutingProposals_DedupesPendingItems(t *testing
 
 	repo := NewSQLiteLLMKBRepo(db)
 	if err := repo.SaveProfile(ctx, llmkb.LLMProfile{
-		LLMID:             "provider-a.chat-pro",
-		CanonicalName:     "Chat Pro",
-		Aliases:           []string{"chat-pro"},
-		ProviderID:        "provider-a",
-		OperationalState:  llmkb.OperationalState{AvailabilityState: llmkb.AvailabilityStateAvailable},
-		CreatedAt:         time.Now().UTC(),
+		LLMID:            "provider-a.chat-pro",
+		CanonicalName:    "Chat Pro",
+		Aliases:          []string{"chat-pro"},
+		ProviderID:       "provider-a",
+		OperationalState: llmkb.OperationalState{AvailabilityState: llmkb.AvailabilityStateAvailable},
+		CreatedAt:        time.Now().UTC(),
 	}); err != nil {
 		t.Fatalf("SaveProfile: %v", err)
 	}
 
 	for i := 0; i < 10; i++ {
 		if err := repo.AppendExecutionRecord(ctx, llmkb.LLMExecutionRecord{
-			RecordID:          "exec-coding-" + string(rune('a'+i)),
-			LLMID:             "provider-a.chat-pro",
-			TaskClass:         llmkb.TaskClassCoding,
-			Outcome:           llmkb.ExecutionOutcomeSuccess,
-			CreatedAt:         time.Now().UTC(),
+			RecordID:  "exec-coding-" + string(rune('a'+i)),
+			LLMID:     "provider-a.chat-pro",
+			TaskClass: llmkb.TaskClassCoding,
+			Outcome:   llmkb.ExecutionOutcomeSuccess,
+			CreatedAt: time.Now().UTC(),
 		}); err != nil {
 			t.Fatalf("AppendExecutionRecord(%d): %v", i, err)
 		}
@@ -83,20 +83,20 @@ func TestSQLiteLLMKBRepo_GetProfileByAlias_ReturnsAmbiguityError(t *testing.T) {
 	repo := NewSQLiteLLMKBRepo(db)
 	for _, profile := range []llmkb.LLMProfile{
 		{
-			LLMID:             "provider-a.chat-pro",
-			CanonicalName:     "Chat Pro A",
-			Aliases:           []string{"chat-pro"},
-			ProviderID:        "provider-a",
-			OperationalState:  llmkb.OperationalState{AvailabilityState: llmkb.AvailabilityStateAvailable},
-			CreatedAt:         time.Now().UTC(),
+			LLMID:            "provider-a.chat-pro",
+			CanonicalName:    "Chat Pro A",
+			Aliases:          []string{"chat-pro"},
+			ProviderID:       "provider-a",
+			OperationalState: llmkb.OperationalState{AvailabilityState: llmkb.AvailabilityStateAvailable},
+			CreatedAt:        time.Now().UTC(),
 		},
 		{
-			LLMID:             "provider-b.chat-pro",
-			CanonicalName:     "Chat Pro B",
-			Aliases:           []string{"chat-pro"},
-			ProviderID:        "provider-b",
-			OperationalState:  llmkb.OperationalState{AvailabilityState: llmkb.AvailabilityStateAvailable},
-			CreatedAt:         time.Now().UTC(),
+			LLMID:            "provider-b.chat-pro",
+			CanonicalName:    "Chat Pro B",
+			Aliases:          []string{"chat-pro"},
+			ProviderID:       "provider-b",
+			OperationalState: llmkb.OperationalState{AvailabilityState: llmkb.AvailabilityStateAvailable},
+			CreatedAt:        time.Now().UTC(),
 		},
 	} {
 		if err := repo.SaveProfile(ctx, profile); err != nil {

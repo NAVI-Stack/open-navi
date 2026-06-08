@@ -11,11 +11,11 @@ type anthropicRequest struct {
 	Messages  []antMessage `json:"messages"`
 	// System is either a plain string or a []antContentBlock for multi-block
 	// system prompts. Omitted when empty.
-	System     any            `json:"system,omitempty"`
-	Tools      []antTool      `json:"tools,omitempty"`
-	ToolChoice any            `json:"tool_choice,omitempty"`
-	Stream     bool           `json:"stream,omitempty"`
-	Thinking   *antThinking   `json:"thinking,omitempty"`
+	System     any          `json:"system,omitempty"`
+	Tools      []antTool    `json:"tools,omitempty"`
+	ToolChoice any          `json:"tool_choice,omitempty"`
+	Stream     bool         `json:"stream,omitempty"`
+	Thinking   *antThinking `json:"thinking,omitempty"`
 }
 
 // antMessage is a single conversation turn on the Anthropic wire.
@@ -85,11 +85,11 @@ type antThinking struct {
 // ---------------------------------------------------------------------------
 
 type anthropicResponse struct {
-	ID         string             `json:"id"`
-	Type       string             `json:"type"` // "message"
-	Content    []antContentBlock  `json:"content"`
-	StopReason string             `json:"stop_reason"`
-	Usage      anthropicUsage     `json:"usage"`
+	ID         string            `json:"id"`
+	Type       string            `json:"type"` // "message"
+	Content    []antContentBlock `json:"content"`
+	StopReason string            `json:"stop_reason"`
+	Usage      anthropicUsage    `json:"usage"`
 }
 
 type anthropicUsage struct {

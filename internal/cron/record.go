@@ -82,7 +82,7 @@ func jobFromRecord(r store.CronJobRecord) (Job, error) {
 		Description:    r.Description,
 		Enabled:        r.Enabled,
 		Schedule:       sched,
-		SessionTarget: session,
+		SessionTarget:  session,
 		WakeMode:       wake,
 		PayloadKind:    pk,
 		PayloadText:    r.PayloadText,

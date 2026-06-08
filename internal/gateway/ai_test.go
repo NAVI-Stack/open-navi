@@ -24,7 +24,7 @@ func (m *mockLLMService) GetActive(ctx context.Context) (llm.Active, error) {
 
 func TestHandleGenerateConversationTitle(t *testing.T) {
 	srv, _, _ := testServer(t)
-	
+
 	mockChat := &mockProvider{
 		chatFunc: func(ctx context.Context, model string, messages []llm.Message, tools []llm.ToolDefinition, opts llm.Options) (*llm.Response, error) {
 			return &llm.Response{
@@ -32,7 +32,7 @@ func TestHandleGenerateConversationTitle(t *testing.T) {
 			}, nil
 		},
 	}
-	
+
 	srv.cfg.LLM = &mockLLMService{chatProv: mockChat}
 
 	// 1. Unauthorized request

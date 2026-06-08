@@ -17,31 +17,31 @@ import (
 // docs/canonical/specs/connectors.md and is intentionally generic so that
 // different drivers can expose their own capability sets.
 type CapabilityDescriptor struct {
-	Name               string          `json:"name"`
-	InputSchema        json.RawMessage `json:"input_schema,omitempty"`
-	OutputSchema       json.RawMessage `json:"output_schema,omitempty"`
-	SideEffectClass    string          `json:"side_effect_class,omitempty"`
-	IdempotencyClass   string          `json:"idempotency_class,omitempty"`
-	Reversibility      string          `json:"reversibility,omitempty"`
-	RiskHint           string          `json:"risk_hint,omitempty"`
-	RequiredPermissions []string       `json:"required_permissions,omitempty"`
-	SupportsDryRun     bool            `json:"supports_dry_run,omitempty"`
-	SupportsRetry      bool            `json:"supports_retry,omitempty"`
+	Name                string          `json:"name"`
+	InputSchema         json.RawMessage `json:"input_schema,omitempty"`
+	OutputSchema        json.RawMessage `json:"output_schema,omitempty"`
+	SideEffectClass     string          `json:"side_effect_class,omitempty"`
+	IdempotencyClass    string          `json:"idempotency_class,omitempty"`
+	Reversibility       string          `json:"reversibility,omitempty"`
+	RiskHint            string          `json:"risk_hint,omitempty"`
+	RequiredPermissions []string        `json:"required_permissions,omitempty"`
+	SupportsDryRun      bool            `json:"supports_dry_run,omitempty"`
+	SupportsRetry       bool            `json:"supports_retry,omitempty"`
 }
 
 // ResultEnvelope is the normalized result for a connector action execution.
 // It is intentionally parallel to the skill execution envelope and the
 // canonical connector result envelope in the v2 spec.
 type ResultEnvelope struct {
-	Status             string          `json:"status"` // "ok", "error"
-	Output             json.RawMessage `json:"output,omitempty"`
-	Error              string          `json:"error,omitempty"`
-	Retryable          bool            `json:"retryable"`
-	ConnectorInstanceID string         `json:"connector_instance_id"`
-	Capability         string          `json:"capability"`
-	CorrelationID      string          `json:"correlation_id,omitempty"`
-	DurationMS         int64           `json:"duration_ms"`
-	ProviderMetadata   json.RawMessage `json:"provider_metadata,omitempty"`
+	Status              string          `json:"status"` // "ok", "error"
+	Output              json.RawMessage `json:"output,omitempty"`
+	Error               string          `json:"error,omitempty"`
+	Retryable           bool            `json:"retryable"`
+	ConnectorInstanceID string          `json:"connector_instance_id"`
+	Capability          string          `json:"capability"`
+	CorrelationID       string          `json:"correlation_id,omitempty"`
+	DurationMS          int64           `json:"duration_ms"`
+	ProviderMetadata    json.RawMessage `json:"provider_metadata,omitempty"`
 }
 
 // EventEnvelope is the normalized shape for inbound connector events.
@@ -99,8 +99,8 @@ type basicDriverAdapter struct {
 	caps        []CapabilityDescriptor
 }
 
-func (d *basicDriverAdapter) DriverID() string   { return d.id }
-func (d *basicDriverAdapter) Kind() string       { return d.kind }
+func (d *basicDriverAdapter) DriverID() string    { return d.id }
+func (d *basicDriverAdapter) Kind() string        { return d.kind }
 func (d *basicDriverAdapter) DisplayName() string { return d.displayName }
 
 func (d *basicDriverAdapter) SetupDescriptor() SetupDescriptor {
@@ -143,8 +143,8 @@ func NewBaseConnector(name string, allowList []string) BaseConnector {
 	}
 }
 
-func (c *BaseConnector) Name() string           { return c.name }
-func (c *BaseConnector) IsRunning() bool        { return c.running.Load() }
+func (c *BaseConnector) Name() string            { return c.name }
+func (c *BaseConnector) IsRunning() bool         { return c.running.Load() }
 func (c *BaseConnector) SetRunning(running bool) { c.running.Store(running) }
 
 // basicInstanceAdapter is a ConnectorInstance that wraps a v1 connectors.Connector
@@ -157,8 +157,8 @@ type basicInstanceAdapter struct {
 	conn       connectors.Connector
 }
 
-func (i *basicInstanceAdapter) InstanceID() string          { return i.instanceID }
-func (i *basicInstanceAdapter) DriverID() string            { return i.driverID }
+func (i *basicInstanceAdapter) InstanceID() string              { return i.instanceID }
+func (i *basicInstanceAdapter) DriverID() string                { return i.driverID }
 func (i *basicInstanceAdapter) Connector() connectors.Connector { return i.conn }
 
 // SetupParam describes a single connector setup parameter (required or optional).
@@ -175,10 +175,9 @@ type SetupParam struct {
 // SetupDescriptor is the authoritative schema for configuring one connector type.
 // Server returns these from GET /api/connectors/setup-schema; CLI uses them for prompts and param collection.
 type SetupDescriptor struct {
-	Type          string      `json:"type"`
-	DisplayName   string      `json:"display_name"`
+	Type           string       `json:"type"`
+	DisplayName    string       `json:"display_name"`
 	RequiredParams []SetupParam `json:"required_params"`
 	OptionalParams []SetupParam `json:"optional_params"`
-	SetupHint     string      `json:"setup_hint,omitempty"`
+	SetupHint      string       `json:"setup_hint,omitempty"`
 }
-

@@ -11,7 +11,7 @@ func TestEngineBuildProducesCompiledControl(t *testing.T) {
 
 	engine := NewEngine(nil)
 	rendered, err := engine.Build(context.Background(), DefaultStandardProfile(), BuildRequest{
-		ChatID:       "sess-1",
+		ChatID:          "sess-1",
 		Mode:            "navi",
 		LastUserMessage: "Be brief and step by step.",
 	})
@@ -37,7 +37,7 @@ func TestEngineBuildAppliesHighStakesHumorGuard(t *testing.T) {
 
 	engine := NewEngine(nil)
 	rendered, err := engine.Build(context.Background(), DefaultStandardProfile(), BuildRequest{
-		ChatID:       "sess-2",
+		ChatID:          "sess-2",
 		Mode:            "navi",
 		LastUserMessage: "I need advice on a legal contract and financial risk.",
 	})

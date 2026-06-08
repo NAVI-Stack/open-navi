@@ -318,9 +318,9 @@ func (s *DefaultService) refreshNaviPresence(ctx context.Context) {
 		StatusText:             statusText,
 		Subtext:                subtext,
 		ActiveRuntimeSessionID: snap.ActiveRuntimeSessionID,
-		CurrentDetail:   snap.CurrentDetail,
-		Attention:       attention,
-		Health:          health,
+		CurrentDetail:          snap.CurrentDetail,
+		Attention:              attention,
+		Health:                 health,
 	}
 
 	s.mu.Lock()

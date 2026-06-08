@@ -105,7 +105,7 @@ func (b *JetStreamBus) Subscribe(ctx context.Context, eventType schema.EventType
 			msg.Nak()
 			return
 		}
-		
+
 		if !schema.AcceptableSchemaVersions()[ev.SchemaVersion] {
 			log.Printf("bus: schema version mismatch: got %q, subject %q", ev.SchemaVersion, subj)
 			msg.Nak()

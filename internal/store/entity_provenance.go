@@ -83,12 +83,12 @@ func SaveEntityProvenance(ctx context.Context, db *sql.DB, entityType, entityID 
 // GetEntityProvenance returns provenance for an entity, if any.
 func GetEntityProvenance(ctx context.Context, db *sql.DB, entityType, entityID string) (*schema.EntityProvenance, error) {
 	var (
-		source, ts          string
-		confidence          float64
-		derivationChain     sql.NullString
-		mutationHistory     sql.NullString
-		proposalID          sql.NullString
-		reinforcementCount  int
+		source, ts         string
+		confidence         float64
+		derivationChain    sql.NullString
+		mutationHistory    sql.NullString
+		proposalID         sql.NullString
+		reinforcementCount int
 	)
 	err := db.QueryRowContext(ctx, `
 		SELECT source, timestamp, confidence, derivation_chain, mutation_history, proposal_id,

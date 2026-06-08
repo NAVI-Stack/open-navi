@@ -18,9 +18,9 @@ func TestExecutorExecute_Success(t *testing.T) {
 	})
 
 	desc := Descriptor{
-		Type:       schema.CommandTypeQuery,
-		UserFacing: true,
-		RuntimeSessionID:  "s1",
+		Type:             schema.CommandTypeQuery,
+		UserFacing:       true,
+		RuntimeSessionID: "s1",
 	}
 
 	ctx := context.Background()
@@ -62,9 +62,9 @@ func TestExecutorExecute_FailureRetryableByIdempotency(t *testing.T) {
 	})
 
 	desc := Descriptor{
-		Type:       schema.CommandTypeQuery, // idempotent
-		UserFacing: true,
-		RuntimeSessionID:  "s2",
+		Type:             schema.CommandTypeQuery, // idempotent
+		UserFacing:       true,
+		RuntimeSessionID: "s2",
 	}
 
 	ctx := context.Background()

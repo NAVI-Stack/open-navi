@@ -12,17 +12,17 @@ import (
 // Step is a single step in a Compose sequence. Reversibility determines
 // how the Compose runner handles failure of this or later steps.
 type Step struct {
-	CommandType schema.CommandType
+	CommandType   schema.CommandType
 	Reversibility schema.ReversibilityClass
-	Run         func(ctx context.Context) (any, error)
+	Run           func(ctx context.Context) (any, error)
 }
 
 // ComposeResult holds the composite outcome and the index of the step that failed (if any).
 type ComposeResult struct {
-	Outcome       schema.ExecutionOutcomeOutcome
-	FailureIndex  int
-	FailureReason string
-	StepOutcomes  []schema.ExecutionOutcome
+	Outcome        schema.ExecutionOutcomeOutcome
+	FailureIndex   int
+	FailureReason  string
+	StepOutcomes   []schema.ExecutionOutcome
 	RecoveryStatus schema.RecoveryStatus
 }
 
@@ -131,10 +131,10 @@ func RunCompose(ctx context.Context, desc Descriptor, steps []Step, mode schema.
 				_ = saver(ctx, compositeEO)
 			}
 			return lastResult, &ComposeResult{
-				Outcome:       compositeOutcome,
-				FailureIndex:  i,
-				FailureReason: failureReason,
-				StepOutcomes:  stepOutcomes,
+				Outcome:        compositeOutcome,
+				FailureIndex:   i,
+				FailureReason:  failureReason,
+				StepOutcomes:   stepOutcomes,
 				RecoveryStatus: compositeRecovery,
 			}, stepErr
 		}
@@ -142,16 +142,16 @@ func RunCompose(ctx context.Context, desc Descriptor, steps []Step, mode schema.
 
 	endTime := time.Now().UTC()
 	compositeEO := schema.ExecutionOutcome{
-		AttemptID:           compositeID + ":1",
-		CommandID:            compositeID,
-		AttemptNumber:        1,
-		CommandType:         schema.CommandTypeCompose,
-		StartTime:           startTime,
-		EndTime:             &endTime,
-		Outcome:             schema.ExecutionOutcomeSucceeded,
-		AffectedEntities:    encodeAffectedEntities(desc.RuntimeSessionID, desc.TaskID),
-		RecoveryStatus:      schema.RecoveryStatusNotRequired,
-		CompensationStatus:  schema.CompensationStatusNotRequired,
+		AttemptID:          compositeID + ":1",
+		CommandID:          compositeID,
+		AttemptNumber:      1,
+		CommandType:        schema.CommandTypeCompose,
+		StartTime:          startTime,
+		EndTime:            &endTime,
+		Outcome:            schema.ExecutionOutcomeSucceeded,
+		AffectedEntities:   encodeAffectedEntities(desc.RuntimeSessionID, desc.TaskID),
+		RecoveryStatus:     schema.RecoveryStatusNotRequired,
+		CompensationStatus: schema.CompensationStatusNotRequired,
 	}
 	if saver != nil {
 		_ = saver(ctx, compositeEO)

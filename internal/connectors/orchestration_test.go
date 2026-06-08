@@ -33,8 +33,8 @@ func newOrchMock(name string) *orchMock {
 
 func (m *orchMock) Name() string                  { return m.name }
 func (m *orchMock) IsRunning() bool               { return m.running.Load() }
-func (m *orchMock) Start(_ context.Context) error  { return nil }
-func (m *orchMock) Stop(_ context.Context) error   { m.running.Store(false); return nil }
+func (m *orchMock) Start(_ context.Context) error { return nil }
+func (m *orchMock) Stop(_ context.Context) error  { m.running.Store(false); return nil }
 func (m *orchMock) Send(_ context.Context, msg connectors.OutboundMessage) error {
 	m.mu.Lock()
 	m.sent = append(m.sent, msg)

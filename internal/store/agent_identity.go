@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	AgentIdentityStatusActive    = "active"
-	AgentIdentityStatusRevoked   = "revoked"
+	AgentIdentityStatusActive     = "active"
+	AgentIdentityStatusRevoked    = "revoked"
 	AgentIdentityStatusSuperseded = "superseded"
 )
 
@@ -262,12 +262,12 @@ func scanAgentIdentity(row *sql.Row) (AgentIdentity, bool, error) {
 
 func scanAgentIdentityFull(row *sql.Row) (AgentIdentity, bool, error) {
 	var (
-		identity       AgentIdentity
-		createdRaw     string
-		revokedAt      sql.NullString
-		revReason      sql.NullString
-		supersedes     sql.NullString
-		supersededBy   sql.NullString
+		identity        AgentIdentity
+		createdRaw      string
+		revokedAt       sql.NullString
+		revReason       sql.NullString
+		supersedes      sql.NullString
+		supersededBy    sql.NullString
 		rotationLinkSig sql.NullString
 	)
 	err := row.Scan(&identity.ID, &identity.KeyType, &identity.PublicKey, &identity.Fingerprint, &createdRaw, &identity.Status,
