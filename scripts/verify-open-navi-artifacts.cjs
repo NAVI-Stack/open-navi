@@ -138,7 +138,14 @@ function verifyNpmArtifacts(opts, version, failures) {
   const wrapperFile = path.join(opts.npmDist, `open-navi-${version}.tgz`);
   if (fs.existsSync(wrapperFile)) {
     const entries = new Set(listTarGz(wrapperFile));
-    for (const entry of ["package/package.json", "package/README.md", "package/cli.cjs", "package/index.cjs"]) {
+    for (const entry of [
+      "package/package.json",
+      "package/README.md",
+      "package/LICENSE",
+      "package/NOTICE",
+      "package/cli.cjs",
+      "package/index.cjs",
+    ]) {
       requireEntry(failures, entries, wrapperFile, entry);
     }
   }
@@ -150,6 +157,8 @@ function verifyNpmArtifacts(opts, version, failures) {
     }
     const entries = new Set(listTarGz(file));
     requireEntry(failures, entries, file, "package/package.json");
+    requireEntry(failures, entries, file, "package/LICENSE");
+    requireEntry(failures, entries, file, "package/NOTICE");
     requireEntry(failures, entries, file, `package/bin/${naviName}`);
     requireEntry(failures, entries, file, `package/bin/${navidName}`);
   }
@@ -203,6 +212,18 @@ function verifyPythonArtifacts(opts, version, failures) {
     }
     if (!inspected.metadata.includes(`Version: ${version}`)) {
       fail(failures, `${wheelName} metadata is missing Version: ${version}`);
+    }
+    if (
+      !inspected.metadata.includes("License-Expression: Apache-2.0") &&
+      !inspected.metadata.includes("License: Apache-2.0")
+    ) {
+      fail(failures, `${wheelName} metadata is missing Apache-2.0 license metadata`);
+    }
+    if (!inspected.names.some((name) => name.endsWith(".dist-info/licenses/LICENSE"))) {
+      fail(failures, `${wheelName} is missing packaged LICENSE`);
+    }
+    if (!inspected.names.some((name) => name.endsWith(".dist-info/licenses/NOTICE"))) {
+      fail(failures, `${wheelName} is missing packaged NOTICE`);
     }
     if (!inspected.wheel.includes("Root-Is-Purelib: false")) {
       fail(failures, `${wheelName} must be marked Root-Is-Purelib: false`);

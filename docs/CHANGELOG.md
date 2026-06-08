@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - **Major Rebranding**: Consolidated project identity as **NAVI**.
 - Renamed `internal/ceo` package to `internal/orchestrator`.
-- Renamed `cmd/ceoai` to `cmd/navid`.
+- Renamed `cmd/open-navi` to `cmd/navid`.
 - Rebranded legacy naming to "Orchestrator" or "NAVI".
 - Updated NATS subjects and streams to `navi.*` and `NAVI_*` naming.
 - Updated environment variables to use `NAVI_` prefix.

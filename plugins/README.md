@@ -54,11 +54,11 @@ Built-in plugins are linked into `navid` through one intentional import boundary
 package main
 
 import (
-    _ "github.com/ceoai/navi/plugins/llm-anthropic/providers/anthropic"
-    _ "github.com/ceoai/navi/plugins/llm-openai/providers/openai"
-    _ "github.com/ceoai/navi/plugins/llm-ollama/providers/ollama"
-    "github.com/ceoai/navi/plugins/slack/connectors/slack"
-    "github.com/ceoai/navi/plugins/telegram/connectors/telegram"
+    _ "github.com/open-navi/navi/plugins/llm-anthropic/providers/anthropic"
+    _ "github.com/open-navi/navi/plugins/llm-openai/providers/openai"
+    _ "github.com/open-navi/navi/plugins/llm-ollama/providers/ollama"
+    "github.com/open-navi/navi/plugins/slack/connectors/slack"
+    "github.com/open-navi/navi/plugins/telegram/connectors/telegram"
 )
 ```
 

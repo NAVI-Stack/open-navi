@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "description": "NAVI local daemon CLI wrapper for Node.js installs.",
   "author": "NAVI Stack",
+  "maintainers": [
+    {
+      "name": "NAVI Stack"
+    }
+  ],
   "homepage": "https://github.com/NAVI-Stack/open-navi#readme",
   "repository": {
     "type": "git",
@@ -29,6 +34,8 @@
   },
   "files": [
     "README.md",
+    "LICENSE",
+    "NOTICE",
     "cli.cjs",
     "index.cjs"
   ],
@@ -42,7 +49,7 @@
   "scripts": {
     "test": "node --test test/*.test.cjs"
   },
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "engines": {
     "node": ">=18"
   }

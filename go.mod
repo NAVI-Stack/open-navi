@@ -1,4 +1,4 @@
-module github.com/ceoai/navi
+module github.com/open-navi/navi
 
 go 1.24.0
 

@@ -1,6 +1,6 @@
 # AGENTS.md — NAVI Codebase Guide
 
-NAVI is a **two-binary** personal AI runtime (Go 1.24, module `github.com/ceoai/navi`).
+NAVI is a **two-binary** personal AI runtime (Go 1.24, module `github.com/open-navi/navi`).
 `navid` (server: SQLite + embedded NATS + agent loop + orchestrator + gateway) and
 `navi` (CLI client via NaviExe). Two supported runtime modes: Docker Compose and
 local daemon. PET is an optional UI client.

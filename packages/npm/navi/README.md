@@ -12,3 +12,5 @@ The installed command is `navi`. The package resolves a platform-native NAVI bin
 For wrapper development, set `NAVI_NATIVE_BIN` to a locally built native `navi` executable.
 
 See the main repository README and `docs/runbooks/publish-open-navi.md` for release details.
+
+Licensed under Apache-2.0. See `LICENSE` and `NOTICE`.

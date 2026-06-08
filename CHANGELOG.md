@@ -7,3 +7,4 @@
 - Add npm platform-native optional dependency packages for `navi` and `navid` binaries.
 - Add PyPI platform-wheel support for bundled native binaries.
 - Add release preparation and publish runbook documentation.
+- License the open-source package surface under Apache-2.0.

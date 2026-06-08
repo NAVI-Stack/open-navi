@@ -20,6 +20,7 @@ const homepage = "https://github.com/NAVI-Stack/open-navi#readme";
 const repositoryUrl = "git+https://github.com/NAVI-Stack/open-navi.git";
 const issuesUrl = "https://github.com/NAVI-Stack/open-navi/issues";
 const pypiRepositoryUrl = "https://github.com/NAVI-Stack/open-navi";
+const approvedLicense = "Apache-2.0";
 
 function rel(...parts) {
   return path.join(repoRoot, ...parts);
@@ -63,12 +64,8 @@ function hasProjectScript(pyproject) {
 }
 
 function checkPackageLicense(label, license) {
-  if (!license) {
-    fail(`${label} is missing license metadata`);
-    return;
-  }
-  if (forPublish && license === "UNLICENSED") {
-    fail(`${label} still uses UNLICENSED; choose the public package license before publishing`);
+  if (license !== approvedLicense) {
+    fail(`${label} license should be ${approvedLicense}`);
   }
 }
 
@@ -103,6 +100,7 @@ const pythonVersion = projectScalar(pyproject, "version");
 const pythonDescription = projectScalar(pyproject, "description");
 const pythonAuthor = /authors\s*=\s*\[[\s\S]*?\{\s*name\s*=\s*"([^"]+)"/m.exec(pyproject)?.[1] || "";
 const pythonLicense = /license\s*=\s*"([^"]+)"/m.exec(pyproject)?.[1] || "";
+const pythonMaintainer = /maintainers\s*=\s*\[[\s\S]*?\{\s*name\s*=\s*"([^"]+)"/m.exec(pyproject)?.[1] || "";
 const pythonUrls = /^\[project\.urls\]$(?<body>[\s\S]*?)(?:^\[|\z)/m.exec(pyproject)?.groups.body || "";
 
 if (mainPackage.name !== "open-navi") {
@@ -129,8 +127,14 @@ if (pythonDescription !== "NAVI Python SDK and local daemon CLI wrapper.") {
 if (mainPackage.author !== "NAVI Stack") {
   fail(`npm package author should be NAVI Stack, found ${mainPackage.author || "<missing>"}`);
 }
+if (mainPackage.maintainers?.[0]?.name !== "NAVI Stack") {
+  fail("npm package maintainer should be NAVI Stack");
+}
 if (pythonAuthor !== "NAVI Stack") {
   fail(`PyPI author should be NAVI Stack, found ${pythonAuthor || "<missing>"}`);
+}
+if (pythonMaintainer !== "NAVI Stack") {
+  fail(`PyPI maintainer should be NAVI Stack, found ${pythonMaintainer || "<missing>"}`);
 }
 if (mainPackage.bin?.navi !== "./cli.cjs") {
   fail('npm package must install the "navi" command from ./cli.cjs');
@@ -150,10 +154,9 @@ if (!pythonUrls.includes(`Issues = "${issuesUrl}"`)) {
   fail(`PyPI Issues URL should be ${issuesUrl}`);
 }
 checkPackageLicense("npm package open-navi", mainPackage.license);
-if (forPublish && !pythonLicense) {
-  fail("PyPI project is missing license metadata; choose the public package license before publishing");
-} else if (!pythonLicense) {
-  warn("PyPI project license metadata is pending the public license decision");
+checkPackageLicense("PyPI project open-navi", pythonLicense);
+if (!/license-files\s*=\s*\[\s*"LICENSE"\s*,\s*"NOTICE"\s*\]/m.test(pyproject)) {
+  fail('PyPI project should include license-files = ["LICENSE", "NOTICE"]');
 }
 
 for (const [packageName, osName, cpuName] of nativePackages) {
@@ -170,9 +173,15 @@ for (const [packageName, osName, cpuName] of nativePackages) {
   if (pkg.os?.[0] !== osName || pkg.cpu?.[0] !== cpuName) {
     fail(`Native package ${packageName} platform metadata should be ${osName}/${cpuName}`);
   }
+  if (pkg.maintainers?.[0]?.name !== "NAVI Stack") {
+    fail(`Native package ${packageName} maintainer should be NAVI Stack`);
+  }
   checkNpmLinks(`native npm package ${packageName}`, pkg);
   checkNpmPublishConfig(`native npm package ${packageName}`, pkg);
   checkPackageLicense(`native npm package ${packageName}`, pkg.license);
+  if (!pkg.files?.includes("LICENSE") || !pkg.files?.includes("NOTICE")) {
+    fail(`Native package ${packageName} should include LICENSE and NOTICE in package files`);
+  }
 }
 
 for (const [name] of nativePackages) {
@@ -182,17 +191,27 @@ for (const [name] of nativePackages) {
 }
 
 for (const required of [
+  "LICENSE",
+  "NOTICE",
   "README.md",
   "CHANGELOG.md",
   "docs/runbooks/publish-open-navi.md",
+  "packages/npm/navi/LICENSE",
+  "packages/npm/navi/NOTICE",
   "packages/npm/navi/README.md",
   "python/README.md",
+  "python/LICENSE",
+  "python/NOTICE",
   "python/setup.py",
   "python/MANIFEST.in",
   "python/navi/bin/__init__.py",
   "python/navi/_generated/__init__.py",
 ]) {
   requireFile(required);
+}
+
+if (!mainPackage.files?.includes("LICENSE") || !mainPackage.files?.includes("NOTICE")) {
+  fail("npm package open-navi should include LICENSE and NOTICE in package files");
 }
 
 const repoReadme = readText("README.md");

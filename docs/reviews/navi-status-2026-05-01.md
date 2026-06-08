@@ -2,7 +2,7 @@
 
 **Generated:** automated weekly review  
 **Phase:** 15 (active) — ScoutAgent, heartbeat autonomy, skill execution hardening  
-**Codebase:** `github.com/ceoai/navi`, Go 1.24+
+**Codebase:** `github.com/open-navi/navi`, Go 1.24+
 
 ---
 

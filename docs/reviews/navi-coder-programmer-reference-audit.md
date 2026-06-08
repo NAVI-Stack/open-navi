@@ -177,7 +177,7 @@ runtime ID and a display label):
 
 | File:line | Reference | Classification |
 | --- | --- | --- |
-| `cmd/navid/plugin_bootstrap.go:18` | `naviprogrammer "github.com/ceoai/navi/plugins/navi-programmer/handlers"` | `legacy_package_reference` (import path tied to directory name) |
+| `cmd/navid/plugin_bootstrap.go:18` | `naviprogrammer "github.com/open-navi/navi/plugins/navi-programmer/handlers"` | `legacy_package_reference` (import path tied to directory name) |
 | `cmd/navi/main.go:2118` | `case "navi-programmer.repo-inspect":` | `code_identifier_requiring_staged_rename` |
 | `cmd/navi/main.go:2120` | `case "navi-programmer.run-validation":` | `code_identifier_requiring_staged_rename` |
 
@@ -185,7 +185,7 @@ runtime ID and a display label):
 
 | File:line | Reference | Classification |
 | --- | --- | --- |
-| `plugins/navi-coder/handlers/coder_repo_handler.go:9` | `naviprogrammer "github.com/ceoai/navi/plugins/navi-programmer/handlers"` | `legacy_package_reference` (intentional compatibility bridge) |
+| `plugins/navi-coder/handlers/coder_repo_handler.go:9` | `naviprogrammer "github.com/open-navi/navi/plugins/navi-programmer/handlers"` | `legacy_package_reference` (intentional compatibility bridge) |
 | `plugins/navi-coder/handlers/coder_repo_handler.go:41` | `coreskill.GetInternalHandler(naviprogrammer.RunValidationSkillID, "run_command")` | `legacy_package_reference` (reuses legacy skill ID by symbol) |
 
 ### 3.5 `docs/**` (22 files)
@@ -262,7 +262,7 @@ with skill-ID aliases.
 ### 5.6 Import paths & directory name
 `cmd/navid/plugin_bootstrap.go:18` and
 `plugins/navi-coder/handlers/coder_repo_handler.go:9` import
-`github.com/ceoai/navi/plugins/navi-programmer/handlers`; the package symbol
+`github.com/open-navi/navi/plugins/navi-programmer/handlers`; the package symbol
 `naviprogrammer.RunValidationSkillID` is reused. *Breaks:* compilation if the
 `plugins/navi-programmer/` directory is moved/renamed. *Mitigation:* OMN-283 must
 move the package and update both imports atomically (or keep a thin re-export

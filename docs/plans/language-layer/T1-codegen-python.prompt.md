@@ -5,7 +5,7 @@
 ## Who/where you are
 
 You are implementing in the NAVI codebase at
-`C:\Users\evirg\codespace\NAVI-Ecosystem\projects\navi` (Go 1.24+, module `github.com/ceoai/navi`).
+`C:\Users\evirg\codespace\NAVI-Ecosystem\projects\navi` (Go 1.24+, module `github.com/open-navi/navi`).
 NAVI is a two-binary personal AI system: `navid` (server) and `navi` (CLI). Read `CLAUDE.md` first.
 
 ## Required reading before you touch code
