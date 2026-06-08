@@ -1,0 +1,11 @@
+id: navi.hardware.i2c
+name: I2C Bus Controller
+description: Governed I2C peripheral interaction capability.
+version: 1.0.0
+kind: sensory
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/i2c
+      skill_id: hardware.i2c

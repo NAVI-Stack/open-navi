@@ -1,0 +1,3689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NAVI Live</title>
+  <style>
+    :root {
+      --paper: #f6f1e8;
+      --ink: #1f2933;
+      --muted: #52606d;
+      --line: #d9c9ad;
+      --panel: rgba(255, 251, 245, 0.92);
+      --accent: #14532d;
+      --accent-2: #b45309;
+      --danger: #b42318;
+      --warning: #b54708;
+      --info: #1d4ed8;
+      --shadow: 0 20px 60px rgba(31, 41, 51, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(180, 83, 9, 0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(20, 83, 45, 0.18), transparent 30%),
+        linear-gradient(135deg, #efe4d2, #f7f3ec 45%, #ece4d7);
+    }
+
+    main {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px;
+      display: grid;
+      gap: 20px;
+    }
+
+    .hero,
+    .panel {
+      background: var(--panel);
+      border: 1px solid rgba(217, 201, 173, 0.9);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: 24px;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    p,
+    .meta,
+    .status,
+    .tiny {
+      color: var(--muted);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr) 340px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .space-between {
+      justify-content: space-between;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    input,
+    textarea,
+    button {
+      font: inherit;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.8);
+      color: var(--ink);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 16px;
+      cursor: pointer;
+      transition: transform 120ms ease, opacity 120ms ease, background 120ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    button.secondary {
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    button.warn {
+      background: #fff4f2;
+      color: var(--danger);
+      border: 1px solid rgba(180, 35, 24, 0.2);
+    }
+
+    .pillbar,
+    .library-toolbar,
+    .modebar,
+    .actionbar,
+    .badgebar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .pill,
+    .badge,
+    .status-badge {
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid var(--line);
+      font-size: 0.83rem;
+    }
+
+    .status-badge.ok {
+      color: var(--accent);
+      border-color: rgba(20, 83, 45, 0.28);
+    }
+
+    .status-badge.warn {
+      color: var(--warning);
+      border-color: rgba(181, 71, 8, 0.28);
+    }
+
+    .status-badge.info {
+      color: var(--info);
+      border-color: rgba(29, 78, 216, 0.28);
+    }
+
+    .status-badge.danger {
+      color: var(--danger);
+      border-color: rgba(180, 35, 24, 0.28);
+      background: rgba(180, 35, 24, 0.06);
+    }
+
+    .tiny {
+      font-size: 0.84rem;
+    }
+
+    .library-toolbar button.active,
+    .modebar button.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .chat {
+      display: grid;
+      gap: 12px;
+      min-height: 420px;
+      max-height: 62vh;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .message {
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.82);
+      animation: rise 180ms ease;
+      white-space: pre-wrap;
+    }
+
+    .message.user {
+      background: rgba(20, 83, 45, 0.08);
+    }
+
+    .message.assistant.partial {
+      border-style: dashed;
+    }
+
+    .message.assistant.proactive {
+      background: rgba(29, 78, 216, 0.08);
+      border-color: rgba(29, 78, 216, 0.26);
+    }
+
+    .message.system {
+      background: rgba(180, 83, 9, 0.08);
+    }
+
+    .message.error {
+      background: rgba(180, 35, 24, 0.08);
+    }
+
+    .message .meta {
+      font-size: 0.82rem;
+      margin-bottom: 6px;
+    }
+
+    .thinking {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(20, 83, 45, 0.18);
+      background: rgba(20, 83, 45, 0.08);
+      color: var(--accent);
+      font-size: 0.92rem;
+    }
+
+    .thinking.active {
+      display: inline-flex;
+    }
+
+    .thinking-dots {
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .thinking-dots span {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: currentColor;
+      opacity: 0.25;
+      animation: pulse 1s infinite ease-in-out;
+    }
+
+    .thinking-dots span:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    .thinking-dots span:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .artifact-list {
+      max-height: 480px;
+      overflow: auto;
+      padding-right: 4px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .artifact-card {
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      display: grid;
+      gap: 9px;
+      transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+      cursor: pointer;
+    }
+
+    .artifact-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(31, 41, 51, 0.08);
+    }
+
+    .artifact-card.active {
+      border-color: rgba(20, 83, 45, 0.35);
+      box-shadow: 0 12px 28px rgba(20, 83, 45, 0.12);
+    }
+
+    .artifact-card-top,
+    .artifact-card-bottom,
+    .workspace-header {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .artifact-title {
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 220px;
+    }
+
+    .artifact-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .artifact-callout {
+      border-left: 3px solid rgba(180, 35, 24, 0.38);
+      padding-left: 10px;
+      color: var(--danger);
+      font-size: 0.84rem;
+    }
+
+    .workspace-shell {
+      display: grid;
+      gap: 16px;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 310px;
+      gap: 18px;
+      min-height: 460px;
+    }
+
+    .workspace-main,
+    .workspace-side {
+      border: 1px solid rgba(217, 201, 173, 0.9);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.72);
+      padding: 16px;
+      overflow: auto;
+    }
+
+    .workspace-main pre,
+    .workspace-side pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin: 0;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .workspace-empty {
+      color: var(--muted);
+      min-height: 240px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .version-list,
+    .inspector-sections {
+      display: grid;
+      gap: 8px;
+    }
+
+    .version-item,
+    .inspector-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.86);
+    }
+
+    .version-item {
+      cursor: pointer;
+    }
+
+    .version-item.active {
+      border-color: rgba(20, 83, 45, 0.35);
+      background: rgba(20, 83, 45, 0.08);
+    }
+
+    .rendered-content {
+      display: grid;
+      gap: 14px;
+    }
+
+    .markdown-view h1,
+    .markdown-view h2,
+    .markdown-view h3 {
+      margin-bottom: 8px;
+    }
+
+    .markdown-view p,
+    .markdown-view li,
+    .markdown-view blockquote {
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    .markdown-view blockquote {
+      border-left: 3px solid rgba(180, 83, 9, 0.4);
+      padding-left: 12px;
+      margin: 0;
+      color: #6b4e2e;
+    }
+
+    .markdown-view code,
+    .inline-code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      background: rgba(31, 41, 51, 0.06);
+      border-radius: 6px;
+      padding: 1px 5px;
+      font-size: 0.92em;
+    }
+
+    .markdown-view table,
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .markdown-view th,
+    .markdown-view td,
+    .data-table th,
+    .data-table td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .code-view {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fbfaf7;
+    }
+
+    .code-toolbar {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .code-lines {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.87rem;
+    }
+
+    .code-line {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 10px;
+      padding: 0 12px;
+    }
+
+    .line-no {
+      color: rgba(82, 96, 109, 0.8);
+      text-align: right;
+      user-select: none;
+      padding: 4px 0;
+    }
+
+    .line-code {
+      white-space: pre-wrap;
+      word-break: break-word;
+      padding: 4px 0;
+    }
+
+    .token-keyword {
+      color: #8b1e3f;
+      font-weight: 600;
+    }
+
+    .token-string {
+      color: #047857;
+    }
+
+    .token-number {
+      color: #b45309;
+    }
+
+    .token-comment {
+      color: #64748b;
+      font-style: italic;
+    }
+
+    .diff-grid,
+    .editor-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .diff-pane,
+    .editor-pane,
+    .preview-pane {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.78);
+      overflow: hidden;
+    }
+
+    .pane-label {
+      border-bottom: 1px solid var(--line);
+      padding: 9px 12px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .editor-pane textarea {
+      min-height: 340px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      line-height: 1.5;
+      padding: 14px;
+    }
+
+    .preview-pane .rendered-content,
+    .diff-pane .rendered-content {
+      padding: 14px;
+    }
+
+    .inspector-card strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .kv-list {
+      display: grid;
+      gap: 6px;
+      font-size: 0.84rem;
+    }
+
+    .kv-list div {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .kv-list span:first-child {
+      color: var(--muted);
+    }
+
+    .callout {
+      border-radius: 14px;
+      border: 1px solid rgba(180, 35, 24, 0.18);
+      background: rgba(180, 35, 24, 0.06);
+      padding: 12px 14px;
+      color: var(--danger);
+    }
+
+    .validation {
+      padding: 12px 14px;
+      border-top: 1px solid var(--line);
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    .split-note {
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(20, 83, 45, 0.06);
+      border: 1px solid rgba(20, 83, 45, 0.12);
+      color: var(--accent);
+      font-size: 0.84rem;
+    }
+
+    .log-shell {
+      display: grid;
+      gap: 16px;
+    }
+
+    .log-toolbar {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .log-controls {
+      display: grid;
+      gap: 12px;
+    }
+
+    .log-viewbar,
+    .log-filterbar,
+    .log-togglebar,
+    .log-summary-strip,
+    .log-badges,
+    .log-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .log-viewbar button.active,
+    .log-filterbar button.active,
+    .log-togglebar button.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .log-search-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 220px;
+      gap: 12px;
+    }
+
+    .log-stream {
+      border: 1px solid rgba(217, 201, 173, 0.9);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.72);
+      min-height: 260px;
+      max-height: 420px;
+      overflow: auto;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .log-empty {
+      min-height: 200px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--muted);
+      padding: 20px;
+    }
+
+    .log-entry {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.86);
+      padding: 12px 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .log-entry.warning {
+      border-color: rgba(181, 71, 8, 0.28);
+      background: rgba(181, 71, 8, 0.06);
+    }
+
+    .log-entry.error {
+      border-color: rgba(180, 35, 24, 0.28);
+      background: rgba(180, 35, 24, 0.06);
+    }
+
+    .log-entry-head {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .log-title {
+      font-weight: 600;
+    }
+
+    .log-message {
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.5;
+    }
+
+    .log-meta {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .log-details {
+      border-top: 1px solid rgba(217, 201, 173, 0.9);
+      padding-top: 8px;
+    }
+
+    .log-details summary {
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .log-details pre {
+      margin: 8px 0 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(31, 41, 51, 0.06);
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .workspace-admin-grid {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr) 340px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .workspace-form textarea {
+      min-height: 72px;
+    }
+
+    .workspace-list,
+    .rule-list,
+    .run-list {
+      display: grid;
+      gap: 10px;
+      max-height: 360px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .workspace-item,
+    .rule-item,
+    .run-item {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.82);
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .workspace-item.active,
+    .run-item.active {
+      border-color: rgba(20, 83, 45, 0.35);
+      box-shadow: 0 12px 24px rgba(20, 83, 45, 0.1);
+    }
+
+    .workspace-field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .boundary-shell {
+      display: grid;
+      gap: 14px;
+    }
+
+    .boundary-card {
+      border: 1px solid rgba(29, 78, 216, 0.18);
+      background: rgba(29, 78, 216, 0.05);
+      border-radius: 16px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .workspace-status-line {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    @keyframes rise {
+      from {
+        transform: translateY(8px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0%, 80%, 100% {
+        opacity: 0.25;
+        transform: translateY(0);
+      }
+      40% {
+        opacity: 1;
+        transform: translateY(-1px);
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .layout,
+      .workspace-admin-grid,
+      .workspace,
+      .log-search-row,
+      .diff-grid,
+      .editor-shell {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <h1>NAVI Live Runtime</h1>
+      <p>Chat-scoped streaming over the runtime event log, with a conversation rail and a first-class artifact library and workspace shell.</p>
+      <div class="pillbar">
+        <div class="pill" id="session-pill">Chat: not connected</div>
+        <div class="pill" id="run-pill">Run: idle</div>
+        <div class="pill" id="queue-pill">Queue: 0 pending</div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="panel stack">
+        <h2>Connect</h2>
+        <label>
+          Chat ID
+          <input id="session-id" placeholder="Create or paste a chat id">
+        </label>
+        <div class="row">
+          <button class="primary" id="create-session">Create Chat</button>
+          <button class="secondary" id="connect-session">Connect</button>
+        </div>
+        <div class="row">
+          <button class="secondary" id="refresh-presence">Refresh Presence</button>
+          <button class="warn" id="cancel-run">Cancel Run</button>
+          <button class="secondary" id="resume-run">Resume Run</button>
+        </div>
+        <div class="status" id="connect-status"></div>
+        <div class="tiny">The page talks directly to <code>/ws/live</code>, rehydrates local artifact state after refresh, and keeps chat context visible while you switch artifacts.</div>
+      </aside>
+
+      <section class="panel stack">
+        <h2>Conversation</h2>
+        <div class="thinking" id="thinking-indicator" aria-live="polite">
+          <div class="thinking-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <span>NAVI is thinking...</span>
+        </div>
+        <div class="chat" id="chat-log"></div>
+        <label>
+          Message
+          <textarea id="message-input" placeholder="Send a message into the durable inbox"></textarea>
+        </label>
+        <button class="primary" id="send-message">Send Message</button>
+      </section>
+
+      <aside class="panel stack" id="artifact-navigator">
+        <div class="row space-between">
+          <h2>Artifact Library</h2>
+          <button class="secondary tiny" id="refresh-artifacts">Refresh</button>
+        </div>
+        <div class="library-toolbar" id="artifact-views">
+          <button class="secondary tiny active" data-view="recent">Recent</button>
+          <button class="secondary tiny" data-view="current_conversation">Current Conversation</button>
+          <button class="secondary tiny" data-view="current_project">Current Project</button>
+          <button class="secondary tiny" data-view="current_workspace">Current Workspace</button>
+          <button class="secondary tiny" data-view="drafts">Drafts / In Progress</button>
+          <button class="secondary tiny" data-view="failed">Failed / Recovery</button>
+          <button class="secondary tiny" data-view="shared_exported">Shared / Exported</button>
+          <button class="secondary tiny" data-view="archived">Archived</button>
+        </div>
+        <div class="tiny" id="artifact-context-copy">Recent artifacts across the owner workspace.</div>
+        <div class="artifact-list" id="artifact-list">
+          <div class="meta" style="text-align: center; padding: 20px;">No artifacts found.</div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel stack log-shell" id="logs-shell">
+      <div class="log-toolbar">
+        <div class="stack" style="gap: 6px;">
+          <h2>Logs</h2>
+          <div class="meta">Readable operator timeline for the active chat, plus structured runtime errors and a 24-hour system summary.</div>
+        </div>
+        <div class="log-summary-strip" id="log-summary-strip">
+          <div class="badge" id="log-stream-badge">Stream: operator</div>
+          <div class="badge" id="log-entry-count">0 entries</div>
+          <div class="badge" id="log-session-scope">Scope: current chat</div>
+        </div>
+      </div>
+      <div class="log-controls">
+        <div class="log-viewbar" id="log-view-controls">
+          <button class="secondary tiny active" data-log-view="live">Live</button>
+          <button class="secondary tiny" data-log-view="errors">Errors</button>
+          <button class="secondary tiny" data-log-view="summary">Summary</button>
+        </div>
+        <div class="log-filterbar" id="log-severity-filters">
+          <button class="secondary tiny active" data-log-severity="all">All Severities</button>
+          <button class="secondary tiny" data-log-severity="info">Info</button>
+          <button class="secondary tiny" data-log-severity="warning">Warning</button>
+          <button class="secondary tiny" data-log-severity="error">Error</button>
+        </div>
+        <div class="log-filterbar" id="log-category-filters">
+          <button class="secondary tiny active" data-log-category="all">All Categories</button>
+          <button class="secondary tiny" data-log-category="runtime">Runtime</button>
+          <button class="secondary tiny" data-log-category="tool">Tool</button>
+          <button class="secondary tiny" data-log-category="governance">Governance</button>
+          <button class="secondary tiny" data-log-category="artifact">Artifact</button>
+          <button class="secondary tiny" data-log-category="error">Error</button>
+          <button class="secondary tiny" data-log-category="message">Message</button>
+        </div>
+        <div class="log-search-row">
+          <label>
+            Search
+            <input id="log-search" placeholder="Search event type, tool, message, or payload">
+          </label>
+          <label>
+            Run ID
+            <input id="log-run-filter" placeholder="Filter by run id">
+          </label>
+        </div>
+        <div class="log-togglebar">
+          <button class="secondary tiny" id="log-pause">Pause</button>
+          <button class="secondary tiny" id="log-clear">Clear</button>
+          <button class="secondary tiny active" id="log-autoscroll">Auto-Scroll</button>
+          <button class="secondary tiny" id="refresh-errors">Refresh Diagnostics</button>
+        </div>
+      </div>
+      <div class="log-stream" id="log-stream">
+        <div class="log-empty">Connect to a chat to inspect live operator events and structured error diagnostics.</div>
+      </div>
+    </section>
+
+    <section class="panel workspace-shell" id="artifact-workspace-shell">
+      <div class="workspace-header">
+        <div class="stack" style="gap: 8px;">
+          <div>
+            <h2 id="artifact-title">Artifact Workspace</h2>
+            <div class="meta" id="artifact-subtitle">Select an artifact from the library to inspect content, diff, version history, and local drafts.</div>
+          </div>
+          <div class="badgebar">
+            <div class="status-badge ok" id="save-state-badge">Saved</div>
+            <div class="status-badge info" id="sync-state-badge">Sync: local</div>
+            <div class="status-badge" id="artifact-mode-badge">Mode: read</div>
+          </div>
+        </div>
+        <div class="stack" style="justify-items: end;">
+          <div class="modebar" id="artifact-modes">
+            <button class="secondary tiny active" data-mode="read">Read</button>
+            <button class="secondary tiny" data-mode="edit">Edit</button>
+            <button class="secondary tiny" data-mode="diff">Diff</button>
+            <button class="secondary tiny" data-mode="history">History</button>
+            <button class="secondary tiny" data-mode="inspector">Inspector</button>
+          </div>
+          <div class="actionbar">
+            <button class="primary tiny" id="save-artifact">Save</button>
+            <button class="secondary tiny" id="export-artifact">Export</button>
+            <button class="secondary tiny" id="print-artifact">Print</button>
+            <button class="secondary tiny" id="discard-draft">Discard Draft</button>
+          </div>
+        </div>
+      </div>
+      <div class="workspace">
+        <div class="workspace-main" id="artifact-canvas">
+          <div class="workspace-empty">Artifact content will appear here.</div>
+        </div>
+        <aside class="workspace-side" id="artifact-side">
+          <div class="workspace-empty">Version history and inspector details will appear here.</div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="panel stack" id="workspace-control-shell">
+      <div class="row space-between">
+        <div>
+          <h2>Workspace Control</h2>
+          <div class="meta">Mode settings, workspace CRUD, whitelist rules, project binding, and boundary-crossing responses.</div>
+        </div>
+        <div class="row">
+          <div class="status-badge info" id="workspace-mode-badge">Mode: hybrid</div>
+          <div class="status-badge ok" id="active-workspace-badge">Active: none</div>
+          <button class="secondary tiny" id="refresh-workspaces">Refresh</button>
+        </div>
+      </div>
+      <div class="workspace-admin-grid">
+        <aside class="stack">
+          <section class="panel stack">
+            <h3>Settings</h3>
+            <div class="library-toolbar" id="workspace-mode-controls">
+              <button class="secondary tiny active" data-workspace-mode="hybrid">Hybrid</button>
+              <button class="secondary tiny" data-workspace-mode="scoped">Scoped</button>
+              <button class="secondary tiny" data-workspace-mode="global">Global</button>
+            </div>
+            <div class="tiny">Operating mode is system-level configuration. Active workspace stays separate.</div>
+          </section>
+          <section class="panel stack">
+            <div class="row space-between">
+              <h3>Workspaces</h3>
+              <button class="secondary tiny" id="new-workspace">New</button>
+            </div>
+            <div class="workspace-list" id="workspace-list">
+              <div class="meta">No workspaces yet.</div>
+            </div>
+          </section>
+        </aside>
+
+        <section class="panel stack workspace-form">
+          <div class="row space-between">
+            <h3 id="workspace-form-title">Workspace Editor</h3>
+            <button class="secondary tiny" id="set-active-workspace">Set Active</button>
+          </div>
+          <div class="workspace-field-grid">
+            <label>
+              Name
+              <input id="workspace-name" placeholder="Project Alpha">
+            </label>
+            <label>
+              Kind
+              <input id="workspace-kind" placeholder="project">
+            </label>
+          </div>
+          <label>
+            Description
+            <input id="workspace-description" placeholder="Workspace for the primary project">
+          </label>
+          <div class="workspace-field-grid">
+            <label>
+              Related Project
+              <input id="workspace-project-id" placeholder="proj-alpha">
+            </label>
+            <label>
+              Boundary Policy
+              <input id="workspace-boundary-policy" placeholder="prompt">
+            </label>
+          </div>
+          <div class="workspace-field-grid">
+            <label>
+              Status
+              <input id="workspace-status" placeholder="active">
+            </label>
+            <label>
+              Tags
+              <input id="workspace-tags" placeholder="product, alpha">
+            </label>
+          </div>
+          <label>
+            Notes
+            <textarea id="workspace-notes" placeholder="Operator notes and binding context"></textarea>
+          </label>
+          <label>
+            Local Roots
+            <textarea id="workspace-local-roots" placeholder="/workspace/alpha"></textarea>
+          </label>
+          <label>
+            Repo Roots
+            <textarea id="workspace-repo-roots" placeholder="/repos/alpha"></textarea>
+          </label>
+          <label>
+            Protected Paths
+            <textarea id="workspace-protected-paths" placeholder="/workspace/alpha/secrets"></textarea>
+          </label>
+          <label>
+            Allowed Actions
+            <input id="workspace-allowed-actions" placeholder="read, write, create, modify">
+          </label>
+          <label>
+            Audit Enabled
+            <input id="workspace-audit-enabled" placeholder="true">
+          </label>
+          <div class="row">
+            <button class="primary" id="save-workspace">Save Workspace</button>
+            <button class="secondary" id="bind-workspace-project">Bind Project</button>
+            <button class="warn" id="archive-workspace">Archive</button>
+          </div>
+          <div class="status" id="workspace-status-message"></div>
+          <section class="stack">
+            <div class="row space-between">
+              <h3>Whitelist Rules</h3>
+              <button class="secondary tiny" id="refresh-rules">Refresh</button>
+            </div>
+            <div class="rule-list" id="workspace-rules">
+              <div class="meta">Select a workspace to inspect rules.</div>
+            </div>
+          </section>
+        </section>
+
+        <aside class="stack boundary-shell">
+          <section class="panel stack">
+            <h3>Boundary Prompt</h3>
+            <div class="boundary-card">
+              <div class="tiny">Use this console to respond to a boundary crossing with the four V1 outcomes. Recent boundary-related runs can prefill it.</div>
+              <label>
+                Action
+                <input id="boundary-action" placeholder="write">
+              </label>
+              <label>
+                Target Path
+                <input id="boundary-target-path" placeholder="/outside/report.md">
+              </label>
+              <label>
+                Rule Scope
+                <input id="boundary-rule-scope" placeholder="/outside">
+              </label>
+              <label>
+                Action Types
+                <input id="boundary-action-types" placeholder="read, write">
+              </label>
+              <label>
+                Switch Workspace
+                <input id="boundary-switch-workspace" placeholder="workspace id for switch">
+              </label>
+              <div class="row">
+                <button class="warn" id="boundary-deny">Deny</button>
+                <button class="secondary" id="boundary-allow-once">Allow Once</button>
+                <button class="secondary" id="boundary-always-allow">Always Allow</button>
+                <button class="primary" id="boundary-switch">Switch Workspace</button>
+              </div>
+              <div class="status" id="boundary-status"></div>
+            </div>
+          </section>
+          <section class="panel stack">
+            <div class="row space-between">
+              <h3>Recent Boundary Runs</h3>
+              <button class="secondary tiny" id="refresh-boundary-runs">Refresh</button>
+            </div>
+            <div class="run-list" id="boundary-run-list">
+              <div class="meta">No boundary-crossing runs loaded yet.</div>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEYS = {
+      chatID: "navi.live.chat_id",
+      workspace: "navi.live.artifact_workspace"
+    };
+
+    const LOG_LIMIT = 1000;
+
+    const state = {
+      chatID: "",
+      ws: null,
+      afterSeq: 0,
+      pendingAssistant: null,
+      thinking: false,
+      reqID: 0,
+      artifactView: "recent",
+      artifactMode: "read",
+      selectedArtifactID: "",
+      selectedVersionID: "",
+      artifacts: [],
+      artifactDetail: null,
+      artifactContent: null,
+      artifactDiff: null,
+      artifactDrafts: {},
+      artifactHeadContents: {},
+      artifactSaveState: "clean",
+      artifactConflict: null,
+      currentWorkspaceID: "",
+      currentProjectID: "",
+      workspaceMode: "hybrid",
+      activeWorkspaceID: "",
+      workspaces: [],
+      selectedWorkspaceID: "",
+      selectedWorkspace: null,
+      workspaceRules: [],
+      boundaryRuns: [],
+      selectedBoundaryRunID: "",
+      logView: "live",
+      logSeverity: "all",
+      logCategory: "all",
+      logSearch: "",
+      logRunID: "",
+      logPaused: false,
+      logAutoScroll: true,
+      liveLogs: [],
+      errorLogs: [],
+      errorSummary: [],
+      errorSummaryWindow: "24h"
+    };
+
+    const els = {
+      chatID: document.getElementById("session-id"),
+      createSession: document.getElementById("create-session"),
+      connectSession: document.getElementById("connect-session"),
+      refreshPresence: document.getElementById("refresh-presence"),
+      cancelRun: document.getElementById("cancel-run"),
+      resumeRun: document.getElementById("resume-run"),
+      sendMessage: document.getElementById("send-message"),
+      messageInput: document.getElementById("message-input"),
+      connectStatus: document.getElementById("connect-status"),
+      thinkingIndicator: document.getElementById("thinking-indicator"),
+      chatLog: document.getElementById("chat-log"),
+      sessionPill: document.getElementById("session-pill"),
+      runPill: document.getElementById("run-pill"),
+      queuePill: document.getElementById("queue-pill"),
+      logsShell: document.getElementById("logs-shell"),
+      logSummaryStrip: document.getElementById("log-summary-strip"),
+      logStreamBadge: document.getElementById("log-stream-badge"),
+      logEntryCount: document.getElementById("log-entry-count"),
+      logSessionScope: document.getElementById("log-session-scope"),
+      logViewControls: document.getElementById("log-view-controls"),
+      logSeverityFilters: document.getElementById("log-severity-filters"),
+      logCategoryFilters: document.getElementById("log-category-filters"),
+      logSearch: document.getElementById("log-search"),
+      logRunFilter: document.getElementById("log-run-filter"),
+      logPause: document.getElementById("log-pause"),
+      logClear: document.getElementById("log-clear"),
+      logAutoscroll: document.getElementById("log-autoscroll"),
+      refreshErrors: document.getElementById("refresh-errors"),
+      logStream: document.getElementById("log-stream"),
+      artifactViews: document.getElementById("artifact-views"),
+      artifactList: document.getElementById("artifact-list"),
+      artifactContextCopy: document.getElementById("artifact-context-copy"),
+      refreshArtifacts: document.getElementById("refresh-artifacts"),
+      artifactTitle: document.getElementById("artifact-title"),
+      artifactSubtitle: document.getElementById("artifact-subtitle"),
+      artifactCanvas: document.getElementById("artifact-canvas"),
+      artifactSide: document.getElementById("artifact-side"),
+      artifactModes: document.getElementById("artifact-modes"),
+      saveStateBadge: document.getElementById("save-state-badge"),
+      syncStateBadge: document.getElementById("sync-state-badge"),
+      artifactModeBadge: document.getElementById("artifact-mode-badge"),
+      saveArtifact: document.getElementById("save-artifact"),
+      exportArtifact: document.getElementById("export-artifact"),
+      printArtifact: document.getElementById("print-artifact"),
+      discardDraft: document.getElementById("discard-draft"),
+      workspaceModeBadge: document.getElementById("workspace-mode-badge"),
+      activeWorkspaceBadge: document.getElementById("active-workspace-badge"),
+      refreshWorkspaces: document.getElementById("refresh-workspaces"),
+      workspaceModeControls: document.getElementById("workspace-mode-controls"),
+      newWorkspace: document.getElementById("new-workspace"),
+      workspaceList: document.getElementById("workspace-list"),
+      workspaceFormTitle: document.getElementById("workspace-form-title"),
+      workspaceName: document.getElementById("workspace-name"),
+      workspaceKind: document.getElementById("workspace-kind"),
+      workspaceDescription: document.getElementById("workspace-description"),
+      workspaceProjectID: document.getElementById("workspace-project-id"),
+      workspaceBoundaryPolicy: document.getElementById("workspace-boundary-policy"),
+      workspaceStatusInput: document.getElementById("workspace-status"),
+      workspaceTags: document.getElementById("workspace-tags"),
+      workspaceNotes: document.getElementById("workspace-notes"),
+      workspaceLocalRoots: document.getElementById("workspace-local-roots"),
+      workspaceRepoRoots: document.getElementById("workspace-repo-roots"),
+      workspaceProtectedPaths: document.getElementById("workspace-protected-paths"),
+      workspaceAllowedActions: document.getElementById("workspace-allowed-actions"),
+      workspaceAuditEnabled: document.getElementById("workspace-audit-enabled"),
+      saveWorkspace: document.getElementById("save-workspace"),
+      bindWorkspaceProject: document.getElementById("bind-workspace-project"),
+      archiveWorkspace: document.getElementById("archive-workspace"),
+      setActiveWorkspace: document.getElementById("set-active-workspace"),
+      workspaceStatusMessage: document.getElementById("workspace-status-message"),
+      workspaceRules: document.getElementById("workspace-rules"),
+      refreshRules: document.getElementById("refresh-rules"),
+      boundaryAction: document.getElementById("boundary-action"),
+      boundaryTargetPath: document.getElementById("boundary-target-path"),
+      boundaryRuleScope: document.getElementById("boundary-rule-scope"),
+      boundaryActionTypes: document.getElementById("boundary-action-types"),
+      boundarySwitchWorkspace: document.getElementById("boundary-switch-workspace"),
+      boundaryDeny: document.getElementById("boundary-deny"),
+      boundaryAllowOnce: document.getElementById("boundary-allow-once"),
+      boundaryAlwaysAllow: document.getElementById("boundary-always-allow"),
+      boundarySwitch: document.getElementById("boundary-switch"),
+      boundaryStatus: document.getElementById("boundary-status"),
+      refreshBoundaryRuns: document.getElementById("refresh-boundary-runs"),
+      boundaryRunList: document.getElementById("boundary-run-list")
+    };
+
+    function nextID(prefix) {
+      state.reqID += 1;
+      return `${prefix}-${state.reqID}`;
+    }
+
+    function setStatus(text, isError = false) {
+      els.connectStatus.textContent = text;
+      els.connectStatus.style.color = isError ? "var(--danger)" : "var(--muted)";
+    }
+
+    function appendMessage(kind, title, content, extraClass = "") {
+      const node = document.createElement("article");
+      node.className = `message ${kind} ${extraClass}`.trim();
+      node.innerHTML = `<div class="meta">${escapeHTML(title)}</div><div>${escapeHTML(content)}</div>`;
+      els.chatLog.appendChild(node);
+      els.chatLog.scrollTop = els.chatLog.scrollHeight;
+      return node;
+    }
+
+    function setThinking(active) {
+      state.thinking = active;
+      els.thinkingIndicator.classList.toggle("active", active);
+    }
+
+    function escapeHTML(text) {
+      return String(text || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll("\"", "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function truncateText(text, max = 180) {
+      const value = String(text || "").replace(/\s+/g, " ").trim();
+      if (value.length <= max) {
+        return value;
+      }
+      return `${value.slice(0, Math.max(0, max - 1)).trimEnd()}…`;
+    }
+
+    function tryParseJSON(raw) {
+      if (typeof raw !== "string" || !raw.trim()) {
+        return null;
+      }
+      try {
+        return JSON.parse(raw);
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function safeJSONStringify(value) {
+      try {
+        return JSON.stringify(value, null, 2);
+      } catch (err) {
+        return JSON.stringify({ error: err.message });
+      }
+    }
+
+    function logSeverityForEventType(type) {
+      const normalized = String(type || "").toLowerCase();
+      if (normalized.includes("failed") || normalized.includes("error")) {
+        return "error";
+      }
+      if (normalized.includes("blocked") || normalized.includes("cancelled") || normalized.includes("paused") || normalized.includes("degradation")) {
+        return "warning";
+      }
+      return "info";
+    }
+
+    function logCategoryForEventType(type) {
+      const normalized = String(type || "").toLowerCase();
+      if (normalized.startsWith("tool.")) {
+        return "tool";
+      }
+      if (normalized.startsWith("artifact.")) {
+        return "artifact";
+      }
+      if (normalized.startsWith("message.") || normalized.startsWith("assistant.")) {
+        return "message";
+      }
+      if (normalized.startsWith("governance.") || normalized.startsWith("proposal.") || normalized.startsWith("inference.") || normalized.startsWith("interrupt.") || normalized.startsWith("degradation.") || normalized.startsWith("recovery.")) {
+        return "governance";
+      }
+      return "runtime";
+    }
+
+    function payloadSummary(payload) {
+      if (!payload || typeof payload !== "object") {
+        return "";
+      }
+      const orderedKeys = [
+        "message",
+        "reason",
+        "error",
+        "phase",
+        "status",
+        "tool_name",
+        "queue_action",
+        "degradation_type",
+        "proposal_id",
+        "content"
+      ];
+      const parts = [];
+      orderedKeys.forEach((key) => {
+        const value = payload[key];
+        if (value === undefined || value === null || value === "") {
+          return;
+        }
+        parts.push(`${key}: ${truncateText(Array.isArray(value) ? value.join(", ") : value, 90)}`);
+      });
+      if (parts.length > 0) {
+        return parts.join(" · ");
+      }
+      return truncateText(safeJSONStringify(payload), 180);
+    }
+
+    function liveEventMessage(event) {
+      const payload = event.payload || {};
+      switch (event.type) {
+        case "run.started":
+          return `Run ${payload.run_id || event.run_id || "unknown"} started in ${payload.phase || "unknown"} mode.`;
+        case "run.phase.changed":
+          return `Phase ${payload.previous || "unknown"} -> ${payload.phase || "unknown"}`;
+        case "run.completed":
+          return `Run completed in ${payload.duration_ms || 0} ms${payload.final_message_id ? ` · final message ${payload.final_message_id}` : ""}`;
+        case "run.failed":
+          return payload.error || "Run failed.";
+        case "run.cancelled":
+          return payload.reason || "Run cancelled.";
+        case "tool.call.started":
+          return `${payload.tool_name || "tool"} started`;
+        case "tool.call.progress":
+          return `${payload.tool_name || "tool"} · ${payload.stage || "progress"}${payload.message ? ` · ${payload.message}` : ""}`;
+        case "tool.call.completed":
+          return `${payload.tool_name || "tool"} completed in ${payload.duration_ms || 0} ms`;
+        case "tool.call.failed":
+          return `${payload.tool_name || "tool"} failed${payload.error ? ` · ${payload.error}` : ""}`;
+        case "governance.blocked":
+          return `${payload.tool_name || "action"} blocked · ${payload.reason || payload.outcome || "governance intervention"}`;
+        case "proposal.waiting":
+          return `Proposal ${payload.proposal_id || "unknown"} waiting${payload.tool_name ? ` · ${payload.tool_name}` : ""}`;
+        case "proposal.resolved":
+          return `Proposal ${payload.proposal_id || "unknown"} resolved${payload.status ? ` · ${payload.status}` : ""}`;
+        case "degradation.noted":
+          return payload.message || `Degradation noted${payload.tool_name ? ` for ${payload.tool_name}` : ""}`;
+        case "recovery.required":
+          return payload.failure_reason || "Recovery required.";
+        case "inference.decision.trace":
+          return [
+            payload.dominant_mode ? `mode ${payload.dominant_mode}` : "",
+            payload.execution_action_type ? `action ${payload.execution_action_type}` : "",
+            payload.governance_outcome ? `governance ${payload.governance_outcome}` : "",
+            payload.target_capability ? `target ${payload.target_capability}` : ""
+          ].filter(Boolean).join(" · ") || "Inference decision committed.";
+        case "artifact.workspace.loaded":
+          return `Artifact workspace loaded${payload.artifact_id ? ` · ${payload.artifact_id}` : ""}`;
+        case "artifact.workspace.load_failed":
+          return `Artifact workspace load failed${payload.failure_code ? ` · ${payload.failure_code}` : ""}`;
+        case "artifact.created":
+        case "artifact.updated":
+        case "artifact.materialized":
+          return payload.artifact_id ? `Artifact ${payload.artifact_id}` : payloadSummary(payload);
+        case "message.received":
+          return `Message received${payload.source_channel ? ` from ${payload.source_channel}` : ""}`;
+        case "message.classified":
+        case "message.deferred":
+        case "message.merged":
+        case "message.superseded":
+          return payloadSummary(payload);
+        default:
+          return payloadSummary(payload) || event.type;
+      }
+    }
+
+    function normalizeLiveLog(event) {
+      const payload = event.payload || {};
+      const details = {
+        id: event.id,
+        type: event.type,
+        kind: event.kind,
+        correlation_id: event.correlation_id,
+        run_id: event.run_id,
+        timestamp: event.timestamp,
+        visibility: event.visibility,
+        payload
+      };
+      const summary = liveEventMessage(event);
+      return {
+        key: `live:${event.id || event.seq || Date.now()}`,
+        source: "live",
+        severity: logSeverityForEventType(event.type),
+        category: logCategoryForEventType(event.type),
+        timestamp: event.timestamp || new Date().toISOString(),
+        title: event.type || "event",
+        message: summary,
+        runID: event.run_id || payload.run_id || "",
+        chatID: payload.chat_id || event.correlation_id || "",
+        searchText: [
+          event.type,
+          summary,
+          event.run_id,
+          payload.run_id,
+          payload.chat_id,
+          payload.tool_name,
+          payload.proposal_id,
+          safeJSONStringify(payload)
+        ].join(" ").toLowerCase(),
+        details
+      };
+    }
+
+    function normalizeErrorLog(item) {
+      const context = tryParseJSON(item.context_json) || item.context_json || null;
+      const details = {
+        id: item.id,
+        severity: item.severity,
+        component: item.component,
+        chat_id: item.chat_id,
+        run_id: item.run_id,
+        error_type: item.error_type,
+        error_message: item.error_message,
+        stack_trace: item.stack_trace,
+        context_json: context,
+        resolved_at: item.resolved_at,
+        resolution: item.resolution
+      };
+      return {
+        key: `error:${item.id || `${item.component}:${item.error_type}:${item.timestamp}`}`,
+        source: "error",
+        severity: item.severity || "error",
+        category: "error",
+        timestamp: item.timestamp || new Date().toISOString(),
+        title: `${item.component || "component"} · ${item.error_type || "error"}`,
+        message: item.error_message || "Structured error recorded.",
+        runID: item.run_id || "",
+        chatID: item.chat_id || "",
+        searchText: [
+          item.component,
+          item.error_type,
+          item.error_message,
+          item.chat_id,
+          item.run_id,
+          item.context_json
+        ].join(" ").toLowerCase(),
+        details
+      };
+    }
+
+    function normalizeErrorSummaryRow(item, window) {
+      const summary = `${item.count || 0} occurrence(s) in ${window}`;
+      return {
+        key: `summary:${item.component}:${item.error_type}`,
+        source: "summary",
+        severity: "info",
+        category: "error",
+        timestamp: "",
+        title: `${item.component || "component"} · ${item.error_type || "error"}`,
+        message: summary,
+        runID: "",
+        chatID: "",
+        searchText: [item.component, item.error_type, summary].join(" ").toLowerCase(),
+        details: { ...item, window }
+      };
+    }
+
+    function currentLogEntries() {
+      if (state.logView === "errors") {
+        return state.errorLogs;
+      }
+      if (state.logView === "summary") {
+        return state.errorSummary;
+      }
+      return state.liveLogs;
+    }
+
+    function filteredLogEntries() {
+      const search = state.logSearch.trim().toLowerCase();
+      const runID = state.logRunID.trim().toLowerCase();
+      return currentLogEntries().filter((entry) => {
+        if (state.logSeverity !== "all" && entry.severity !== state.logSeverity) {
+          return false;
+        }
+        if (state.logCategory !== "all" && entry.category !== state.logCategory) {
+          return false;
+        }
+        if (runID && !String(entry.runID || "").toLowerCase().includes(runID)) {
+          return false;
+        }
+        if (search && !entry.searchText.includes(search)) {
+          return false;
+        }
+        return true;
+      });
+    }
+
+    function renderLogEntry(entry) {
+      const detailText = safeJSONStringify(entry.details);
+      const meta = [
+        entry.timestamp ? new Date(entry.timestamp).toLocaleString() : "summary row",
+        entry.chatID ? `chat ${entry.chatID}` : "",
+        entry.runID ? `run ${entry.runID}` : "",
+        entry.source === "live" ? "operator stream" : entry.source === "error" ? "error log" : "summary"
+      ].filter(Boolean);
+      return `
+        <article class="log-entry ${escapeHTML(entry.severity)}">
+          <div class="log-entry-head">
+            <div class="stack" style="gap: 6px;">
+              <div class="log-title">${escapeHTML(entry.title)}</div>
+              <div class="log-message">${escapeHTML(entry.message)}</div>
+            </div>
+            <div class="log-badges">
+              <span class="badge">${escapeHTML(entry.severity)}</span>
+              <span class="badge">${escapeHTML(entry.category)}</span>
+            </div>
+          </div>
+          <div class="log-meta">${meta.map((part) => `<span>${escapeHTML(part)}</span>`).join("")}</div>
+          <details class="log-details">
+            <summary>View details</summary>
+            <pre>${escapeHTML(detailText)}</pre>
+          </details>
+        </article>
+      `;
+    }
+
+    function updateLogChrome(filteredCount, totalCount) {
+      const label = state.logView === "live"
+        ? "Stream: operator"
+        : state.logView === "errors"
+          ? "Source: /api/errors"
+          : `Source: /api/errors/summary (${state.errorSummaryWindow})`;
+      els.logStreamBadge.textContent = label;
+      els.logSessionScope.textContent = `Scope: ${state.chatID || "no chat"}`;
+      els.logEntryCount.textContent = filteredCount === totalCount
+        ? `${totalCount} entries`
+        : `${filteredCount} of ${totalCount} entries`;
+
+      els.logViewControls.querySelectorAll("[data-log-view]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.logView === state.logView);
+      });
+      els.logSeverityFilters.querySelectorAll("[data-log-severity]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.logSeverity === state.logSeverity);
+      });
+      els.logCategoryFilters.querySelectorAll("[data-log-category]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.logCategory === state.logCategory);
+      });
+      els.logPause.classList.toggle("active", state.logPaused);
+      els.logPause.textContent = state.logPaused ? "Resume Live View" : "Pause";
+      els.logAutoscroll.classList.toggle("active", state.logAutoScroll);
+      els.logAutoscroll.textContent = state.logAutoScroll ? "Auto-Scroll" : "Manual Scroll";
+    }
+
+    function renderLogStream() {
+      const allEntries = currentLogEntries();
+      const entries = filteredLogEntries();
+      updateLogChrome(entries.length, allEntries.length);
+      if (entries.length === 0) {
+        const emptyCopy = state.logView === "live"
+          ? "No live operator events match the current filters."
+          : state.logView === "errors"
+            ? "No structured errors match the current filters."
+            : "No error summary rows match the current filters.";
+        els.logStream.innerHTML = `<div class="log-empty">${escapeHTML(emptyCopy)}</div>`;
+        return;
+      }
+      els.logStream.innerHTML = entries.map((entry) => renderLogEntry(entry)).join("");
+      if (state.logView === "live" && state.logAutoScroll && !state.logPaused) {
+        els.logStream.scrollTop = els.logStream.scrollHeight;
+      }
+    }
+
+    function appendLiveLogEntry(event) {
+      const entry = normalizeLiveLog(event);
+      state.liveLogs.push(entry);
+      if (state.liveLogs.length > LOG_LIMIT) {
+        state.liveLogs = state.liveLogs.slice(-LOG_LIMIT);
+      }
+      if (!state.logPaused || state.logView !== "live") {
+        renderLogStream();
+      } else {
+        updateLogChrome(filteredLogEntries().length, currentLogEntries().length);
+      }
+    }
+
+    async function refreshErrorLogs() {
+      const chatURL = state.chatID
+        ? `/api/errors?chat_id=${encodeURIComponent(state.chatID)}&limit=100`
+        : "";
+      const [chatPayload, connectorPayload] = await Promise.all([
+        chatURL ? fetchJSON(chatURL) : Promise.resolve({ items: [] }),
+        fetchJSON("/api/errors?component=connector&limit=100")
+      ]);
+      const merged = new Map();
+      const items = []
+        .concat(Array.isArray(chatPayload.items) ? chatPayload.items : [])
+        .concat(Array.isArray(connectorPayload.items) ? connectorPayload.items : []);
+      items.forEach((item) => {
+        const normalized = normalizeErrorLog(item);
+        if (!merged.has(normalized.key)) {
+          merged.set(normalized.key, normalized);
+        }
+      });
+      state.errorLogs = Array.from(merged.values()).sort((left, right) => {
+        return new Date(right.timestamp || 0).getTime() - new Date(left.timestamp || 0).getTime();
+      });
+      renderLogStream();
+    }
+
+    async function refreshErrorSummary() {
+      const payload = await fetchJSON(`/api/errors/summary?window=${encodeURIComponent(state.errorSummaryWindow)}`);
+      state.errorSummary = Array.isArray(payload.items)
+        ? payload.items.map((item) => normalizeErrorSummaryRow(item, payload.window || state.errorSummaryWindow))
+        : [];
+      state.errorSummaryWindow = payload.window || state.errorSummaryWindow;
+      renderLogStream();
+    }
+
+    async function refreshDiagnostics() {
+      await Promise.all([refreshErrorLogs(), refreshErrorSummary()]);
+      renderLogStream();
+    }
+
+    function truncateText(text, max = 180) {
+      const value = String(text || "").replace(/\s+/g, " ").trim();
+      if (value.length <= max) {
+        return value;
+      }
+      return `${value.slice(0, Math.max(0, max - 3)).trimEnd()}...`;
+    }
+
+    function payloadSummary(payload) {
+      if (!payload || typeof payload !== "object") {
+        return "";
+      }
+      const orderedKeys = [
+        "message",
+        "reason",
+        "error",
+        "phase",
+        "status",
+        "tool_name",
+        "queue_action",
+        "degradation_type",
+        "proposal_id",
+        "content"
+      ];
+      const parts = [];
+      orderedKeys.forEach((key) => {
+        const value = payload[key];
+        if (value === undefined || value === null || value === "") {
+          return;
+        }
+        parts.push(`${key}: ${truncateText(Array.isArray(value) ? value.join(", ") : value, 90)}`);
+      });
+      if (parts.length > 0) {
+        return parts.join(" | ");
+      }
+      return truncateText(safeJSONStringify(payload), 180);
+    }
+
+    function liveEventMessage(event) {
+      const payload = event.payload || {};
+      switch (event.type) {
+        case "run.started":
+          return `Run ${payload.run_id || event.run_id || "unknown"} started in ${payload.phase || "unknown"} mode.`;
+        case "run.phase.changed":
+          return `Phase ${payload.previous || "unknown"} -> ${payload.phase || "unknown"}`;
+        case "run.completed":
+          return `Run completed in ${payload.duration_ms || 0} ms${payload.final_message_id ? ` | final message ${payload.final_message_id}` : ""}`;
+        case "run.failed":
+          return payload.error || "Run failed.";
+        case "run.cancelled":
+          return payload.reason || "Run cancelled.";
+        case "tool.call.started":
+          return `${payload.tool_name || "tool"} started`;
+        case "tool.call.progress":
+          return `${payload.tool_name || "tool"} | ${payload.stage || "progress"}${payload.message ? ` | ${payload.message}` : ""}`;
+        case "tool.call.completed":
+          return `${payload.tool_name || "tool"} completed in ${payload.duration_ms || 0} ms`;
+        case "tool.call.failed":
+          return `${payload.tool_name || "tool"} failed${payload.error ? ` | ${payload.error}` : ""}`;
+        case "governance.blocked":
+          return `${payload.tool_name || "action"} blocked | ${payload.reason || payload.outcome || "governance intervention"}`;
+        case "proposal.waiting":
+          return `Proposal ${payload.proposal_id || "unknown"} waiting${payload.tool_name ? ` | ${payload.tool_name}` : ""}`;
+        case "proposal.resolved":
+          return `Proposal ${payload.proposal_id || "unknown"} resolved${payload.status ? ` | ${payload.status}` : ""}`;
+        case "degradation.noted":
+          return payload.message || `Degradation noted${payload.tool_name ? ` for ${payload.tool_name}` : ""}`;
+        case "recovery.required":
+          return payload.failure_reason || "Recovery required.";
+        case "inference.decision.trace":
+          return [
+            payload.dominant_mode ? `mode ${payload.dominant_mode}` : "",
+            payload.execution_action_type ? `action ${payload.execution_action_type}` : "",
+            payload.governance_outcome ? `governance ${payload.governance_outcome}` : "",
+            payload.target_capability ? `target ${payload.target_capability}` : ""
+          ].filter(Boolean).join(" | ") || "Inference decision committed.";
+        case "artifact.workspace.loaded":
+          return `Artifact workspace loaded${payload.artifact_id ? ` | ${payload.artifact_id}` : ""}`;
+        case "artifact.workspace.load_failed":
+          return `Artifact workspace load failed${payload.failure_code ? ` | ${payload.failure_code}` : ""}`;
+        case "artifact.created":
+        case "artifact.updated":
+        case "artifact.materialized":
+          return payload.artifact_id ? `Artifact ${payload.artifact_id}` : payloadSummary(payload);
+        case "message.received":
+          return `Message received${payload.source_channel ? ` from ${payload.source_channel}` : ""}`;
+        case "message.classified":
+        case "message.deferred":
+        case "message.merged":
+        case "message.superseded":
+          return payloadSummary(payload);
+        default:
+          return payloadSummary(payload) || event.type;
+      }
+    }
+
+    function normalizeErrorLog(item) {
+      const context = tryParseJSON(item.context_json) || item.context_json || null;
+      const details = {
+        id: item.id,
+        severity: item.severity,
+        component: item.component,
+        chat_id: item.chat_id,
+        run_id: item.run_id,
+        error_type: item.error_type,
+        error_message: item.error_message,
+        stack_trace: item.stack_trace,
+        context_json: context,
+        resolved_at: item.resolved_at,
+        resolution: item.resolution
+      };
+      return {
+        key: `error:${item.id || `${item.component}:${item.error_type}:${item.timestamp}`}`,
+        source: "error",
+        severity: item.severity || "error",
+        category: "error",
+        timestamp: item.timestamp || new Date().toISOString(),
+        title: `${item.component || "component"} | ${item.error_type || "error"}`,
+        message: item.error_message || "Structured error recorded.",
+        runID: item.run_id || "",
+        chatID: item.chat_id || "",
+        searchText: [
+          item.component,
+          item.error_type,
+          item.error_message,
+          item.chat_id,
+          item.run_id,
+          item.context_json
+        ].join(" ").toLowerCase(),
+        details
+      };
+    }
+
+    function normalizeErrorSummaryRow(item, window) {
+      const summary = `${item.count || 0} occurrence(s) in ${window}`;
+      return {
+        key: `summary:${item.component}:${item.error_type}`,
+        source: "summary",
+        severity: "error",
+        category: "error",
+        timestamp: "",
+        title: `${item.component || "component"} | ${item.error_type || "error"}`,
+        message: summary,
+        runID: "",
+        chatID: "",
+        searchText: [item.component, item.error_type, summary].join(" ").toLowerCase(),
+        details: { ...item, window }
+      };
+    }
+
+    function updateLogChrome(filteredCount, totalCount) {
+      const label = state.logView === "live"
+        ? "Stream: operator"
+        : state.logView === "errors"
+          ? "Source: /api/errors"
+          : `Source: /api/errors/summary (${state.errorSummaryWindow})`;
+      els.logStreamBadge.textContent = label;
+      els.logSessionScope.textContent = state.logView === "errors"
+        ? state.chatID
+          ? `Scope: current chat (${state.chatID}) + connector diagnostics`
+          : "Scope: connector diagnostics"
+        : state.chatID
+          ? `Scope: current chat (${state.chatID})`
+          : "Scope: current chat";
+      els.logEntryCount.textContent = filteredCount === totalCount
+        ? `${totalCount} entries`
+        : `${filteredCount} of ${totalCount} entries`;
+
+      els.logViewControls.querySelectorAll("[data-log-view]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.logView === state.logView);
+      });
+      els.logSeverityFilters.querySelectorAll("[data-log-severity]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.logSeverity === state.logSeverity);
+      });
+      els.logCategoryFilters.querySelectorAll("[data-log-category]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.logCategory === state.logCategory);
+      });
+      els.logPause.classList.toggle("active", state.logPaused);
+      els.logPause.textContent = state.logPaused ? "Resume Live View" : "Pause";
+      els.logAutoscroll.classList.toggle("active", state.logAutoScroll);
+      els.logAutoscroll.textContent = state.logAutoScroll ? "Auto-Scroll" : "Manual Scroll";
+    }
+
+    function updatePresenceView(presence) {
+      if (!presence) {
+        return;
+      }
+      state.chatID = presence.chat_id || state.chatID;
+      if (state.chatID) {
+        els.chatID.value = state.chatID;
+        localStorage.setItem(STORAGE_KEYS.chatID, state.chatID);
+      }
+      els.sessionPill.textContent = `Chat: ${state.chatID || "not connected"}`;
+      const run = presence.run || {};
+      const runText = run.run_id ? `${run.status || "unknown"} · ${run.phase || "unknown"}` : "idle";
+      els.runPill.textContent = `Run: ${runText}`;
+      els.queuePill.textContent = `Queue: ${presence.pending_count || 0} pending / ${presence.deferred_count || 0} deferred`;
+    }
+
+    async function createSession() {
+      const res = await fetch("/api/navi/chats", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({})
+      });
+      if (!res.ok) {
+        throw new Error(`create chat failed: ${res.status}`);
+      }
+      const body = await res.json();
+      state.chatID = body.chat_id || "";
+      els.chatID.value = state.chatID;
+      updatePresenceView({ chat_id: state.chatID, pending_count: 0, deferred_count: 0 });
+      persistWorkspaceState();
+      setStatus("Chat created.");
+    }
+
+    async function fetchJSON(url, options = {}) {
+      const res = await fetch(url, {
+        headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+        ...options
+      });
+      let data = null;
+      try {
+        data = await res.json();
+      } catch (_) {
+      }
+      if (!res.ok) {
+        const message = data?.error?.message || data?.error || `request failed: ${res.status}`;
+        const err = new Error(message);
+        err.status = res.status;
+        err.details = data?.error?.details;
+        throw err;
+      }
+      return data;
+    }
+
+    function wsURL() {
+      const proto = location.protocol === "https:" ? "wss:" : "ws:";
+      return `${proto}//${location.host}/ws/live`;
+    }
+
+    function sendWS(method, params = {}) {
+      if (!state.ws || state.ws.readyState !== WebSocket.OPEN) {
+        throw new Error("live connection is not open");
+      }
+      state.ws.send(JSON.stringify({
+        type: "req",
+        id: nextID(method),
+        method,
+        params
+      }));
+    }
+
+    function connectLive() {
+      const chatID = els.chatID.value.trim();
+      if (!chatID) {
+        setStatus("Enter or create a chat first.", true);
+        return;
+      }
+      const chatChanged = state.chatID && state.chatID !== chatID;
+      state.chatID = chatID;
+      if (chatChanged) {
+        state.afterSeq = 0;
+        state.liveLogs = [];
+        state.errorLogs = [];
+      }
+      localStorage.setItem(STORAGE_KEYS.chatID, state.chatID);
+      if (state.ws) {
+        state.ws.close();
+      }
+      state.pendingAssistant = null;
+      setThinking(false);
+      renderLogStream();
+      state.ws = new WebSocket(wsURL());
+      state.ws.addEventListener("open", () => {
+        state.ws.send(JSON.stringify({
+          type: "req",
+          id: nextID("connect"),
+          method: "connect",
+          params: { chat_id: chatID, after_seq: state.afterSeq, stream: "operator" }
+        }));
+        setStatus("Connected to live runtime.");
+      });
+      state.ws.addEventListener("message", (evt) => {
+        const frame = JSON.parse(evt.data);
+        if (frame.type === "res") {
+          handleResponse(frame);
+          return;
+        }
+        if (frame.type !== "event" || !frame.event) {
+          return;
+        }
+        handleEvent(frame.event);
+      });
+      state.ws.addEventListener("close", () => {
+        setStatus("Disconnected from live runtime.");
+      });
+      state.ws.addEventListener("error", () => {
+        setStatus("WebSocket error.", true);
+      });
+    }
+
+    function handleResponse(frame) {
+      if (!frame.ok) {
+        setStatus(frame.error || "request failed", true);
+        return;
+      }
+      if (frame.result && frame.result.chat_id && !frame.id.startsWith("getArtifact")) {
+        updatePresenceView(frame.result);
+      }
+      if (frame.id && frame.id.startsWith("connect-")) {
+        updatePresenceView(frame.result);
+        requestArtifacts();
+        sendWS("getPresence");
+        requestWorkspaceConsole();
+        refreshDiagnostics().catch((err) => {
+          setStatus(`Diagnostics refresh failed: ${err.message || String(err)}`, true);
+        });
+        if (state.selectedArtifactID) {
+          requestArtifactSelection();
+        }
+        return;
+      }
+      if (Array.isArray(frame.result) && frame.id && frame.id.startsWith("getArtifacts")) {
+        state.artifacts = frame.result;
+        updateArtifactContext(frame.result);
+        updateArtifactLibrary(frame.result);
+        if (state.selectedArtifactID) {
+          const stillPresent = frame.result.some((item) => item.id === state.selectedArtifactID);
+          if (!stillPresent && frame.result[0]?.id) {
+            selectArtifact(frame.result[0].id);
+          } else if (stillPresent && !state.artifactDetail) {
+            requestArtifactSelection();
+          }
+        }
+        persistWorkspaceState();
+        return;
+      }
+      if (frame.result && frame.id && frame.id.startsWith("getArtifact-")) {
+        state.artifactDetail = frame.result;
+        state.currentWorkspaceID = frame.result.workspace_id || state.currentWorkspaceID;
+        state.currentProjectID = frame.result.project_id || state.currentProjectID;
+        if (!state.selectedVersionID) {
+          state.selectedVersionID = frame.result.current_version_id || "";
+        }
+        if (!isDraftDirty(frame.result)) {
+          state.artifactConflict = null;
+          if (state.artifactSaveState === "saving") {
+            state.artifactSaveState = "saved";
+          }
+        }
+        if (frame.result.current_version_id && !state.artifactHeadContents[frame.result.id] && state.selectedVersionID !== frame.result.current_version_id) {
+          sendWS("getArtifactContent", { artifact_id: frame.result.id });
+        }
+        renderArtifactWorkspace();
+        persistWorkspaceState();
+        return;
+      }
+      if (frame.result && frame.id && frame.id.startsWith("getArtifactContent")) {
+        const result = frame.result;
+        if (state.artifactDetail && result.version_id === state.artifactDetail.current_version_id) {
+          state.artifactHeadContents[result.artifact_id] = result.content || "";
+        }
+        const shouldDisplay = !state.selectedVersionID || result.version_id === state.selectedVersionID || (!state.artifactContent && result.artifact_id === state.selectedArtifactID);
+        if (shouldDisplay) {
+          state.artifactContent = result;
+        }
+        renderArtifactWorkspace();
+        persistWorkspaceState();
+        return;
+      }
+      if (frame.result && frame.id && frame.id.startsWith("getArtifactDiff")) {
+        state.artifactDiff = frame.result;
+        renderArtifactWorkspace();
+        persistWorkspaceState();
+        return;
+      }
+    }
+
+    function handleEvent(event) {
+      state.afterSeq = Math.max(state.afterSeq, event.seq || 0);
+      appendLiveLogEntry(event);
+      const payload = event.payload || {};
+      switch (event.type) {
+        case "assistant.message.partial":
+          if (!state.pendingAssistant) {
+            state.pendingAssistant = appendMessage("assistant", "assistant.streaming", payload.content || "", "partial");
+          } else {
+            state.pendingAssistant.querySelector("div:last-child").textContent = payload.content || "";
+          }
+          break;
+        case "assistant.message.completed":
+          setThinking(false);
+          if (payload.message_kind === "proactive") {
+            appendMessage("assistant", "assistant.proactive", payload.content || "", "proactive");
+            break;
+          }
+          if (state.pendingAssistant) {
+            state.pendingAssistant.querySelector(".meta").textContent = "assistant.completed";
+            state.pendingAssistant.classList.remove("partial");
+            state.pendingAssistant.querySelector("div:last-child").textContent = payload.content || "";
+            state.pendingAssistant = null;
+          } else {
+            appendMessage("assistant", "assistant.completed", payload.content || "");
+          }
+          break;
+        case "run.started":
+          setThinking(true);
+          break;
+        case "run.completed":
+          setThinking(false);
+          state.pendingAssistant = null;
+          break;
+        case "proposal.waiting":
+          setThinking(false);
+          appendMessage("system", "proposal.waiting", `Proposal ${payload.proposal_id}\nTool: ${payload.tool_name}\nReason: ${payload.reason}`);
+          break;
+        case "run.failed":
+          setThinking(false);
+          appendMessage("error", "run.failed", payload.error || "Run failed.");
+          state.pendingAssistant = null;
+          break;
+        case "run.cancelled":
+          setThinking(false);
+          appendMessage("system", "run.cancelled", payload.reason || "Run cancelled.");
+          state.pendingAssistant = null;
+          break;
+        case "interrupt.raised":
+        case "interrupt.applied":
+          appendMessage("system", event.type, `${payload.interrupt_class || "interrupt"}: ${payload.reason || ""}`);
+          break;
+        case "artifact.created":
+        case "artifact.updated":
+          requestArtifacts();
+          if (payload.artifact_id && payload.artifact_id === state.selectedArtifactID) {
+            requestArtifactSelection();
+          }
+          break;
+      }
+      try {
+        sendWS("getPresence");
+      } catch (_) {
+      }
+    }
+
+    async function sendMessage() {
+      const content = els.messageInput.value.trim();
+      if (!content) {
+        return;
+      }
+      appendMessage("user", "user", content);
+      setThinking(true);
+      els.messageInput.value = "";
+      sendWS("sendMessage", {
+        content,
+        source_channel: "web",
+        source_message_ref: `web:${Date.now()}`,
+        idempotency_key: `web:${state.chatID}:${Date.now()}`
+      });
+    }
+
+    function requestArtifacts() {
+      sendWS("getArtifacts", {
+        view: state.artifactView,
+        project_id: derivedProjectID(),
+        workspace_id: derivedWorkspaceID()
+      });
+      updateArtifactContextCopy();
+    }
+
+    async function requestWorkspaceConsole() {
+      try {
+        const [modeResp, listResp, runsResp] = await Promise.all([
+          fetchJSON("/api/workspace-mode"),
+          fetchJSON("/api/workspaces"),
+          fetchJSON("/api/runs?limit=20"),
+        ]);
+        state.workspaceMode = modeResp.mode || "hybrid";
+        state.activeWorkspaceID = modeResp.active_workspace_id || listResp.active_workspace_id || "";
+        state.workspaces = Array.isArray(listResp.items) ? listResp.items : [];
+        state.boundaryRuns = ((runsResp.items || []).filter((item) => item.boundary_crossing || item.approval_required));
+        if (!state.selectedWorkspaceID && state.activeWorkspaceID) {
+          state.selectedWorkspaceID = state.activeWorkspaceID;
+        }
+        if (!state.selectedWorkspaceID && state.workspaces[0]?.workspace_id) {
+          state.selectedWorkspaceID = state.workspaces[0].workspace_id;
+        }
+        if (state.selectedWorkspaceID) {
+          await selectWorkspace(state.selectedWorkspaceID, false);
+        } else {
+          updateWorkspaceBadges();
+          updateWorkspaceList();
+          renderWorkspaceRules([]);
+          renderBoundaryRuns();
+        }
+      } catch (err) {
+        els.workspaceStatusMessage.textContent = err.message || String(err);
+      }
+    }
+
+    async function selectWorkspace(workspaceID, fetchDetails = true) {
+      state.selectedWorkspaceID = workspaceID;
+      if (fetchDetails && workspaceID) {
+        try {
+          state.selectedWorkspace = await fetchJSON(`/api/workspaces/${workspaceID}`);
+          const rulesResp = await fetchJSON(`/api/workspaces/${workspaceID}/whitelist-rules`);
+          state.workspaceRules = rulesResp.items || [];
+        } catch (err) {
+          els.workspaceStatusMessage.textContent = err.message || String(err);
+        }
+      } else {
+        state.selectedWorkspace = state.workspaces.find((item) => item.workspace_id === workspaceID) || null;
+      }
+      populateWorkspaceForm(state.selectedWorkspace);
+      updateWorkspaceBadges();
+      updateWorkspaceList();
+      renderWorkspaceRules(state.workspaceRules);
+      renderBoundaryRuns();
+    }
+
+    function updateWorkspaceBadges() {
+      els.workspaceModeBadge.textContent = `Mode: ${state.workspaceMode || "hybrid"}`;
+      els.activeWorkspaceBadge.textContent = `Active: ${state.activeWorkspaceID || "none"}`;
+      els.workspaceModeControls.querySelectorAll("[data-workspace-mode]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.workspaceMode === state.workspaceMode);
+      });
+    }
+
+    function updateWorkspaceList() {
+      if (!state.workspaces.length) {
+        els.workspaceList.innerHTML = '<div class="meta">No workspaces yet.</div>';
+        return;
+      }
+      els.workspaceList.innerHTML = "";
+      state.workspaces.forEach((workspace) => {
+        const node = document.createElement("div");
+        node.className = `workspace-item ${state.selectedWorkspaceID === workspace.workspace_id ? "active" : ""}`.trim();
+        node.innerHTML = `
+          <div class="row space-between">
+            <strong>${escapeHTML(workspace.name || workspace.workspace_id)}</strong>
+            <span class="badge">${escapeHTML(workspace.status || "active")}</span>
+          </div>
+          <div class="workspace-status-line">
+            <span>${escapeHTML(workspace.workspace_kind || "general")}</span>
+            <span>${escapeHTML(workspace.related_project_id || "no project")}</span>
+            ${workspace.workspace_id === state.activeWorkspaceID ? '<span class="badge">active</span>' : ""}
+          </div>
+          <div class="tiny">${escapeHTML(workspace.description || "No description.")}</div>
+        `;
+        node.addEventListener("click", () => selectWorkspace(workspace.workspace_id));
+        els.workspaceList.appendChild(node);
+      });
+    }
+
+    function populateWorkspaceForm(workspace) {
+      const selected = workspace || {};
+      els.workspaceFormTitle.textContent = workspace ? `Workspace Editor · ${selected.name || selected.workspace_id}` : "Workspace Editor";
+      els.workspaceName.value = selected.name || "";
+      els.workspaceKind.value = selected.workspace_kind || "general";
+      els.workspaceDescription.value = selected.description || "";
+      els.workspaceProjectID.value = selected.related_project_id || "";
+      els.workspaceBoundaryPolicy.value = selected.boundary_policy?.out_of_scope_default || "prompt";
+      els.workspaceStatusInput.value = selected.status || "active";
+      els.workspaceTags.value = Array.isArray(selected.tags) ? selected.tags.join(", ") : "";
+      els.workspaceNotes.value = selected.notes || "";
+      els.workspaceLocalRoots.value = Array.isArray(selected.local_roots) ? selected.local_roots.join("\n") : "";
+      els.workspaceRepoRoots.value = Array.isArray(selected.repo_roots) ? selected.repo_roots.join("\n") : "";
+      els.workspaceProtectedPaths.value = Array.isArray(selected.protected_paths) ? selected.protected_paths.join("\n") : "";
+      els.workspaceAllowedActions.value = allowedActionsToList(selected.allowed_actions);
+      els.workspaceAuditEnabled.value = String(selected.audit_enabled ?? true);
+    }
+
+    function allowedActionsToList(actions = {}) {
+      return Object.entries(actions)
+        .filter(([, enabled]) => enabled)
+        .map(([key]) => key)
+        .join(", ");
+    }
+
+    function parseLines(value) {
+      return String(value || "")
+        .split(/\r?\n|,/)
+        .map((line) => line.trim())
+        .filter(Boolean);
+    }
+
+    function parseAllowedActions(value) {
+      const enabled = new Set(parseLines(value).map((item) => item.toLowerCase()));
+      return {
+        read: enabled.has("read"),
+        write: enabled.has("write"),
+        create: enabled.has("create"),
+        modify: enabled.has("modify"),
+        rename_move: enabled.has("rename_move") || enabled.has("rename-move"),
+        delete: enabled.has("delete"),
+        execute: enabled.has("execute"),
+      };
+    }
+
+    function currentWorkspacePayload() {
+      return {
+        name: els.workspaceName.value.trim(),
+        workspace_kind: els.workspaceKind.value.trim() || "general",
+        description: els.workspaceDescription.value.trim(),
+        related_project_id: els.workspaceProjectID.value.trim(),
+        boundary_policy: { out_of_scope_default: els.workspaceBoundaryPolicy.value.trim() || "prompt" },
+        status: els.workspaceStatusInput.value.trim() || "active",
+        tags: parseLines(els.workspaceTags.value),
+        notes: els.workspaceNotes.value.trim(),
+        local_roots: parseLines(els.workspaceLocalRoots.value),
+        repo_roots: parseLines(els.workspaceRepoRoots.value),
+        protected_paths: parseLines(els.workspaceProtectedPaths.value),
+        allowed_actions: parseAllowedActions(els.workspaceAllowedActions.value),
+        audit_enabled: String(els.workspaceAuditEnabled.value).trim().toLowerCase() !== "false"
+      };
+    }
+
+    async function saveWorkspace() {
+      const payload = currentWorkspacePayload();
+      const isUpdate = Boolean(state.selectedWorkspaceID);
+      const path = isUpdate ? `/api/workspaces/${state.selectedWorkspaceID}` : "/api/workspaces";
+      const method = isUpdate ? "PUT" : "POST";
+      const saved = await fetchJSON(path, { method, body: JSON.stringify(payload) });
+      state.selectedWorkspaceID = saved.workspace_id;
+      els.workspaceStatusMessage.textContent = isUpdate ? "Workspace updated." : "Workspace created.";
+      await requestWorkspaceConsole();
+    }
+
+    async function setActiveWorkspace() {
+      if (!state.selectedWorkspaceID) {
+        throw new Error("Select a workspace first.");
+      }
+      await fetchJSON("/api/workspaces/active", {
+        method: "PUT",
+        body: JSON.stringify({ workspace_id: state.selectedWorkspaceID })
+      });
+      els.workspaceStatusMessage.textContent = "Active workspace updated.";
+      await requestWorkspaceConsole();
+    }
+
+    async function bindWorkspaceProject() {
+      if (!state.selectedWorkspaceID) {
+        throw new Error("Select a workspace first.");
+      }
+      await fetchJSON(`/api/workspaces/${state.selectedWorkspaceID}/project-binding`, {
+        method: "PUT",
+        body: JSON.stringify({ project_id: els.workspaceProjectID.value.trim() })
+      });
+      els.workspaceStatusMessage.textContent = "Project binding updated.";
+      await requestWorkspaceConsole();
+    }
+
+    async function archiveWorkspace() {
+      if (!state.selectedWorkspaceID) {
+        throw new Error("Select a workspace first.");
+      }
+      await fetchJSON(`/api/workspaces/${state.selectedWorkspaceID}/archive`, { method: "POST" });
+      els.workspaceStatusMessage.textContent = "Workspace archived.";
+      await requestWorkspaceConsole();
+    }
+
+    function renderWorkspaceRules(rules) {
+      if (!rules || !rules.length) {
+        els.workspaceRules.innerHTML = '<div class="meta">No whitelist rules for this workspace.</div>';
+        return;
+      }
+      els.workspaceRules.innerHTML = "";
+      rules.forEach((rule) => {
+        const node = document.createElement("div");
+        node.className = "rule-item";
+        node.innerHTML = `
+          <div class="row space-between">
+            <strong>${escapeHTML(rule.scope)}</strong>
+            <span class="badge">${escapeHTML(rule.status)}</span>
+          </div>
+          <div class="workspace-status-line">
+            <span>${escapeHTML((rule.action_types || []).join(", "))}</span>
+            <span>${escapeHTML(rule.created_at || "")}</span>
+          </div>
+          <div class="tiny">${escapeHTML(rule.rule_id)}</div>
+          <div class="row">
+            ${rule.status === "active" ? `<button class="warn tiny" data-revoke-rule="${escapeHTML(rule.rule_id)}">Revoke</button>` : ""}
+          </div>
+        `;
+        els.workspaceRules.appendChild(node);
+      });
+      els.workspaceRules.querySelectorAll("[data-revoke-rule]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          try {
+            await fetchJSON(`/api/workspaces/${state.selectedWorkspaceID}/whitelist-rules/${button.dataset.revokeRule}/revoke`, { method: "POST" });
+            els.workspaceStatusMessage.textContent = "Whitelist rule revoked.";
+            await selectWorkspace(state.selectedWorkspaceID);
+          } catch (err) {
+            els.workspaceStatusMessage.textContent = err.message || String(err);
+          }
+        });
+      });
+    }
+
+    function renderBoundaryRuns() {
+      if (!state.boundaryRuns.length) {
+        els.boundaryRunList.innerHTML = '<div class="meta">No boundary-crossing runs loaded yet.</div>';
+        return;
+      }
+      els.boundaryRunList.innerHTML = "";
+      state.boundaryRuns.forEach((run) => {
+        const node = document.createElement("div");
+        node.className = `run-item ${state.selectedBoundaryRunID === run.run_id ? "active" : ""}`.trim();
+        node.innerHTML = `
+          <div class="row space-between">
+            <strong>${escapeHTML(run.type || "run")}</strong>
+            <span class="badge">${escapeHTML(run.approval_outcome || (run.approval_required ? "pending" : "n/a"))}</span>
+          </div>
+          <div class="workspace-status-line">
+            <span>${escapeHTML(run.workspace_id || "no workspace")}</span>
+            <span>${run.boundary_crossing ? "boundary crossing" : "approval"}</span>
+          </div>
+          <div class="tiny">${escapeHTML(run.failure_reason || "")}</div>
+        `;
+        node.addEventListener("click", () => {
+          state.selectedBoundaryRunID = run.run_id;
+          els.boundaryAction.value = run.type || "";
+          els.boundaryTargetPath.value = extractBoundaryPath(run);
+          els.boundaryRuleScope.value = extractBoundaryPath(run);
+          els.boundaryActionTypes.value = mapActionType(run.type || "");
+          if (run.workspace_id) {
+            state.selectedWorkspaceID = run.workspace_id;
+            selectWorkspace(run.workspace_id);
+          }
+          renderBoundaryRuns();
+        });
+        els.boundaryRunList.appendChild(node);
+      });
+    }
+
+    function extractBoundaryPath(run) {
+      if (Array.isArray(run.affected_entities) && run.affected_entities[0]) {
+        return String(run.affected_entities[0]).replace(/^path:/, "");
+      }
+      const match = String(run.failure_reason || "").match(/:\s(.+)$/);
+      return match ? match[1] : "";
+    }
+
+    function mapActionType(commandType) {
+      switch (String(commandType || "").toLowerCase()) {
+        case "query":
+          return "read";
+        case "create":
+          return "create";
+        case "update":
+          return "modify";
+        case "delete":
+          return "delete";
+        default:
+          return "execute";
+      }
+    }
+
+    async function resolveBoundary(decision) {
+      const payload = {
+        workspace_id: state.selectedWorkspaceID || state.activeWorkspaceID,
+        decision,
+        action: els.boundaryAction.value.trim(),
+        target_path: els.boundaryTargetPath.value.trim(),
+        rule_scope: els.boundaryRuleScope.value.trim(),
+        action_types: parseLines(els.boundaryActionTypes.value),
+        switch_workspace_id: els.boundarySwitchWorkspace.value.trim(),
+      };
+      const result = await fetchJSON("/api/workspaces/boundary/resolve", {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+      els.boundaryStatus.textContent = `Boundary decision recorded: ${result.approval_outcome || decision}.`;
+      await requestWorkspaceConsole();
+    }
+
+    function requestArtifactSelection() {
+      if (!state.selectedArtifactID) {
+        return;
+      }
+      sendWS("getArtifact", { artifact_id: state.selectedArtifactID });
+      sendWS("getArtifactContent", {
+        artifact_id: state.selectedArtifactID,
+        version_id: state.selectedVersionID || undefined
+      });
+      if (state.artifactMode === "diff") {
+        requestArtifactDiff();
+      }
+    }
+
+    function requestArtifactDiff() {
+      if (!state.selectedArtifactID) {
+        return;
+      }
+      sendWS("getArtifactDiff", {
+        artifact_id: state.selectedArtifactID,
+        version_id: state.selectedVersionID || undefined
+      });
+    }
+
+    function selectArtifact(artifactID) {
+      state.selectedArtifactID = artifactID;
+      state.selectedVersionID = "";
+      state.artifactDetail = null;
+      state.artifactContent = null;
+      state.artifactDiff = null;
+      const artifact = state.artifacts.find((item) => item.id === artifactID);
+      if (artifact) {
+        state.currentWorkspaceID = artifact.workspace_id || state.currentWorkspaceID;
+        state.currentProjectID = artifact.project_id || state.currentProjectID;
+      }
+      renderArtifactWorkspace();
+      requestArtifactSelection();
+      persistWorkspaceState();
+    }
+
+    function derivedProjectID() {
+      if (state.artifactDetail?.project_id) {
+        return state.artifactDetail.project_id;
+      }
+      if (state.currentProjectID) {
+        return state.currentProjectID;
+      }
+      const fromConversation = state.artifacts.find((item) => item.project_id);
+      return fromConversation ? fromConversation.project_id : "";
+    }
+
+    function derivedWorkspaceID() {
+      if (state.artifactDetail?.workspace_id) {
+        return state.artifactDetail.workspace_id;
+      }
+      if (state.currentWorkspaceID) {
+        return state.currentWorkspaceID;
+      }
+      return state.artifacts[0]?.workspace_id || "";
+    }
+
+    function updateArtifactContext(items) {
+      if (!Array.isArray(items) || items.length === 0) {
+        return;
+      }
+      if (!state.currentWorkspaceID) {
+        state.currentWorkspaceID = items.find((item) => item.workspace_id)?.workspace_id || "";
+      }
+      if (!state.currentProjectID) {
+        state.currentProjectID = items.find((item) => item.project_id)?.project_id || "";
+      }
+      updateArtifactContextCopy();
+    }
+
+    function updateArtifactContextCopy() {
+      const descriptions = {
+        recent: "Recent artifacts across the owner workspace.",
+        current_conversation: "Artifacts linked to this conversation session.",
+        current_project: state.currentProjectID ? `Artifacts for project ${state.currentProjectID}.` : "No current project is known for this session yet.",
+        current_workspace: state.currentWorkspaceID ? `Artifacts for workspace ${state.currentWorkspaceID}.` : "No current workspace is known for this session yet.",
+        drafts: "Draft and in-progress artifacts that still need attention.",
+        failed: "Artifacts with failed executions, export problems, or recovery work still open.",
+        shared_exported: "Published artifacts with sharing or export state.",
+        archived: "Archived artifacts kept for recovery or audit."
+      };
+      els.artifactContextCopy.textContent = descriptions[state.artifactView] || descriptions.recent;
+    }
+
+    function artifactLifecycleBadge(item) {
+      const stateName = item.lifecycle_state || item.status || "unknown";
+      let cls = "status-badge";
+      if (stateName === "errored") cls += " danger";
+      else if (stateName === "review_ready" || stateName === "archived") cls += " warn";
+      else if (stateName === "in_progress") cls += " info";
+      else cls += " ok";
+      return `<span class="${cls}">${escapeHTML(stateName)}</span>`;
+    }
+
+    function updateArtifactLibrary(artifacts) {
+      if (!artifacts || artifacts.length === 0) {
+        els.artifactList.innerHTML = '<div class="meta" style="text-align: center; padding: 20px;">No artifacts found for this view.</div>';
+        return;
+      }
+      els.artifactList.innerHTML = "";
+      artifacts.forEach((item) => {
+        const node = document.createElement("div");
+        node.className = `artifact-card ${state.selectedArtifactID === item.id ? "active" : ""}`.trim();
+        const lastEditor = formatLastEditor(item.last_editor);
+        const pending = item.pending_execution_state ? `<span class="badge">execution ${escapeHTML(item.pending_execution_state)}</span>` : "";
+        const shared = item.shared_exported ? '<span class="badge">shared/exported</span>' : "";
+        const branch = item.current_branch_id && item.current_branch_id !== "main"
+          ? `<span class="badge">branch ${escapeHTML(item.current_branch_id)}</span>`
+          : "";
+        const failure = item.lifecycle_state === "errored" || item.pending_execution_state === "failed";
+        node.innerHTML = `
+          <div class="artifact-card-top">
+            <div>
+              <div class="artifact-title">${escapeHTML(item.display_title || item.canonical_title || item.title || item.id)}</div>
+              <div class="artifact-meta">
+                <span>${escapeHTML(item.type || "artifact")}${item.subtype ? " / " + escapeHTML(item.subtype) : ""}</span>
+                <span>${escapeHTML(item.project_id || "no project")}</span>
+                <span>${escapeHTML(lastEditor)}</span>
+              </div>
+            </div>
+            ${artifactLifecycleBadge(item)}
+          </div>
+          <div class="artifact-card-bottom">
+            <div class="artifact-meta">
+              <span>updated ${escapeHTML(relativeTime(item.last_updated || item.updated_at))}</span>
+              <span>sync ${escapeHTML(item.sync_state || "local")}</span>
+              ${branch}
+              ${pending}
+              ${shared}
+            </div>
+          </div>
+          ${failure ? `<div class="artifact-callout">${escapeHTML(item.last_error || "Execution failed. Open the artifact for more detail.")}</div>` : ""}
+        `;
+        node.addEventListener("click", () => selectArtifact(item.id));
+        els.artifactList.appendChild(node);
+      });
+    }
+
+    function renderArtifactWorkspace() {
+      const detail = state.artifactDetail;
+      els.artifactModeBadge.textContent = `Mode: ${state.artifactMode}`;
+      if (!detail) {
+        els.artifactTitle.textContent = "Artifact Workspace";
+        els.artifactSubtitle.textContent = "Select an artifact from the library to inspect content, diff, version history, and local drafts.";
+        els.artifactCanvas.innerHTML = '<div class="workspace-empty">Artifact content will appear here.</div>';
+        els.artifactSide.innerHTML = '<div class="workspace-empty">Version history and inspector details will appear here.</div>';
+        els.saveStateBadge.className = "status-badge ok";
+        els.saveStateBadge.textContent = "Saved";
+        els.syncStateBadge.className = "status-badge info";
+        els.syncStateBadge.textContent = "Sync: local";
+        return;
+      }
+
+      const versions = Array.isArray(detail.versions) ? detail.versions : [];
+      if (!state.selectedVersionID) {
+        state.selectedVersionID = detail.current_version_id || versions[0]?.version_id || "";
+      }
+
+      els.artifactTitle.textContent = detail.display_title || detail.canonical_title || detail.title || "Artifact Workspace";
+      els.artifactSubtitle.textContent = [
+        `${detail.type || "artifact"}${detail.subtype ? " / " + detail.subtype : ""}`,
+        detail.lifecycle_state || detail.status || "unknown",
+        detail.project_id || "no project",
+        detail.current_branch_id || "main"
+      ].join(" · ");
+
+      updateWorkspaceBadges(detail);
+      els.artifactCanvas.innerHTML = renderArtifactMain(detail);
+      els.artifactSide.innerHTML = renderArtifactInspector(detail, versions);
+      bindWorkspaceInteractions(detail, versions);
+    }
+
+    function renderArtifactMain(detail) {
+      if (state.artifactMode === "edit") {
+        return renderEditMode(detail);
+      }
+      if (state.artifactMode === "diff") {
+        return renderDiffMode(detail);
+      }
+      if (state.artifactMode === "history") {
+        return renderHistoryMode(detail);
+      }
+      if (state.artifactMode === "inspector") {
+        return `
+          <div class="rendered-content">
+            <div class="split-note">Inspector split view keeps the current artifact rendered here while the side rail shows versions, provenance, sources, exports, shares, and sync metadata.</div>
+            ${renderContentByType(detail, committedOrSelectedContent(detail))}
+          </div>
+        `;
+      }
+      return `<div class="rendered-content">${renderContentByType(detail, committedOrSelectedContent(detail))}</div>`;
+    }
+
+    function renderEditMode(detail) {
+      const draft = currentDraft(detail);
+      const validation = validateDraft(detail, draft);
+      const conflict = artifactConflictState(detail);
+      return `
+        <div class="rendered-content">
+          <div class="split-note">Unsaved drafts are preserved locally per artifact, so switching to another artifact or browsing history will not discard your current edit session.</div>
+          ${conflict ? `
+            <div class="callout">
+              Conflict detected: your local edit buffer is based on ${escapeHTML(conflict.baseVersion)} while the current head is ${escapeHTML(conflict.headVersion)}.
+              <div class="row" style="margin-top: 10px;">
+                <button class="secondary tiny" data-conflict-action="latest">View Latest Head</button>
+                <button class="secondary tiny" data-conflict-action="branch">Branch From Current Edit</button>
+                <button class="secondary tiny" data-conflict-action="rebase">Retry With Rebase</button>
+              </div>
+            </div>
+          ` : ""}
+          <div class="editor-shell">
+            <section class="editor-pane">
+              <div class="pane-label">Editor</div>
+              <textarea id="artifact-editor" spellcheck="false">${escapeHTML(draft)}</textarea>
+              <div class="validation">${escapeHTML(validation.message)}</div>
+            </section>
+            <section class="preview-pane">
+              <div class="pane-label">Preview</div>
+              <div class="rendered-content" id="artifact-preview">${renderContentByType(detail, draft)}</div>
+            </section>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDiffMode(detail) {
+      const diff = state.artifactDiff?.diff;
+      if (!diff || typeof diff !== "object") {
+        return '<div class="workspace-empty">No diff payload is loaded for the selected version yet.</div>';
+      }
+      const before = typeof diff.before === "string" ? diff.before : JSON.stringify(diff.before || "", null, 2);
+      const after = typeof diff.after === "string" ? diff.after : JSON.stringify(diff.after || "", null, 2);
+      return `
+        <div class="rendered-content">
+          <div class="badgebar">
+            <div class="badge">diff kind ${escapeHTML(diff.kind || "line")}</div>
+            <div class="badge">selected version ${escapeHTML(state.selectedVersionID || detail.current_version_id || "unknown")}</div>
+          </div>
+          <div class="diff-grid">
+            <section class="diff-pane">
+              <div class="pane-label">Before</div>
+              <div class="rendered-content">${renderContentByType(detail, before)}</div>
+            </section>
+            <section class="diff-pane">
+              <div class="pane-label">After</div>
+              <div class="rendered-content">${renderContentByType(detail, after)}</div>
+            </section>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderHistoryMode(detail) {
+      const versions = Array.isArray(detail.versions) ? detail.versions : [];
+      if (!versions.length) {
+        return '<div class="workspace-empty">No version history is available for this artifact yet.</div>';
+      }
+      return `
+        <div class="rendered-content">
+          <div class="split-note">Browsing history updates the read and diff panes without overwriting the local draft stored for edit mode.</div>
+          <div class="version-list">
+            ${versions.map((version) => `
+              <div class="version-item ${state.selectedVersionID === version.version_id ? "active" : ""}" data-version-id="${escapeHTML(version.version_id)}">
+                <div><strong>v${escapeHTML(version.version_number || version.version || "?")}</strong> · ${escapeHTML(version.change_type || "update")}</div>
+                <div class="tiny">${escapeHTML(version.change_summary || "No summary.")}</div>
+                <div class="artifact-meta">
+                  <span>${escapeHTML(version.commit_state || "committed")}</span>
+                  <span>${escapeHTML(version.validation_state || "pending")}</span>
+                  <span>${escapeHTML(relativeTime(version.created_at))}</span>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderArtifactInspector(detail, versions) {
+      const latestVersion = versions.find((version) => version.version_id === (state.selectedVersionID || detail.current_version_id)) || versions[0] || null;
+      const exportsBadge = detail.shared_exported ? "present" : "not exported";
+      const exportRecords = Array.isArray(detail.exports) ? detail.exports : [];
+      const shareRecords = Array.isArray(detail.shares) ? detail.shares : [];
+      const branchRecords = Array.isArray(detail.branches) ? detail.branches : [];
+      const recentRuns = Array.isArray(detail.recent_runs) ? detail.recent_runs : [];
+      const sources = [
+        detail.project_id ? `project ${detail.project_id}` : "",
+        detail.source_run_id ? `run ${detail.source_run_id}` : "",
+        detail.source_execution_id ? `execution ${detail.source_execution_id}` : ""
+      ].filter(Boolean);
+      return `
+        <div class="inspector-sections">
+          ${detail.lifecycle_state === "errored" || detail.pending_execution_state === "failed"
+            ? `<div class="callout">${escapeHTML(detail.last_error || "This artifact is currently in a failed execution state.")}</div>`
+            : ""}
+          <section class="inspector-card">
+            <strong>Overview</strong>
+            <div class="kv-list">
+              <div><span>Type</span><span>${escapeHTML(detail.type || "artifact")}${detail.subtype ? " / " + escapeHTML(detail.subtype) : ""}</span></div>
+              <div><span>Status</span><span>${escapeHTML(detail.lifecycle_state || detail.status || "unknown")}</span></div>
+              <div><span>Project</span><span>${escapeHTML(detail.project_id || "none")}</span></div>
+              <div><span>Updated</span><span>${escapeHTML(relativeTime(detail.updated_at))}</span></div>
+              <div><span>Sync</span><span>${escapeHTML(detail.sync_state || "local")}</span></div>
+              <div><span>Execution</span><span>${escapeHTML(detail.pending_execution_state || "idle")}</span></div>
+            </div>
+          </section>
+          <section class="inspector-card">
+            <strong>Versions</strong>
+            <div class="version-list">
+              ${versions.slice(0, 8).map((version) => `
+                <div class="version-item ${state.selectedVersionID === version.version_id ? "active" : ""}" data-version-id="${escapeHTML(version.version_id)}">
+                  <div>v${escapeHTML(version.version_number || version.version || "?")}</div>
+                  <div class="tiny">${escapeHTML(version.change_type || "update")} · ${escapeHTML(version.patch_strategy || "full")}</div>
+                </div>
+              `).join("") || '<div class="tiny">No versions yet.</div>'}
+            </div>
+          </section>
+          <section class="inspector-card">
+            <strong>Branches & Provenance</strong>
+            <div class="kv-list">
+              <div><span>Branch</span><span>${escapeHTML(detail.current_branch_id || "main")}</span></div>
+              <div><span>Version</span><span>${escapeHTML(detail.current_version_id || "unknown")}</span></div>
+              <div><span>Renderer</span><span>${escapeHTML(detail.renderer?.component_id || "RawRenderer")}</span></div>
+              <div><span>Editor</span><span>${escapeHTML(detail.editor?.editor_id || "RawEditor")}</span></div>
+              <div><span>Validation</span><span>${escapeHTML(latestVersion?.validation_state || "pending")}</span></div>
+            </div>
+            <div class="version-list">
+              ${branchRecords.slice(0, 4).map((branch) => `
+                <div class="version-item">
+                  <div>${escapeHTML(branch.name || branch.branch_id)}</div>
+                  <div class="tiny">${escapeHTML(branch.status || "active")} · base ${escapeHTML(branch.base_version_id || "unknown")}</div>
+                </div>
+              `).join("") || '<div class="tiny">No branch records yet.</div>'}
+            </div>
+          </section>
+          <section class="inspector-card">
+            <strong>Sources, Exports & Sync</strong>
+            <div class="kv-list">
+              <div><span>Sources</span><span>${escapeHTML(sources.join(", ") || "none")}</span></div>
+              <div><span>Exports</span><span>${escapeHTML(exportsBadge)}</span></div>
+              <div><span>Shares</span><span>${shareRecords.length ? "available" : "none"}</span></div>
+              <div><span>Content Ref</span><span>${escapeHTML(latestVersion?.content_ref?.uri || "unavailable")}</span></div>
+              <div><span>Diff Ref</span><span>${escapeHTML(latestVersion?.diff_ref?.uri || "unavailable")}</span></div>
+            </div>
+            <div class="version-list">
+              ${exportRecords.slice(0, 3).map((item) => `
+                <div class="version-item">
+                  <div>export ${escapeHTML(item.format || "unknown")} · ${escapeHTML(item.status || "pending")}</div>
+                  <div class="tiny">${escapeHTML(item.target_kind || "download")}${item.failure_reason ? " · " + escapeHTML(item.failure_reason) : ""}</div>
+                </div>
+              `).join("") || '<div class="tiny">No export records yet.</div>'}
+            </div>
+            <div class="version-list">
+              ${shareRecords.slice(0, 3).map((item) => `
+                <div class="version-item">
+                  <div>share ${escapeHTML(item.scope || "unknown")} · ${escapeHTML(item.status || "active")}</div>
+                  <div class="tiny">${escapeHTML(item.access_level || "read")}${item.share_url ? " · " + escapeHTML(item.share_url) : ""}</div>
+                </div>
+              `).join("") || '<div class="tiny">No share records yet.</div>'}
+            </div>
+          </section>
+          <section class="inspector-card">
+            <strong>Attributes</strong>
+            <pre>${escapeHTML(JSON.stringify(detail.attributes || {}, null, 2))}</pre>
+          </section>
+          <section class="inspector-card">
+            <strong>Recovery History</strong>
+            <div class="version-list">
+              ${recentRuns.slice(0, 5).map((run) => `
+                <div class="version-item">
+                  <div>${escapeHTML(run.type || "run")} · ${escapeHTML(run.failure_class || run.status || "unknown")}</div>
+                  <div class="tiny">${escapeHTML(run.recovery_status || "not_required")} · ${escapeHTML(run.failure_reason || "No failure reason recorded.")}</div>
+                </div>
+              `).join("") || '<div class="tiny">No recovery history for this artifact yet.</div>'}
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    function bindWorkspaceInteractions(detail, versions) {
+      els.artifactCanvas.querySelectorAll("[data-version-id]").forEach((node) => {
+        node.addEventListener("click", () => {
+          state.selectedVersionID = node.dataset.versionId;
+          sendWS("getArtifactContent", { artifact_id: detail.id, version_id: state.selectedVersionID });
+          sendWS("getArtifactDiff", { artifact_id: detail.id, version_id: state.selectedVersionID });
+          renderArtifactWorkspace();
+          persistWorkspaceState();
+        });
+      });
+      els.artifactSide.querySelectorAll("[data-version-id]").forEach((node) => {
+        node.addEventListener("click", () => {
+          state.selectedVersionID = node.dataset.versionId;
+          sendWS("getArtifactContent", { artifact_id: detail.id, version_id: state.selectedVersionID });
+          sendWS("getArtifactDiff", { artifact_id: detail.id, version_id: state.selectedVersionID });
+          renderArtifactWorkspace();
+          persistWorkspaceState();
+        });
+      });
+      const editor = document.getElementById("artifact-editor");
+      if (editor) {
+        editor.addEventListener("input", () => {
+          state.artifactDrafts[detail.id] = editor.value;
+          state.artifactSaveState = "dirty";
+          persistWorkspaceState();
+          updateWorkspaceBadges(detail);
+          const preview = document.getElementById("artifact-preview");
+          if (preview) {
+            preview.innerHTML = renderContentByType(detail, editor.value);
+          }
+          const validationNode = els.artifactCanvas.querySelector(".validation");
+          if (validationNode) {
+            validationNode.textContent = validateDraft(detail, editor.value).message;
+          }
+        });
+      }
+      els.artifactCanvas.querySelectorAll("[data-conflict-action]").forEach((node) => {
+        node.addEventListener("click", async () => {
+          const action = node.dataset.conflictAction;
+          if (action === "latest" || action === "rebase") {
+            if (action === "rebase" && state.artifactConflict?.headVersion) {
+              state.artifactConflict.baseVersion = state.artifactConflict.headVersion;
+              state.artifactSaveState = "dirty";
+            } else {
+              state.artifactConflict = null;
+            }
+            state.selectedVersionID = detail.current_version_id || state.selectedVersionID;
+            sendWS("getArtifactContent", { artifact_id: detail.id, version_id: state.selectedVersionID });
+            sendWS("getArtifactDiff", { artifact_id: detail.id, version_id: state.selectedVersionID });
+            renderArtifactWorkspace();
+            persistWorkspaceState();
+            return;
+          }
+          if (action === "branch") {
+            try {
+              await fetchJSON(`/api/artifacts/${detail.id}/branches`, {
+                method: "POST",
+                body: JSON.stringify({
+                  base_version_id: state.selectedVersionID || detail.current_version_id,
+                  name: "conflict-fallback"
+                })
+              });
+              state.artifactDetail = await fetchJSON(`/api/artifacts/${detail.id}`);
+              state.artifactConflict = null;
+              state.artifactSaveState = "dirty";
+              renderArtifactWorkspace();
+            } catch (err) {
+              setStatus(err.message || String(err), true);
+            }
+          }
+        });
+      });
+    }
+
+    function artifactConflictState(detail) {
+      if (state.artifactConflict?.headVersion && state.artifactConflict?.baseVersion) {
+        return state.artifactConflict;
+      }
+      if (!detail) {
+        return null;
+      }
+      const draftDirty = isDraftDirty(detail);
+      const baseVersion = state.selectedVersionID || detail.current_version_id || "";
+      const headVersion = detail.current_version_id || "";
+      if (!draftDirty || !baseVersion || !headVersion || baseVersion === headVersion) {
+        return null;
+      }
+      return { baseVersion, headVersion };
+    }
+
+    function updateWorkspaceBadges(detail) {
+      const draftDirty = isDraftDirty(detail);
+      const conflict = artifactConflictState(detail);
+      if (state.artifactSaveState === "saving") {
+        els.saveStateBadge.className = "status-badge info";
+        els.saveStateBadge.textContent = "Saving";
+      } else if (state.artifactSaveState === "save_failed") {
+        els.saveStateBadge.className = "status-badge danger";
+        els.saveStateBadge.textContent = "Save failed";
+      } else if (conflict || state.artifactSaveState === "conflicted") {
+        els.saveStateBadge.className = "status-badge danger";
+        els.saveStateBadge.textContent = "Conflicted";
+      } else if (draftDirty || state.artifactSaveState === "dirty") {
+        els.saveStateBadge.className = "status-badge warn";
+        els.saveStateBadge.textContent = "Dirty";
+      } else if (state.selectedVersionID && detail.current_version_id && state.selectedVersionID !== detail.current_version_id) {
+        els.saveStateBadge.className = "status-badge info";
+        els.saveStateBadge.textContent = "Browsing history";
+      } else {
+        els.saveStateBadge.className = "status-badge ok";
+        els.saveStateBadge.textContent = state.artifactSaveState === "saved" ? "Saved" : "Clean";
+      }
+
+      const syncState = detail.sync_state || "local";
+      els.syncStateBadge.textContent = `Sync: ${syncState}`;
+      if (syncState === "exported" || syncState === "shared") {
+        els.syncStateBadge.className = "status-badge ok";
+      } else if (detail.lifecycle_state === "errored") {
+        els.syncStateBadge.className = "status-badge danger";
+      } else {
+        els.syncStateBadge.className = "status-badge info";
+      }
+    }
+
+    function currentDraft(detail) {
+      if (!detail) {
+        return "";
+      }
+      const headContent = state.artifactHeadContents[detail.id];
+      if (Object.prototype.hasOwnProperty.call(state.artifactDrafts, detail.id)) {
+        return state.artifactDrafts[detail.id];
+      }
+      if (typeof headContent === "string") {
+        return headContent;
+      }
+      return committedOrSelectedContent(detail);
+    }
+
+    function committedOrSelectedContent(detail) {
+      if (!detail) {
+        return "";
+      }
+      if (state.artifactContent && state.artifactContent.artifact_id === detail.id) {
+        return state.artifactContent.content || "";
+      }
+      if (detail.current_version_id && state.artifactHeadContents[detail.id]) {
+        return state.artifactHeadContents[detail.id];
+      }
+      return "";
+    }
+
+    function isDraftDirty(detail) {
+      if (!detail) {
+        return false;
+      }
+      return currentDraft(detail) !== (state.artifactHeadContents[detail.id] || committedOrSelectedContent(detail) || "");
+    }
+
+    function validateDraft(detail, content) {
+      if (detail?.subtype === "json") {
+        try {
+          JSON.parse(content || "{}");
+          return { ok: true, message: "JSON validation passed." };
+        } catch (err) {
+          return { ok: false, message: `JSON validation failed: ${err.message}` };
+        }
+      }
+      if (detail?.subtype === "csv" || detail?.subtype === "table") {
+        const rows = parseCSV(content || "");
+        return { ok: rows.length > 0, message: rows.length > 0 ? `${rows.length} table row(s) detected.` : "No table rows detected yet." };
+      }
+      return { ok: true, message: "Preview is ready. This local edit session stays preserved until you discard it." };
+    }
+
+    function renderContentByType(detail, content) {
+      if (!detail) {
+        return `<pre>${escapeHTML(content)}</pre>`;
+      }
+      if (detail.type === "document" || detail.subtype === "markdown") {
+        return renderMarkdown(content);
+      }
+      if (detail.type === "code") {
+        return renderCode(content, detail.subtype);
+      }
+      if (detail.type === "data" || detail.subtype === "json" || detail.subtype === "csv" || detail.subtype === "table") {
+        return renderData(content, detail.subtype);
+      }
+      return `<pre>${escapeHTML(content)}</pre>`;
+    }
+
+    function renderMarkdown(markdown) {
+      const lines = String(markdown || "").replace(/\r\n/g, "\n").split("\n");
+      const html = [];
+      let i = 0;
+      while (i < lines.length) {
+        const line = lines[i];
+        if (!line.trim()) {
+          i += 1;
+          continue;
+        }
+        const fence = line.match(/^```([a-zA-Z0-9_-]+)?\s*$/);
+        if (fence) {
+          const lang = fence[1] || "text";
+          const codeLines = [];
+          i += 1;
+          while (i < lines.length && !/^```/.test(lines[i])) {
+            codeLines.push(lines[i]);
+            i += 1;
+          }
+          i += 1;
+          html.push(renderCode(codeLines.join("\n"), lang));
+          continue;
+        }
+        if (/^\|.*\|$/.test(line) && i + 1 < lines.length && /^\|?[\s:-]+\|[\s|:-]*$/.test(lines[i + 1])) {
+          const rows = [];
+          while (i < lines.length && /^\|.*\|$/.test(lines[i])) {
+            rows.push(lines[i]);
+            i += 1;
+          }
+          html.push(renderMarkdownTable(rows));
+          continue;
+        }
+        const heading = line.match(/^(#{1,3})\s+(.*)$/);
+        if (heading) {
+          const level = heading[1].length;
+          html.push(`<h${level}>${formatInlineMarkdown(heading[2])}</h${level}>`);
+          i += 1;
+          continue;
+        }
+        if (/^>\s?/.test(line)) {
+          const blockquote = [];
+          while (i < lines.length && /^>\s?/.test(lines[i])) {
+            blockquote.push(lines[i].replace(/^>\s?/, ""));
+            i += 1;
+          }
+          html.push(`<blockquote>${blockquote.map((part) => formatInlineMarkdown(part)).join("<br>")}</blockquote>`);
+          continue;
+        }
+        if (/^[-*]\s+/.test(line)) {
+          const items = [];
+          while (i < lines.length && /^[-*]\s+/.test(lines[i])) {
+            items.push(`<li>${formatInlineMarkdown(lines[i].replace(/^[-*]\s+/, ""))}</li>`);
+            i += 1;
+          }
+          html.push(`<ul>${items.join("")}</ul>`);
+          continue;
+        }
+        if (/^\d+\.\s+/.test(line)) {
+          const items = [];
+          while (i < lines.length && /^\d+\.\s+/.test(lines[i])) {
+            items.push(`<li>${formatInlineMarkdown(lines[i].replace(/^\d+\.\s+/, ""))}</li>`);
+            i += 1;
+          }
+          html.push(`<ol>${items.join("")}</ol>`);
+          continue;
+        }
+        const paragraph = [];
+        while (i < lines.length && lines[i].trim() && !/^(#{1,3}\s+|>\s?|[-*]\s+|\d+\.\s+|```)/.test(lines[i])) {
+          paragraph.push(lines[i]);
+          i += 1;
+        }
+        html.push(`<p>${formatInlineMarkdown(paragraph.join(" "))}</p>`);
+      }
+      return `<div class="rendered-content markdown-view">${html.join("") || "<p>No document content loaded.</p>"}</div>`;
+    }
+
+    function formatInlineMarkdown(text) {
+      let value = escapeHTML(text || "");
+      value = value.replace(/`([^`]+)`/g, '<span class="inline-code">$1</span>');
+      value = value.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+      value = value.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+      value = value.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>');
+      return value;
+    }
+
+    function renderMarkdownTable(rows) {
+      const cells = rows.map((row) => row.trim().replace(/^\||\|$/g, "").split("|").map((cell) => cell.trim()));
+      if (cells.length < 2) {
+        return `<pre>${escapeHTML(rows.join("\n"))}</pre>`;
+      }
+      const [header] = cells;
+      const bodyRows = cells.slice(2);
+      return `
+        <table>
+          <thead>
+            <tr>${header.map((cell) => `<th>${formatInlineMarkdown(cell)}</th>`).join("")}</tr>
+          </thead>
+          <tbody>
+            ${bodyRows.map((row) => `<tr>${row.map((cell) => `<td>${formatInlineMarkdown(cell)}</td>`).join("")}</tr>`).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function renderCode(content, language) {
+      const lines = String(content || "").split("\n");
+      const rendered = lines.map((line, index) => `
+        <div class="code-line">
+          <div class="line-no">${index + 1}</div>
+          <div class="line-code">${highlightCode(line, language)}</div>
+        </div>
+      `).join("");
+      return `
+        <div class="code-view">
+          <div class="code-toolbar">
+            <span>${escapeHTML(language || "text")}</span>
+            <span>${lines.length} line(s)</span>
+          </div>
+          <div class="code-lines">${rendered}</div>
+        </div>
+      `;
+    }
+
+    function highlightCode(line, language) {
+      let escaped = escapeHTML(line);
+      escaped = escaped.replace(/(\/\/.*$)/g, '<span class="token-comment">$1</span>');
+      escaped = escaped.replace(/(&quot;.*?&quot;|&#39;.*?&#39;)/g, '<span class="token-string">$1</span>');
+      escaped = escaped.replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="token-number">$1</span>');
+      const keywordSet = {
+        go: ["func", "package", "import", "return", "if", "else", "for", "range", "struct", "interface", "type", "var", "const"],
+        js: ["function", "const", "let", "return", "if", "else", "await", "async", "class", "new"],
+        javascript: ["function", "const", "let", "return", "if", "else", "await", "async", "class", "new"],
+        json: [],
+        text: []
+      };
+      const keywords = keywordSet[language] || keywordSet.go;
+      keywords.forEach((keyword) => {
+        const pattern = new RegExp(`\\b${keyword}\\b`, "g");
+        escaped = escaped.replace(pattern, `<span class="token-keyword">${keyword}</span>`);
+      });
+      return escaped;
+    }
+
+    function renderData(content, subtype) {
+      if (subtype === "json") {
+        try {
+          const parsed = JSON.parse(content || "{}");
+          return `
+            <div class="rendered-content">
+              <div class="badgebar">
+                <div class="badge">tree view</div>
+                <div class="badge">validated JSON</div>
+              </div>
+              <pre>${escapeHTML(JSON.stringify(parsed, null, 2))}</pre>
+            </div>
+          `;
+        } catch (err) {
+          return `<div class="callout">JSON parse failed: ${escapeHTML(err.message)}</div><pre>${escapeHTML(content)}</pre>`;
+        }
+      }
+      const rows = parseCSV(content || "");
+      if (!rows.length) {
+        return `<pre>${escapeHTML(content)}</pre>`;
+      }
+      const header = rows[0];
+      const body = rows.slice(1);
+      return `
+        <div class="rendered-content">
+          <div class="badgebar">
+            <div class="badge">tabular view</div>
+            <div class="badge">${rows.length - 1} row(s)</div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>${header.map((cell) => `<th>${escapeHTML(cell)}</th>`).join("")}</tr>
+            </thead>
+            <tbody>
+              ${body.map((row) => `<tr>${row.map((cell) => `<td>${escapeHTML(cell)}</td>`).join("")}</tr>`).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function parseCSV(content) {
+      return String(content || "")
+        .split(/\r?\n/)
+        .filter((line) => line.trim())
+        .map((line) => line.split(",").map((cell) => cell.trim()));
+    }
+
+    function relativeTime(value) {
+      if (!value) {
+        return "unknown";
+      }
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) {
+        return String(value);
+      }
+      const seconds = Math.round((Date.now() - date.getTime()) / 1000);
+      const abs = Math.abs(seconds);
+      if (abs < 60) return `${abs}s ago`;
+      if (abs < 3600) return `${Math.round(abs / 60)}m ago`;
+      if (abs < 86400) return `${Math.round(abs / 3600)}h ago`;
+      return `${Math.round(abs / 86400)}d ago`;
+    }
+
+    function formatLastEditor(lastEditor) {
+      if (!lastEditor || typeof lastEditor !== "object") {
+        return "last editor unknown";
+      }
+      return lastEditor.actor_id || lastEditor.actor_type || "last editor unknown";
+    }
+
+    async function downloadArtifactContent() {
+      if (!state.artifactDetail) {
+        return;
+      }
+      const detail = state.artifactDetail;
+      const preferredFormat = preferredExportFormat(detail);
+      const created = await fetchJSON(`/api/artifacts/${detail.id}/exports`, {
+        method: "POST",
+        body: JSON.stringify({
+          format: preferredFormat,
+          target_kind: "download"
+        })
+      });
+      const res = await fetch(`/api/artifact-exports/${created.export_id}/content`);
+      if (!res.ok) {
+        throw new Error(`export download failed: ${res.status}`);
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = makeArtifactFilename(detail, preferredFormat);
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+      state.artifactDetail = await fetchJSON(`/api/artifacts/${detail.id}`);
+      renderArtifactWorkspace();
+    }
+
+    function preferredExportFormat(detail) {
+      const formats = detail?.renderer?.export_formats || detail?.editor?.export_formats || [];
+      if (formats.includes("pdf")) return "pdf";
+      if (formats.includes("json")) return "json";
+      if (formats.includes("csv")) return "csv";
+      if (formats.includes("md")) return "md";
+      return "txt";
+    }
+
+    function makeArtifactFilename(detail, preferredFormat = "") {
+      const safeTitle = (detail.display_title || detail.canonical_title || "artifact")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "artifact";
+      const subtype = preferredFormat || detail.subtype || "";
+      let ext = ".txt";
+      if (subtype === "markdown" || subtype === "md") ext = ".md";
+      else if (subtype === "pdf") ext = ".pdf";
+      else if (subtype === "json") ext = ".json";
+      else if (subtype === "csv" || subtype === "table") ext = ".csv";
+      else if (detail.type === "code" && subtype) ext = `.${subtype}`;
+      return `${safeTitle}${ext}`;
+    }
+
+    function discardDraft() {
+      if (!state.artifactDetail) {
+        return;
+      }
+      delete state.artifactDrafts[state.artifactDetail.id];
+      state.artifactConflict = null;
+      state.artifactSaveState = "clean";
+      persistWorkspaceState();
+      renderArtifactWorkspace();
+    }
+
+    async function saveArtifactDraft() {
+      if (!state.artifactDetail) {
+        return;
+      }
+      const detail = state.artifactDetail;
+      state.artifactSaveState = "saving";
+      renderArtifactWorkspace();
+      try {
+        const saved = await fetchJSON(`/api/artifacts/${detail.id}/content`, {
+          method: "POST",
+          body: JSON.stringify({
+            content: currentDraft(detail),
+            expected_base_version_id: artifactConflictState(detail)?.baseVersion || detail.current_version_id,
+            change_summary: "Saved from artifact workspace"
+          })
+        });
+        state.artifactDetail = saved;
+        state.selectedVersionID = saved.current_version_id || saved.saved_version_id || "";
+        state.artifactHeadContents[detail.id] = currentDraft(detail);
+        delete state.artifactDrafts[detail.id];
+        state.artifactConflict = null;
+        state.artifactSaveState = "saved";
+        renderArtifactWorkspace();
+        persistWorkspaceState();
+      } catch (err) {
+        if (err.status === 409) {
+          const headVersion = err.details?.current_head_version_id || detail.current_version_id;
+          const baseVersion = err.details?.expected_base_version_id || detail.current_version_id;
+          state.artifactConflict = { headVersion, baseVersion };
+          if (err.details?.artifact) {
+            state.artifactDetail = err.details.artifact;
+          }
+          state.artifactSaveState = "conflicted";
+          renderArtifactWorkspace();
+          persistWorkspaceState();
+          return;
+        }
+        state.artifactSaveState = "save_failed";
+        renderArtifactWorkspace();
+        persistWorkspaceState();
+        throw err;
+      }
+    }
+
+    function persistWorkspaceState() {
+      const payload = {
+        artifactView: state.artifactView,
+        artifactMode: state.artifactMode,
+        selectedArtifactID: state.selectedArtifactID,
+        selectedVersionID: state.selectedVersionID,
+        artifactDrafts: state.artifactDrafts,
+        artifactHeadContents: state.artifactHeadContents,
+        currentWorkspaceID: state.currentWorkspaceID,
+        currentProjectID: state.currentProjectID
+      };
+      localStorage.setItem(STORAGE_KEYS.workspace, JSON.stringify(payload));
+      if (state.chatID) {
+        localStorage.setItem(STORAGE_KEYS.chatID, state.chatID);
+      }
+    }
+
+    function loadWorkspaceState() {
+      const chatID = localStorage.getItem(STORAGE_KEYS.chatID);
+      if (chatID) {
+        state.chatID = chatID;
+        els.chatID.value = chatID;
+      }
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.workspace);
+        if (!raw) {
+          return;
+        }
+        const parsed = JSON.parse(raw);
+        state.artifactView = parsed.artifactView || state.artifactView;
+        state.artifactMode = parsed.artifactMode || state.artifactMode;
+        state.selectedArtifactID = parsed.selectedArtifactID || "";
+        state.selectedVersionID = parsed.selectedVersionID || "";
+        state.artifactDrafts = parsed.artifactDrafts || {};
+        state.artifactHeadContents = parsed.artifactHeadContents || {};
+        state.currentWorkspaceID = parsed.currentWorkspaceID || "";
+        state.currentProjectID = parsed.currentProjectID || "";
+      } catch (_) {
+      }
+      els.artifactViews.querySelectorAll("[data-view]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.view === state.artifactView);
+      });
+      els.artifactModes.querySelectorAll("[data-mode]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.mode === state.artifactMode);
+      });
+      updateArtifactContextCopy();
+    }
+
+    els.createSession.addEventListener("click", async () => {
+      try {
+        await createSession();
+      } catch (err) {
+        setStatus(err.message || String(err), true);
+      }
+    });
+
+    els.connectSession.addEventListener("click", connectLive);
+    els.refreshPresence.addEventListener("click", () => {
+      try {
+        sendWS("getPresence");
+      } catch (err) {
+        setStatus(err.message || String(err), true);
+      }
+    });
+    els.cancelRun.addEventListener("click", () => {
+      try {
+        sendWS("cancelRun");
+      } catch (err) {
+        setStatus(err.message || String(err), true);
+      }
+    });
+    els.resumeRun.addEventListener("click", () => {
+      try {
+        sendWS("resumeRun");
+      } catch (err) {
+        setStatus(err.message || String(err), true);
+      }
+    });
+    els.sendMessage.addEventListener("click", () => {
+      try {
+        sendMessage();
+      } catch (err) {
+        setStatus(err.message || String(err), true);
+      }
+    });
+    els.messageInput.addEventListener("keydown", (evt) => {
+      if ((evt.metaKey || evt.ctrlKey) && evt.key === "Enter") {
+        evt.preventDefault();
+        sendMessage();
+      }
+    });
+    els.refreshArtifacts.addEventListener("click", () => {
+      try {
+        requestArtifacts();
+      } catch (err) {
+        setStatus(err.message || String(err), true);
+      }
+    });
+    els.refreshWorkspaces.addEventListener("click", () => {
+      requestWorkspaceConsole().catch((err) => {
+        els.workspaceStatusMessage.textContent = err.message || String(err);
+      });
+    });
+    els.workspaceModeControls.addEventListener("click", async (evt) => {
+      const button = evt.target.closest("[data-workspace-mode]");
+      if (!button) {
+        return;
+      }
+      try {
+        await fetchJSON("/api/workspace-mode", {
+          method: "PUT",
+          body: JSON.stringify({ mode: button.dataset.workspaceMode })
+        });
+        els.workspaceStatusMessage.textContent = "Workspace mode updated.";
+        await requestWorkspaceConsole();
+      } catch (err) {
+        els.workspaceStatusMessage.textContent = err.message || String(err);
+      }
+    });
+    els.newWorkspace.addEventListener("click", () => {
+      state.selectedWorkspaceID = "";
+      state.selectedWorkspace = null;
+      state.workspaceRules = [];
+      populateWorkspaceForm(null);
+      renderWorkspaceRules([]);
+      els.workspaceStatusMessage.textContent = "Creating a new workspace.";
+      updateWorkspaceList();
+    });
+    els.saveWorkspace.addEventListener("click", () => {
+      saveWorkspace().catch((err) => {
+        els.workspaceStatusMessage.textContent = err.message || String(err);
+      });
+    });
+    els.setActiveWorkspace.addEventListener("click", () => {
+      setActiveWorkspace().catch((err) => {
+        els.workspaceStatusMessage.textContent = err.message || String(err);
+      });
+    });
+    els.bindWorkspaceProject.addEventListener("click", () => {
+      bindWorkspaceProject().catch((err) => {
+        els.workspaceStatusMessage.textContent = err.message || String(err);
+      });
+    });
+    els.archiveWorkspace.addEventListener("click", () => {
+      archiveWorkspace().catch((err) => {
+        els.workspaceStatusMessage.textContent = err.message || String(err);
+      });
+    });
+    els.refreshRules.addEventListener("click", () => {
+      if (state.selectedWorkspaceID) {
+        selectWorkspace(state.selectedWorkspaceID).catch((err) => {
+          els.workspaceStatusMessage.textContent = err.message || String(err);
+        });
+      }
+    });
+    els.refreshBoundaryRuns.addEventListener("click", () => {
+      requestWorkspaceConsole().catch((err) => {
+        els.workspaceStatusMessage.textContent = err.message || String(err);
+      });
+    });
+    els.boundaryDeny.addEventListener("click", () => {
+      resolveBoundary("denied").catch((err) => {
+        els.boundaryStatus.textContent = err.message || String(err);
+      });
+    });
+    els.boundaryAllowOnce.addEventListener("click", () => {
+      resolveBoundary("allow_once").catch((err) => {
+        els.boundaryStatus.textContent = err.message || String(err);
+      });
+    });
+    els.boundaryAlwaysAllow.addEventListener("click", () => {
+      resolveBoundary("always_allow").catch((err) => {
+        els.boundaryStatus.textContent = err.message || String(err);
+      });
+    });
+    els.boundarySwitch.addEventListener("click", () => {
+      resolveBoundary("switched_workspace").catch((err) => {
+        els.boundaryStatus.textContent = err.message || String(err);
+      });
+    });
+    els.artifactViews.addEventListener("click", (evt) => {
+      const button = evt.target.closest("[data-view]");
+      if (!button) {
+        return;
+      }
+      els.artifactViews.querySelectorAll("[data-view]").forEach((node) => node.classList.remove("active"));
+      button.classList.add("active");
+      state.artifactView = button.dataset.view;
+      persistWorkspaceState();
+      requestArtifacts();
+    });
+    els.artifactModes.addEventListener("click", (evt) => {
+      const button = evt.target.closest("[data-mode]");
+      if (!button) {
+        return;
+      }
+      els.artifactModes.querySelectorAll("[data-mode]").forEach((node) => node.classList.remove("active"));
+      button.classList.add("active");
+      state.artifactMode = button.dataset.mode;
+      if (state.selectedArtifactID && state.artifactMode === "diff" && !state.artifactDiff) {
+        requestArtifactDiff();
+      }
+      renderArtifactWorkspace();
+      persistWorkspaceState();
+    });
+    els.saveArtifact.addEventListener("click", () => {
+      saveArtifactDraft().catch((err) => setStatus(err.message || String(err), true));
+    });
+    els.exportArtifact.addEventListener("click", () => {
+      downloadArtifactContent().catch((err) => setStatus(err.message || String(err), true));
+    });
+    els.printArtifact.addEventListener("click", () => window.print());
+    els.discardDraft.addEventListener("click", discardDraft);
+    els.logViewControls.addEventListener("click", (evt) => {
+      const button = evt.target.closest("[data-log-view]");
+      if (!button) {
+        return;
+      }
+      state.logView = button.dataset.logView || "live";
+      renderLogStream();
+      if (state.logView === "errors" && state.chatID) {
+        refreshErrorLogs().catch((err) => setStatus(err.message || String(err), true));
+      }
+      if (state.logView === "summary") {
+        refreshErrorSummary().catch((err) => setStatus(err.message || String(err), true));
+      }
+    });
+    els.logSeverityFilters.addEventListener("click", (evt) => {
+      const button = evt.target.closest("[data-log-severity]");
+      if (!button) {
+        return;
+      }
+      state.logSeverity = button.dataset.logSeverity || "all";
+      renderLogStream();
+    });
+    els.logCategoryFilters.addEventListener("click", (evt) => {
+      const button = evt.target.closest("[data-log-category]");
+      if (!button) {
+        return;
+      }
+      state.logCategory = button.dataset.logCategory || "all";
+      renderLogStream();
+    });
+    els.logSearch.addEventListener("input", () => {
+      state.logSearch = els.logSearch.value || "";
+      renderLogStream();
+    });
+    els.logRunFilter.addEventListener("input", () => {
+      state.logRunID = els.logRunFilter.value || "";
+      renderLogStream();
+    });
+    els.logPause.addEventListener("click", () => {
+      state.logPaused = !state.logPaused;
+      if (state.logPaused) {
+        updateLogChrome(filteredLogEntries().length, currentLogEntries().length);
+        return;
+      }
+      renderLogStream();
+    });
+    els.logClear.addEventListener("click", () => {
+      if (state.logView === "errors") {
+        state.errorLogs = [];
+      } else if (state.logView === "summary") {
+        state.errorSummary = [];
+      } else {
+        state.liveLogs = [];
+      }
+      renderLogStream();
+    });
+    els.logAutoscroll.addEventListener("click", () => {
+      state.logAutoScroll = !state.logAutoScroll;
+      renderLogStream();
+    });
+    els.refreshErrors.addEventListener("click", () => {
+      refreshDiagnostics().catch((err) => setStatus(err.message || String(err), true));
+    });
+
+    loadWorkspaceState();
+    renderArtifactWorkspace();
+    renderLogStream();
+    requestWorkspaceConsole().catch(() => {});
+    if (state.chatID) {
+      connectLive();
+    }
+  </script>
+</body>
+</html>

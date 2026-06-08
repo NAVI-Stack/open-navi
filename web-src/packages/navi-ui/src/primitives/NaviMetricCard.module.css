@@ -1,0 +1,29 @@
+.card {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--navi-space-xs);
+  min-width: 140px;
+  padding: var(--navi-space-md) var(--navi-space-lg);
+  background: var(--navi-surface-elevated);
+  border: 1px solid var(--navi-border-subtle);
+  border-radius: var(--navi-radius-lg);
+}
+
+.label {
+  font-size: var(--navi-font-size-xs);
+  color: var(--navi-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.value {
+  font-size: var(--navi-font-size-xl);
+  font-weight: 600;
+  color: var(--navi-text);
+  line-height: 1.1;
+}
+
+.sub {
+  font-size: var(--navi-font-size-sm);
+  color: var(--navi-text-secondary);
+}

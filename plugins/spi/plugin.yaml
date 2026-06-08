@@ -1,0 +1,11 @@
+id: navi.hardware.spi
+name: SPI Bus Controller
+description: Governed SPI peripheral interaction capability.
+version: 1.0.0
+kind: sensory
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/spi
+      skill_id: hardware.spi

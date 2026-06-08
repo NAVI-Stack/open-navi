@@ -1,0 +1,71 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: var(--navi-radius-full);
+  font-size: 11px;
+  font-weight: var(--navi-font-weight-medium);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  background: var(--navi-bg-subtle);
+  border: 1px solid var(--navi-border);
+}
+
+.sm { font-size: 10px; padding: 2px 6px; }
+.md { font-size: 11px; padding: 2px 8px; }
+.lg { font-size: 12px; padding: 4px 10px; }
+
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.pulse {
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(var(--badge-color-rgb), 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 4px rgba(var(--badge-color-rgb), 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(var(--badge-color-rgb), 0); }
+}
+
+.idle .dot { background-color: var(--navi-text-tertiary); }
+.idle { color: var(--navi-text-secondary); }
+
+.running .dot { background-color: var(--navi-accent); }
+.running { color: var(--navi-accent); --badge-color-rgb: 56, 189, 248; background: var(--navi-accent-dim); border-color: transparent; }
+
+.blocked .dot { background-color: var(--navi-warning); }
+.blocked { color: var(--navi-warning); background: var(--navi-warning-dim); border-color: transparent; }
+
+.completed .dot { background-color: var(--navi-success); }
+.completed { color: var(--navi-success); background: var(--navi-success-dim); border-color: transparent; }
+
+.failed .dot { background-color: var(--navi-danger); }
+.failed { color: var(--navi-danger); background: var(--navi-danger-dim); border-color: transparent; }
+
+.warning .dot { background-color: var(--navi-warning); }
+.warning { color: var(--navi-warning); }
+
+.info .dot { background-color: var(--navi-info); }
+.info { color: var(--navi-info); background: var(--navi-info-dim); border-color: transparent; }
+
+.default .dot { background-color: var(--navi-text-tertiary); }
+.default { color: var(--navi-text-secondary); }
+
+/* Legacy aliases */
+.danger .dot { background-color: var(--navi-danger); }
+.danger { color: var(--navi-danger); background: var(--navi-danger-dim); border-color: transparent; }
+
+.success .dot { background-color: var(--navi-success); }
+.success { color: var(--navi-success); background: var(--navi-success-dim); border-color: transparent; }
+
+.muted .dot { background-color: var(--navi-text-tertiary); }
+.muted { color: var(--navi-text-tertiary); }
+
+.accent .dot { background-color: var(--navi-accent); }
+.accent { color: var(--navi-accent); }

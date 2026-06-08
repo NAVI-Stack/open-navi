@@ -1,0 +1,162 @@
+oss27_version: "1.0"
+skill_id: "core-artifact"
+semver: "1.0.0"
+
+display:
+  name: "Core Artifact"
+  description: "Create, update, list, and search durable NAVI artifacts for substantial generated work products."
+  emoji: "artifact"
+
+interfaces:
+  - name: "create"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["title", "type", "content"]
+      properties:
+        title:
+          type: "string"
+          description: "Human-readable artifact title."
+        type:
+          type: "string"
+          enum: ["document", "code", "data", "presentation"]
+          description: "Artifact category."
+        subtype:
+          type: "string"
+          description: "Specific artifact subtype, such as html, markdown, table, diagram, json, csv, or code language."
+        content_format:
+          type: "string"
+          description: "MIME-like format, such as text/html, text/markdown, application/json, text/csv, or text/plain."
+        content:
+          description: "Full artifact payload to persist."
+        reason:
+          type: "string"
+          description: "Short reason for creating the artifact."
+        workspace_id:
+          type: "string"
+          description: "Optional explicit workspace ID override."
+        project_id:
+          type: "string"
+          description: "Optional project ID to link."
+        owner_id:
+          type: "string"
+          description: "Optional explicit owner ID override."
+        source_conversation_id:
+          type: "string"
+          description: "Optional source chat/conversation ID."
+        source_message_id:
+          type: "string"
+          description: "Optional source message or run ID."
+    output_schema:
+      type: "object"
+      properties:
+        artifact_id: { type: "string" }
+        version_id: { type: "string" }
+        title: { type: "string" }
+        message: { type: "string" }
+
+  - name: "update"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["artifact_id", "content"]
+      properties:
+        artifact_id:
+          type: "string"
+        content:
+          description: "Replacement artifact content."
+        reason:
+          type: "string"
+        expected_base_version_id:
+          type: "string"
+          description: "Optional optimistic concurrency guard."
+        source_conversation_id:
+          type: "string"
+        source_message_id:
+          type: "string"
+    output_schema:
+      type: "object"
+      properties:
+        artifact_id: { type: "string" }
+        version_id: { type: "string" }
+        version_number: { type: "integer" }
+        message: { type: "string" }
+
+  - name: "list"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties:
+        limit:
+          type: "integer"
+          description: "Maximum artifacts to return."
+    output_schema:
+      type: "object"
+      properties:
+        artifacts:
+          type: "array"
+          items:
+            type: "object"
+
+  - name: "search"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["query"]
+      properties:
+        query:
+          type: "string"
+          description: "Search text."
+    output_schema:
+      type: "object"
+      properties:
+        artifacts:
+          type: "array"
+          items:
+            type: "object"
+
+  - name: "update_lifecycle"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["artifact_id", "state"]
+      properties:
+        artifact_id:
+          type: "string"
+        state:
+          type: "string"
+          enum: ["draft", "in_progress", "review_ready", "approved", "archived", "errored"]
+    output_schema:
+      type: "object"
+      properties:
+        artifact_id: { type: "string" }
+        lifecycle_state: { type: "string" }
+        message: { type: "string" }
+
+effects:
+  side_effects: ["artifact_write"]
+  risk_tier: "low"
+  idempotency: false
+  requires_confirmation: false
+
+security:
+  auth: []
+  data_access:
+    pii: "possible"
+    secrets: "forbidden"
+  sandbox:
+    required: false
+    network_egress: []
+
+performance:
+  expected_p50_ms: 80
+  timeout_ms: 5000
+
+governance:
+  publisher: "navi.official"
+  signed: false

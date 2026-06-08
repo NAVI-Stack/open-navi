@@ -1,0 +1,41 @@
+id: navi.contacts
+name: NAVI Contacts
+description: >
+  Privacy-first contact management. NAVI maintains its own contact graph (owner_type: navi),
+  separate from contacts imported from the owner's address book (owner_type: owner). Supports
+  trust levels (unknown → verified), identity linking (email/phone/navi_id deduplication),
+  interaction tracking, and vCard 3.0 import/export for Google Contacts and Apple Contacts.
+version: 1.0.0
+kind: domain
+status: active
+trust_tier: builtin
+
+display:
+  name: NAVI Contacts
+  description: Manage NAVI's contacts — trust levels, identity linking, interaction tracking, and vCard 3.0 import/export.
+  emoji: "👤"
+
+categories:
+  - domain
+  - identity
+
+capabilities:
+  - contacts.read
+  - contacts.write
+  - contacts.vcf
+
+components:
+  skills:
+    - path: skills/navi-contacts
+      skill_id: navi-contacts
+
+permissions:
+  data_access:
+    pii: possible
+    secrets: forbidden
+
+lifecycle:
+  activate:
+    expose_skills: true
+  disable:
+    hide_skills: true

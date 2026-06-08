@@ -1,0 +1,11 @@
+id: navi.llm.embed
+name: LLM Embed
+description: Embedding-oriented LLM helper capability.
+version: 1.0.0
+kind: domain
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/llm-embed
+      skill_id: llm-embed

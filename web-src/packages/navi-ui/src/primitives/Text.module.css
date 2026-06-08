@@ -1,0 +1,26 @@
+.text {
+  font-family: var(--navi-font-sans);
+  line-height: var(--navi-line-height);
+}
+
+.text[data-mono='true'] { font-family: var(--navi-font-mono); }
+
+.text[data-size='xs'] { font-size: var(--navi-font-size-xs); }
+.text[data-size='sm'] { font-size: var(--navi-font-size-sm); }
+.text[data-size='md'] { font-size: var(--navi-font-size); }
+.text[data-size='lg'] { font-size: var(--navi-font-size-lg); }
+.text[data-size='xl'] { font-size: var(--navi-font-size-xl); }
+.text[data-size='2xl'] { font-size: var(--navi-font-size-2xl); }
+
+.text[data-weight='normal'] { font-weight: var(--navi-font-weight-normal); }
+.text[data-weight='medium'] { font-weight: var(--navi-font-weight-medium); }
+.text[data-weight='semibold'] { font-weight: var(--navi-font-weight-semibold); }
+.text[data-weight='bold'] { font-weight: var(--navi-font-weight-bold); }
+
+.text[data-tone='default'] { color: var(--navi-text); }
+.text[data-tone='secondary'] { color: var(--navi-text-secondary); }
+.text[data-tone='tertiary'] { color: var(--navi-text-tertiary); }
+.text[data-tone='accent'] { color: var(--navi-accent); }
+.text[data-tone='danger'] { color: var(--navi-danger); }
+.text[data-tone='success'] { color: var(--navi-success); }
+.text[data-tone='warning'] { color: var(--navi-warning); }

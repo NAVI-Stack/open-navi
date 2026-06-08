@@ -1,0 +1,11 @@
+id: navi.llm.router
+name: LLM Router
+description: Runtime LLM provider and model routing controls.
+version: 1.0.0
+kind: system
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/llm-router
+      skill_id: llm-router

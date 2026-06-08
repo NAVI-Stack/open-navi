@@ -1,0 +1,20 @@
+{
+  "name": "navi-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "NAVI frontend workspace: the shared @navi/ui library and the apps that consume it (starting with the NAVI Console).",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "build": "pnpm --filter navi-console run build",
+    "build:ui": "pnpm --filter @navi/ui run build",
+    "dev": "pnpm --filter navi-console run dev",
+    "test": "pnpm -r run test",
+    "typecheck": "pnpm -r run typecheck"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

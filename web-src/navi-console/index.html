@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="icon" href="data:," />
+  <title>NAVI Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/splash.css" />
+  <link rel="stylesheet" href="/shimmer.css" />
+</head>
+<body>
+  <div id="navi-splash-screen" aria-label="loading" role="status">
+    <div id="navi-splash-container">
+      <div id="navi-splash-brand" class="navi-loader navi-loader--console" data-expanded="0" data-font="0">
+        <span class="navi-loader__visible">NAVI</span><span class="navi-loader__hidden"><br />-SOLE</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    ;(function () {
+      const brand = document.getElementById('navi-splash-brand')
+      if (!brand) return
+
+      const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      const timing = isReducedMotion
+        ? { hold: 100, expansion: 300, pause: 50 }
+        : { hold: 500, expansion: 800, pause: 200 }
+
+      let shimmerResolve
+      const shimmerStarted = new Promise((resolve) => { shimmerResolve = resolve })
+      window.__naviSplash = { shimmerStarted }
+
+      function domReady() {
+        return new Promise((resolve) => {
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', resolve, { once: true })
+          } else {
+            resolve()
+          }
+        })
+      }
+
+      Promise.all([domReady()]).then(function () {
+        brand.dataset.font = '1'
+        setTimeout(function () {
+          brand.dataset.expanded = '1'
+          setTimeout(function () {
+            setTimeout(function () {
+              brand.classList.add('shimmer')
+              shimmerResolve()
+            }, timing.pause)
+          }, timing.expansion)
+        }, timing.hold)
+      })
+    })()
+  </script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

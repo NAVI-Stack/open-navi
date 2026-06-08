@@ -1,0 +1,46 @@
+kind: LLMProfile
+schema_version: 1
+llm_id: meta.llama-3-2-3b
+canonical_name: Llama 3.2 3B
+aliases:
+  - llama-3.2-3b
+  - llama 3.2 3b
+identity:
+  provider: ollama
+  publisher: Meta
+  release_channel: stable
+  hosting_modes_supported:
+    - local
+capabilities:
+  primary_use_cases:
+    - chat
+    - automation
+  interaction_modes:
+    - conversational
+    - streaming
+  agentic_class: none
+  coding_class: basic
+  reasoning_class: basic
+  instruction_following_class: fair
+  tool_discipline_class: fair
+  schema_reliability_class: fair
+  multimodal_class: weak
+technical_profile:
+  supports_tools: false
+  supports_parallel_tools: false
+  supports_json_schema: false
+  supports_streaming: true
+  supports_vision: false
+  supports_audio_in: false
+  supports_audio_out: false
+  max_output_tokens: 2048
+  context_window:
+    input_tokens: 8192
+routing_profile:
+  preferred_for:
+    - chat
+    - lightweight
+  cost_tier: free
+  latency_tier: high
+  max_risk_tier_allowed: low
+  autonomy_ceiling: assistive

@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://navi.dev/schema/enums.json",
+  "title": "NAVI AI Platform — Enum Definitions",
+  "definitions": {
+    "RiskLevel": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"],
+      "description": "Blast radius classification for a task."
+    },
+    "TaskStatus": {
+      "type": "string",
+      "enum": ["pending", "running", "blocked", "completed", "failed", "cancelled"],
+      "description": "Lifecycle state machine for a task."
+    },
+    "EventKind": {
+      "type": "string",
+      "enum": ["command", "fact"],
+      "description": "Commands express intent; facts record what happened. Mixing breaks replay."
+    },
+    "EventType": {
+      "type": "string",
+      "enum": [
+        "cmd.task.create", "cmd.task.assign", "cmd.task.cancel", "cmd.task.update",
+        "cmd.claim.acquire", "cmd.claim.release",
+        "cmd.agent.register", "cmd.agent.retire",
+        "fact.task.created", "fact.task.assigned", "fact.task.started",
+        "fact.task.completed", "fact.task.failed", "fact.task.cancelled",
+        "fact.claim.acquired", "fact.claim.released", "fact.claim.expired", "fact.claim.conflict",
+        "fact.agent.registered", "fact.agent.retired",
+        "fact.cost.recorded",
+        "fact.governor.tripped"
+      ],
+      "description": "Fully-qualified event name on the bus."
+    },
+    "AgentType": {
+      "type": "string",
+      "enum": ["orchestrator", "architect", "developer", "reviewer", "tester", "devops", "secops", "docs"],
+      "description": "Role of an agent in the system."
+    },
+    "ClaimStatus": {
+      "type": "string",
+      "enum": ["active", "released", "expired", "conflict"],
+      "description": "Lifecycle of a surface claim."
+    },
+    "CostTier": {
+      "type": "string",
+      "enum": ["free", "cheap", "moderate", "expensive"],
+      "description": "API spending bucket for tier-level caps."
+    },
+    "Tool": {
+      "type": "string",
+      "enum": ["read_file", "write_file", "run_command", "web_search", "call_llm", "git_ops", "deploy_ops", "sec_scan"],
+      "description": "Capability that an agent can invoke."
+    }
+  }
+}

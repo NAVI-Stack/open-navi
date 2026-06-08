@@ -1,0 +1,88 @@
+oss27_version: 1.0
+skill_id: navi.native.folder_pick
+semver: 0.1.0
+
+display:
+  name: Native Folder Picker
+  description: Open a native OS folder picker dialog via the PET desktop bridge.
+  emoji: "📁"
+
+interfaces:
+  - name: pick
+    description: Open the operating system's native folder selection dialog and return the selected path.
+    transport:
+      type: bridge
+      connector: navi.connector.pet_bridge
+      operation: folder_pick
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        title:
+          type: string
+          description: Dialog window title shown to the user.
+        default_path:
+          type: string
+          description: Optional starting directory path for the dialog.
+    output_schema:
+      type: object
+      additionalProperties: false
+      required:
+        - selected_path
+      properties:
+        selected_path:
+          type: string
+          description: Absolute path of the selected folder, or empty if the user cancelled.
+        cancelled:
+          type: boolean
+          description: True if the user dismissed the dialog without selecting a folder.
+
+effects:
+  side_effects:
+    - user_interaction
+  risk_tier: low
+  requires_confirmation: false
+  idempotency_level: idempotent
+  reversibility: reversible_internal
+
+security:
+  auth:
+    type: bridge_token
+    env:
+      - NAVI_PET_BRIDGE_TOKEN
+  data_access:
+    pii: false
+    secrets: forbidden
+  sandbox:
+    required: true
+    network_egress: none
+
+performance:
+  timeout_ms: 30000
+  rate_limit:
+    qps: 1
+    burst: 1
+
+governance:
+  publisher: navi.builtin
+  signed: false
+  trust_tier: builtin
+
+capability:
+  tags:
+    - dialog
+    - native
+    - ui
+  domains:
+    - workspace
+  provides:
+    - native.dialog
+  requires:
+    - navi.connector.pet_bridge
+
+reliability:
+  expected_failure_modes:
+    - bridge_unavailable
+    - dialog_cancelled
+    - not_running_in_pet
+  retry_policy: safe

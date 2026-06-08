@@ -1,0 +1,11 @@
+id: navi.workflow.workspace_surface_audit
+name: Workspace Surface Audit
+description: Reusable workspace surface audit workflow guidance.
+version: 1.0.0
+kind: workflow
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/workspace-surface-audit
+      skill_id: workspace-surface-audit

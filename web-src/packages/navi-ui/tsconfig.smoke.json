@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": false,
+    "noEmit": true,
+    "types": []
+  },
+  "include": ["scripts/smoke-dist.ts"]
+}

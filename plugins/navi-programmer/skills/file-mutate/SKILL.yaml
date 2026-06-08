@@ -1,0 +1,186 @@
+oss27_version: "1.0"
+skill_id: "navi-programmer.file-mutate"
+semver: "0.1.0"
+
+display:
+  name: "NAVI Programmer File Mutate"
+  description: "Create or replace scoped text files with preconditions and structured mutation evidence."
+
+interfaces:
+  - name: "create_file"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+          description: "Repository or workspace root. Defaults to NAVI_WORKSPACE_DIR, then the skill process cwd."
+        path:
+          type: "string"
+          description: "File path to create, relative to root unless absolute and still inside root."
+        content:
+          type: "string"
+        encoding:
+          type: "string"
+        create_parent_dirs:
+          type: "boolean"
+        allow_overwrite:
+          type: "boolean"
+          description: "Allow create_file to replace an existing file when expected_sha256 also matches."
+        expected_sha256:
+          type: "string"
+          description: "Optional expected hash for an existing overwrite target."
+        allow_hidden:
+          type: "boolean"
+        dry_run:
+          type: "boolean"
+        max_content_bytes:
+          type: "integer"
+          minimum: 1
+          maximum: 1048576
+      required: ["path", "content"]
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        outcome:
+          type: "string"
+        changed:
+          type: "boolean"
+        changed_files:
+          type: "array"
+          items:
+            type: "object"
+        diff_summary:
+          type: "object"
+
+  - name: "write_file"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+          description: "Repository or workspace root. Defaults to NAVI_WORKSPACE_DIR, then the skill process cwd."
+        path:
+          type: "string"
+          description: "File path to replace, relative to root unless absolute and still inside root."
+        content:
+          type: "string"
+        encoding:
+          type: "string"
+        create_if_missing:
+          type: "boolean"
+        create_parent_dirs:
+          type: "boolean"
+        expected_sha256:
+          type: "string"
+        expected_content:
+          type: "string"
+        allow_hidden:
+          type: "boolean"
+        dry_run:
+          type: "boolean"
+        max_content_bytes:
+          type: "integer"
+          minimum: 1
+          maximum: 1048576
+      required: ["path", "content"]
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        outcome:
+          type: "string"
+        changed:
+          type: "boolean"
+        changed_files:
+          type: "array"
+          items:
+            type: "object"
+        diff_summary:
+          type: "object"
+
+effects:
+  side_effects: ["filesystem_write"]
+  risk_tier: "medium"
+  idempotency: false
+  idempotency_level: "conditional"
+  reversibility: "reversible_internal"
+  requires_confirmation: false
+
+security:
+  auth: []
+  data_access:
+    pii: "possible"
+    secrets: "write"
+  sandbox:
+    required: true
+    network_egress: []
+
+performance:
+  expected_p50_ms: 100
+  timeout_ms: 30000
+  rate_limit:
+    qps: 2
+    burst: 4
+
+observability:
+  log_redaction: ["file_content", "diff"]
+  emit_metrics: ["file_mutation_invocation", "file_mutation_outcome"]
+
+governance:
+  publisher: "navi.programmer"
+  signed: false
+  deprecates: []
+  replaces: []
+  trust_tier: "builtin"
+
+capability:
+  tags: ["programming", "mutation", "filesystem", "governed-write"]
+  domains: ["coding", "repository-management"]
+  provides:
+    - "scoped-file-creation"
+    - "scoped-file-replacement"
+    - "mutation-evidence-capture"
+  requires:
+    - "workspace-binding"
+  command_type: "update"
+
+reliability:
+  expected_failure_modes:
+    - "path_out_of_scope"
+    - "path_denied"
+    - "file_exists"
+    - "file_not_found"
+    - "hash_mismatch"
+    - "content_mismatch"
+    - "binary_file"
+    - "write_failed"
+  retry_policy: "conditional"
+
+python_runtime:
+  python_version: "3.11"
+  venv_strategy: "per_skill"
+  lifecycle: "cold"
+  spawn_timeout_ms: 5000
+  io_format: "json_stdio"
+  max_input_bytes: 2097152
+  max_output_bytes: 2097152
+  timeout_ms: 30000
+  max_memory_mb: 256
+  max_cpu_percent: 100
+  network_access: false
+  allow_fs_write: true
+  tmpdir_mb: 64
+  maturity: "prototype"

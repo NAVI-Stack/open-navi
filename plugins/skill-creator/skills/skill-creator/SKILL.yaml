@@ -1,0 +1,87 @@
+oss27_version: "1.0"
+skill_id: "skill-creator"
+semver: "1.0.0"
+
+display:
+  name: "skill-creator"
+  description: "Create a new NAVI skill from a capability description. Use when the user explicitly asks to add a capability, or when you detect a missing ability."
+  emoji: "D"
+
+interfaces:
+  - name: "create"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        capability:
+          type: "string"
+          description: "What the new skill should do."
+        context:
+          type: "string"
+          description: "Additional context such as the triggering request, desired behavior, or failure details."
+        chat_id:
+          type: "string"
+          description: "Optional chat identifier to associate with the synthetic capability gap."
+      required: ["capability"]
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        skill_id:
+          type: "string"
+        installed:
+          type: "boolean"
+        message:
+          type: "string"
+        skill_dir:
+          type: "string"
+        gap_closed:
+          type: "boolean"
+
+effects:
+  side_effects: ["filesystem_write", "registry_modification"]
+  risk_tier: "medium"
+  idempotency: false
+  idempotency_level: "conditional"
+  reversibility: "reversible_internal"
+  requires_confirmation: true
+
+security:
+  auth: []
+  data_access:
+    pii: "none"
+    secrets: "forbidden"
+  sandbox:
+    required: false
+    network_egress: []
+
+performance:
+  expected_p50_ms: 1500
+  timeout_ms: 30000
+  rate_limit:
+    qps: 1
+    burst: 1
+
+observability:
+  log_redaction: []
+  emit_metrics: []
+
+governance:
+  publisher: "navi.core"
+  signed: false
+  deprecates: []
+  replaces: []
+  trust_tier: "builtin"
+
+capability:
+  tags: ["meta", "self-extension", "skill-creation"]
+  domains: ["skills"]
+  provides: ["skill-scaffolding"]
+  requires: []
+  command_type: "create"
+
+reliability:
+  expected_failure_modes: ["llm_generation_failed", "installation_failed", "proposal_required"]
+  retry_policy: "conditional"

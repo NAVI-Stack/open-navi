@@ -1,0 +1,11 @@
+id: navi.self_diagnostic
+name: Self Diagnostic
+description: Built-in self-diagnostic capability package.
+version: 1.0.0
+kind: system
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/self-diagnostic
+      skill_id: self-diagnostic

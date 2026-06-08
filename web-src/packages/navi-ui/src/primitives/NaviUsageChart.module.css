@@ -1,0 +1,63 @@
+.chart {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--navi-space-sm);
+}
+
+.title {
+  font-size: var(--navi-font-size-sm);
+  font-weight: 600;
+  color: var(--navi-text-secondary);
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--navi-space-xs);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(80px, 160px) 1fr auto;
+  align-items: center;
+  gap: var(--navi-space-sm);
+}
+
+.barLabel {
+  font-size: var(--navi-font-size-sm);
+  color: var(--navi-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.track {
+  position: relative;
+  display: block;
+  height: 10px;
+  background: var(--navi-border-subtle);
+  border-radius: var(--navi-radius-full);
+  overflow: hidden;
+}
+
+.bar {
+  display: block;
+  height: 100%;
+  background: var(--navi-accent);
+  border-radius: var(--navi-radius-full);
+  transition: width var(--navi-transition-fast);
+}
+
+.barValue {
+  font-size: var(--navi-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--navi-text-secondary);
+  min-width: 2ch;
+  text-align: right;
+}
+
+.empty {
+  font-size: var(--navi-font-size-sm);
+  color: var(--navi-text-tertiary);
+}

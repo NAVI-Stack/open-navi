@@ -1,0 +1,82 @@
+{
+  "name": "@navi/ui",
+  "version": "0.1.0",
+  "description": "Shared NAVI UI Library — design tokens, primitives, theming, and a pluggable generative-UI runtime. The NAVI Console is its first consumer.",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "src",
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./theme": {
+      "types": "./dist/theme/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./genui": {
+      "types": "./dist/genui/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./patterns": {
+      "types": "./dist/patterns/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./openui": {
+      "types": "./dist/openui/index.d.ts",
+      "default": "./dist/openui.js"
+    },
+    "./navi-ui.css": "./dist/navi-ui.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./styles.css": "./dist/tokens.css"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "vite build -c vite.lib.config.ts",
+    "smoke:dist": "node scripts/smoke-dist.mjs && tsc --noEmit -p tsconfig.smoke.json",
+    "ladle": "ladle serve",
+    "ladle:build": "ladle build"
+  },
+  "peerDependencies": {
+    "lucide-react": ">=0.503.0",
+    "react": "^19.0.0",
+    "react-aria-components": "^1.7.0",
+    "react-dom": "^19.0.0"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@ladle/react": "^5.1.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "@vitejs/plugin-react": "^4.5.2",
+    "jsdom": "^29.1.1",
+    "lucide-react": "^0.503.0",
+    "react": "^19.1.0",
+    "react-aria-components": "^1.7.1",
+    "react-dom": "^19.1.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^2.1.9",
+    "vitest-axe": "^0.1.0"
+  },
+  "optionalDependencies": {
+    "@openuidev/react-lang": "^0.2.6"
+  }
+}

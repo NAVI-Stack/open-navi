@@ -1,0 +1,129 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main, agents/**]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Unit tests
+        run: go test ./cmd/... ./internal/... ./connectors/... ./plugins/... -count=1
+
+  conformance:
+    # Language-layer contract guards: forbidden Python imports, ungoverned
+    # reads, and hand-edited generated contracts. See cmd/langguard/README.md
+    # and docs/architecture/language-layer-contract.md §8.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Language-layer conformance
+        # Builds the checker to bin/ and runs all three guards. The drift guard
+        # regenerates the governed Python + TypeScript contracts from the Go
+        # source and fails if the committed files differ.
+        run: make conformance
+
+  frontend:
+    # Console + @navi/ui regression gate: typecheck + vitest (incl. data-driven
+    # render and accessibility tests). Blocking so the render feature cannot
+    # regress unnoticed. The Go e2e render scenario is runnable via
+    # `make test-e2e` (docker) but is intentionally not a required gate here.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: web-src/pnpm-lock.yaml
+
+      - name: Install workspace deps
+        run: cd web-src && pnpm install --frozen-lockfile
+
+      - name: Typecheck + test @navi/ui
+        run: cd web-src && pnpm --filter @navi/ui run typecheck && pnpm --filter @navi/ui test
+
+      - name: Typecheck + test Console
+        run: cd web-src && pnpm --filter navi-console exec tsc --noEmit && pnpm --filter navi-console test
+
+  docker-navid:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and start NaviD
+        run: docker compose -f compose.yml up -d --build
+
+      - name: Wait for health
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:6284/health >/dev/null; then
+              echo "health OK"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "health check timed out"
+          docker compose -f compose.yml logs
+          exit 1
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose -f compose.yml logs
+
+      - name: Stop stack
+        if: always()
+        run: docker compose -f compose.yml down -v
+
+  docker-strict:
+    runs-on: ubuntu-latest
+    needs: test
+    env:
+      NAVI_OLLAMA_URL: http://127.0.0.1:11434/v1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and start NaviD (strict compose)
+        run: docker compose -f compose.strict.yml up -d --build
+
+      - name: Wait for health
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:6284/health >/dev/null; then
+              echo "health OK"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "health check timed out"
+          docker compose -f compose.strict.yml logs
+          exit 1
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose -f compose.strict.yml logs
+
+      - name: Stop stack
+        if: always()
+        run: docker compose -f compose.strict.yml down -v

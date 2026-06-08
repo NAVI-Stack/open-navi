@@ -1,0 +1,45 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: First-run console
+      - generic [ref=e6]: Setup complete
+      - generic [ref=e7]: System light
+    - heading "NAVI setup" [level=1] [ref=e8]
+    - paragraph [ref=e9]: "This is where NAVI becomes yours: owner recovery, a working brain, and an optional first way to talk. Local-first by default, theme-aware from the first screen."
+    - generic "NAVI setup principles" [ref=e10]:
+      - generic [ref=e11]:
+        - strong [ref=e12]: Owner-held
+        - generic [ref=e13]: Your recovery passport is created here and shown once.
+      - generic [ref=e14]:
+        - strong [ref=e15]: Local-first
+        - generic [ref=e16]: Ollama stays the default when it is available.
+      - generic [ref=e17]:
+        - strong [ref=e18]: Ready to grow
+        - generic [ref=e19]: Connect a channel now, or let NAVI meet you in chat after setup.
+  - generic [ref=e20]:
+    - complementary "Setup progress" [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]: "1"
+        - generic [ref=e24]:
+          - heading "Recovery" [level=3] [ref=e25]
+          - paragraph [ref=e26]: Create and save your owner passport.
+      - generic [ref=e27]:
+        - generic [ref=e28]: "2"
+        - generic [ref=e29]:
+          - heading "Brain" [level=3] [ref=e30]
+          - paragraph [ref=e31]: Pick a provider and model.
+      - generic [ref=e32]:
+        - generic [ref=e33]: "3"
+        - generic [ref=e34]:
+          - heading "Connection" [level=3] [ref=e35]
+          - paragraph [ref=e36]: Optional first communication method.
+      - generic [ref=e37]:
+        - generic [ref=e38]: "4"
+        - generic [ref=e39]:
+          - heading "Ready" [level=3] [ref=e40]
+          - paragraph [ref=e41]: Finish and open NAVI.
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - heading "NAVI is ready" [level=2] [ref=e44]
+        - paragraph [ref=e45]: Setup is complete. The normal backend page is available now.
+      - button "Open NAVI" [ref=e47] [cursor=pointer]

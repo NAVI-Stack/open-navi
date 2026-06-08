@@ -1,0 +1,202 @@
+oss27_version: "1.0"
+skill_id: "navi-programmer.git-lifecycle"
+semver: "0.1.0"
+
+display:
+  name: "NAVI Programmer Git Lifecycle"
+  description: "Inspect Git state, create local branches and commits, and prepare review handoff evidence without remote mutation."
+
+interfaces:
+  - name: "inspect_status"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+          description: "Repository or workspace root. Defaults to NAVI_WORKSPACE_DIR, then the skill process cwd."
+        include_diff:
+          type: "boolean"
+        max_diff_bytes:
+          type: "integer"
+          minimum: 1024
+          maximum: 1048576
+        paths:
+          type: "array"
+          items:
+            type: "string"
+    output_schema:
+      type: "object"
+      additionalProperties: true
+
+  - name: "create_branch"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+        branch_name:
+          type: "string"
+        start_point:
+          type: "string"
+        checkout:
+          type: "boolean"
+        allow_existing:
+          type: "boolean"
+        allow_dirty:
+          type: "boolean"
+        dry_run:
+          type: "boolean"
+      required: ["branch_name"]
+    output_schema:
+      type: "object"
+      additionalProperties: true
+
+  - name: "create_commit"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+        message:
+          type: "string"
+        paths:
+          type: "array"
+          items:
+            type: "string"
+        expected_branch:
+          type: "string"
+        allow_untracked:
+          type: "boolean"
+        dry_run:
+          type: "boolean"
+      required: ["message", "paths"]
+    output_schema:
+      type: "object"
+      additionalProperties: true
+
+  - name: "prepare_review"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+        title:
+          type: "string"
+        summary:
+          type: "string"
+        validation_summary:
+          type: "string"
+        include_diff:
+          type: "boolean"
+        max_diff_bytes:
+          type: "integer"
+          minimum: 1024
+          maximum: 1048576
+        paths:
+          type: "array"
+          items:
+            type: "string"
+    output_schema:
+      type: "object"
+      additionalProperties: true
+
+effects:
+  side_effects: ["git_ref_update", "git_index_update", "git_commit_create"]
+  risk_tier: "medium"
+  idempotency: false
+  idempotency_level: "conditional"
+  reversibility: "reversible_internal"
+  requires_confirmation: false
+
+security:
+  auth: []
+  data_access:
+    pii: "possible"
+    secrets: "read"
+  sandbox:
+    required: true
+    network_egress: []
+
+performance:
+  expected_p50_ms: 250
+  timeout_ms: 30000
+  rate_limit:
+    qps: 2
+    burst: 4
+
+observability:
+  log_redaction: ["diff", "commit_message"]
+  emit_metrics: ["git_lifecycle_invocation", "git_lifecycle_outcome"]
+
+governance:
+  publisher: "navi.programmer"
+  signed: false
+  deprecates: []
+  replaces: []
+  trust_tier: "builtin"
+
+capability:
+  tags: ["programming", "git", "review", "lifecycle"]
+  domains: ["coding", "repository-management"]
+  provides:
+    - "git-status-evidence"
+    - "local-branch-creation"
+    - "local-commit-creation"
+    - "review-handoff-preparation"
+  requires:
+    - "workspace-binding"
+  command_type: "update"
+
+reliability:
+  expected_failure_modes:
+    - "not_git_repo"
+    - "path_out_of_scope"
+    - "dirty_worktree_blocked"
+    - "branch_exists"
+    - "branch_invalid"
+    - "branch_mismatch"
+    - "no_changes_selected"
+    - "untracked_not_allowed"
+    - "commit_failed"
+    - "remote_action_blocked"
+  retry_policy: "conditional"
+
+python_runtime:
+  python_version: "3.11"
+  venv_strategy: "per_skill"
+  lifecycle: "cold"
+  spawn_timeout_ms: 5000
+  io_format: "json_stdio"
+  max_input_bytes: 1048576
+  max_output_bytes: 2097152
+  timeout_ms: 30000
+  max_memory_mb: 256
+  max_cpu_percent: 100
+  network_access: false
+  allow_fs_write: true
+  tmpdir_mb: 64
+  maturity: "prototype"

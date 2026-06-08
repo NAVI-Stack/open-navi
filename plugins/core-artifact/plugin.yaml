@@ -1,0 +1,14 @@
+id: navi.core_artifact
+name: Core Artifact
+description: Durable artifact creation, update, listing, and search for generated work products.
+version: 1.0.0
+kind: core
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/core-artifact
+      skill_id: core-artifact
+lifecycle:
+  activate:
+    expose_skills: true

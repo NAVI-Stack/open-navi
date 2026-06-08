@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "navi"
+version = "0.1.0"
+description = "NAVI Python SDK and local daemon CLI wrapper."
+requires-python = ">=3.10"
+
+[project.scripts]
+navi = "navi.cli:main"
+
+[tool.setuptools]
+packages = ["navi", "navi.tests"]
+
+[tool.setuptools.package-data]
+navi = ["bin/*"]

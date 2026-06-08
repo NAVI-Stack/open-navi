@@ -1,0 +1,38 @@
+oss27_version: "1.0"
+skill_id: "connector.telegram"
+semver: "1.0.0"
+display:
+  name: "Telegram Connector"
+  description: >
+    Activate the Telegram connector so the user can chat with NAVI from their phone.
+    IMPORTANT: Never ask the user to type their bot token or chat ID into this chat.
+    Credentials must never pass through the conversation.
+    Instead, tell the user to type the CLI command: /connect telegram
+    That command will securely collect their credentials out-of-band without exposing
+    them to the conversation history.
+interfaces:
+  - name: "setup"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: []
+      properties:
+        redirect:
+          type: "string"
+          description: "Always set to 'cli' — signals that credentials are collected out-of-band via /connect telegram"
+          enum: ["cli"]
+    output_schema:
+      type: "object"
+      properties:
+        status:
+          type: "string"
+        message:
+          type: "string"
+effects:
+  side_effects: ["instructs_user"]
+  risk_tier: "low"
+  requires_confirmation: false
+governance:
+  publisher: "navi.official"
+  signed: false

@@ -1,0 +1,168 @@
+{
+  "fixture_id": "np-fixture-bounded-docs-mutation",
+  "kind": "task_fixture",
+  "version": "0.1.0",
+  "description": "Bounded documentation mutation task with full evidence through the validation state.",
+  "task": {
+    "source": "chat",
+    "raw_task": "Update docs/README.md so the implementation-facing docs table links to the bounded mutation runner spec.",
+    "current_repo": ".",
+    "allowed_scope": [
+      "docs"
+    ],
+    "acceptance_hint": "Docs README points readers to the bounded mutation runner spec."
+  },
+  "expected": {
+    "task_class": "bounded_mutation",
+    "mutation_intent": "mutative",
+    "requires_mutation": true,
+    "required_evidence": [
+      "raw_task_input",
+      "normalized_task",
+      "workspace_binding",
+      "repo_status",
+      "inspected_files",
+      "relevant_patterns",
+      "execution_plan",
+      "mutation_attempts",
+      "changed_files",
+      "diff_summary",
+      "validation_results"
+    ],
+    "expected_skill_interfaces": [
+      "navi-programmer.task-normalize.normalize_task",
+      "navi-programmer.task-normalize.bind_scope",
+      "navi-programmer.repo-inspect.repo_status",
+      "navi-programmer.repo-inspect.read_file",
+      "navi-programmer.patch-apply.preview_patch",
+      "navi-programmer.patch-apply.apply_patch",
+      "navi-programmer.run-validation.record_not_run"
+    ]
+  },
+  "runner_input": {
+    "current_state": "validating",
+    "target_state": "synthesizing",
+    "task_class": "bounded_mutation",
+    "available_skills": [
+      "navi-programmer.task-normalize",
+      "navi-programmer.repo-inspect",
+      "navi-programmer.file-mutate",
+      "navi-programmer.patch-apply",
+      "navi-programmer.run-validation",
+      "navi-programmer.git-lifecycle"
+    ],
+    "evidence": {
+      "raw_task_input": {
+        "source": "chat",
+        "content": "Update docs/README.md so the implementation-facing docs table links to the bounded mutation runner spec.",
+        "received_at": "2026-04-29T00:00:00Z"
+      },
+      "normalized_task": {
+        "summary": "Update docs/README.md so the implementation-facing docs table links to the bounded mutation runner spec.",
+        "task_class": "bounded_mutation",
+        "mutation_intent": "mutative",
+        "acceptance_target": "Docs README points readers to the bounded mutation runner spec.",
+        "validation_hints": {
+          "required": true,
+          "classes": [
+            "other"
+          ],
+          "candidate_commands": [],
+          "not_run_allowed_with_reason": "docs_only_no_project_validation_path"
+        }
+      },
+      "workspace_binding": {
+        "repo_root": ".",
+        "allowed_scope": [
+          "docs"
+        ],
+        "is_self_update": false,
+        "candidate_context": {}
+      },
+      "repo_status": {
+        "is_git_repo": true,
+        "dirty": true,
+        "status_lines": [
+          " M docs/README.md"
+        ]
+      },
+      "inspected_files": [
+        {
+          "path": "docs/README.md",
+          "reason": "target documentation table",
+          "content_hash_or_read_window": "read_file:implementation-facing docs table"
+        },
+        {
+          "path": "docs/specs/navi-programmer-bounded-mutation-runner.md",
+          "reason": "target link destination",
+          "content_hash_or_read_window": "read_file:title"
+        }
+      ],
+      "relevant_patterns": [
+        {
+          "path": "docs/README.md",
+          "line": 29,
+          "preview": "| Bounded mutation runner |"
+        }
+      ],
+      "execution_plan": {
+        "steps": [
+          "Inspect docs README table.",
+          "Add bounded mutation runner spec link.",
+          "Record docs-only validation not-run reason."
+        ],
+        "intended_file_touch_set": [
+          "docs/README.md"
+        ],
+        "validation_plan": [
+          {
+            "validation_kind": "docs",
+            "method": "record_not_run",
+            "reason": "docs_only_no_project_validation_path"
+          }
+        ],
+        "rollback_or_recovery_notes": "Revert docs/README.md table row if the link is incorrect."
+      },
+      "mutation_attempts": [
+        {
+          "skill": "navi-programmer.patch-apply.apply_patch",
+          "status": "success",
+          "target": "docs/README.md"
+        }
+      ],
+      "changed_files": [
+        {
+          "path": "docs/README.md",
+          "action": "update",
+          "summary": "Added bounded mutation runner spec link to implementation-facing docs table."
+        }
+      ],
+      "diff_summary": {
+        "files_changed": 1,
+        "insertions": 1,
+        "deletions": 0
+      },
+      "validation_results": [
+        {
+          "validation_kind": "docs",
+          "command": [],
+          "cwd": ".",
+          "verdict": "not_run",
+          "exit_code": null,
+          "duration_ms": 0,
+          "stdout": "",
+          "stderr": "",
+          "reason": "docs_only_no_project_validation_path"
+        }
+      ]
+    }
+  },
+  "expected_runner_output": {
+    "blocked": false,
+    "outcome": "synthesizing",
+    "transition_allowed_by_contract": true,
+    "missing_evidence_count": 0,
+    "missing_skills_count": 0,
+    "validation_effect": "eligible_only_with_explicit_reason"
+  }
+}

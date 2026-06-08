@@ -1,0 +1,77 @@
+# NAVI Plugin Manifest
+# This file is the lifecycle, packaging, permission, and discovery boundary.
+# Skills and connectors remain typed subcomponents owned by this plugin.
+
+plugin_id: navi.native
+semver: 0.1.0
+kind: agentic
+status: active
+trust_tier: builtin
+
+display:
+  name: NAVI Native
+  description: Agentic integration for native filesystem and OS dialog capabilities bridged through the PET desktop shell.
+  emoji: "🖥️"
+
+categories:
+  - agentic
+  - integration
+
+capabilities:
+  - native.file_read
+  - native.file_write
+  - native.list_dir
+  - native.dialog
+
+components:
+  skills:
+    - path: skills/native-file-read/SKILL.yaml
+      skill_id: navi.native.file_read
+    - path: skills/native-file-write/SKILL.yaml
+      skill_id: navi.native.file_write
+    - path: skills/native-list-dir/SKILL.yaml
+      skill_id: navi.native.list_dir
+    - path: skills/native-folder-pick/SKILL.yaml
+      skill_id: navi.native.folder_pick
+  connectors:
+    - path: connectors/petbridge
+      connector_id: navi.connector.pet_bridge
+  policies:
+    - path: policies/permissions.yaml
+    - path: policies/rate-limits.yaml
+
+permissions:
+  auth:
+    type: bridge_token
+    env:
+      - NAVI_PET_BRIDGE_TOKEN
+  scopes:
+    - filesystem.read
+    - filesystem.write
+    - dialog.open
+  data_access:
+    pii: possible
+    secrets: forbidden
+  network:
+    egress: none
+
+runtime:
+  isolation:
+    required: true
+    mode: bridge
+  failure_behavior:
+    mark_degraded_on_crash: true
+    circuit_breaker: true
+
+lifecycle:
+  install:
+    requires_confirmation: true
+    checks:
+      - capability: pet_desktop_available
+  activate:
+    expose_skills: true
+  disable:
+    hide_skills: true
+    revoke_runtime_handles: true
+  uninstall:
+    remove_local_state: prompt_owner

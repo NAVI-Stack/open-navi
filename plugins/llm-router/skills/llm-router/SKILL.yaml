@@ -1,0 +1,88 @@
+oss27_version: "1.0"
+skill_id: "llm-router"
+semver: "1.0.0"
+display:
+  name: "LLM Router"
+  description: "Inspect and change NAVI's active LLM provider and model at runtime."
+interfaces:
+  - name: "list"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties: {}
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        providers:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              key:
+                type: "string"
+              display_name:
+                type: "string"
+              models:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    name:
+                      type: "string"
+                  required: ["name"]
+            required: ["key", "display_name", "models"]
+      required: ["providers"]
+  - name: "get_active"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties: {}
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        provider:
+          type: "string"
+        model:
+          type: "string"
+      required: ["provider", "model"]
+  - name: "set_active"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties:
+        provider:
+          type: "string"
+          description: "Logical provider key."
+        model:
+          type: "string"
+          description: "Model identifier as listed by the list interface."
+      required: ["provider", "model"]
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        provider:
+          type: "string"
+        model:
+          type: "string"
+      required: ["provider", "model"]
+effects:
+  side_effects: []
+  risk_tier: "low"
+  requires_confirmation: false
+security:
+  auth: []
+  data_access:
+    pii: "none"
+    secrets: "forbidden"
+  sandbox:
+    required: false
+    network_egress: []
+governance:
+  publisher: "navi.official"
+  signed: false

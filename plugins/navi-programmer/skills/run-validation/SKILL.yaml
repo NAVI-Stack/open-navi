@@ -1,0 +1,206 @@
+oss27_version: "1.0"
+skill_id: "navi-programmer.run-validation"
+semver: "0.1.0"
+
+display:
+  name: "NAVI Programmer Run Validation"
+  description: "Run bounded local build, test, lint, and static validation commands and capture structured evidence."
+
+interfaces:
+  - name: "run_command"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+          description: "Optional repository or workspace root. Defaults to NAVI_WORKSPACE_DIR, then the skill process cwd."
+        cwd:
+          type: "string"
+          description: "Working directory for the command, relative to root unless absolute and still inside root."
+        command:
+          oneOf:
+            - type: "array"
+              items:
+                type: "string"
+            - type: "string"
+          description: "Command argv array, or a shell-free string that will be split. Shells and metacharacter operators are rejected."
+        validation_kind:
+          type: "string"
+          enum: ["build", "test", "lint", "static", "typecheck", "smoke", "other"]
+        timeout_ms:
+          type: "integer"
+          minimum: 1000
+          maximum: 600000
+        max_output_bytes:
+          type: "integer"
+          minimum: 1024
+          maximum: 5242880
+        expected_exit_codes:
+          type: "array"
+          items:
+            type: "integer"
+        env:
+          type: "object"
+          additionalProperties:
+            type: "string"
+          description: "Explicit non-secret environment variables to pass to the command."
+        env_allowlist:
+          type: "array"
+          items:
+            type: "string"
+          description: "Names of non-secret host environment variables that may be passed through."
+        sandbox_profile:
+          type: "string"
+          description: "Caller-selected NAVI core sandbox profile ID. Defaults to local-validation-network-disabled."
+        dry_run:
+          type: "boolean"
+          description: "Validate policy and return a not_run result without executing the command."
+      required: ["command"]
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        verdict:
+          type: "string"
+          enum: ["passed", "failed", "not_run", "ambiguous", "timed_out"]
+        command:
+          type: "array"
+          items:
+            type: "string"
+        cwd:
+          type: "string"
+        exit_code:
+          type: ["integer", "null"]
+        duration_ms:
+          type: "integer"
+        stdout:
+          type: "string"
+        stderr:
+          type: "string"
+        stdout_truncated:
+          type: "boolean"
+        stderr_truncated:
+          type: "boolean"
+        timed_out:
+          type: "boolean"
+
+  - name: "record_not_run"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+        cwd:
+          type: "string"
+        validation_kind:
+          type: "string"
+          enum: ["build", "test", "lint", "static", "typecheck", "smoke", "other"]
+        reason:
+          type: "string"
+          description: "Why validation was not run."
+        blocked_by:
+          type: "string"
+          description: "Optional dependency, policy, or missing context that blocked validation."
+        recommended_command:
+          oneOf:
+            - type: "array"
+              items:
+                type: "string"
+            - type: "string"
+          description: "Optional command that should be run when the blocker is resolved."
+      required: ["reason"]
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        verdict:
+          type: "string"
+          enum: ["not_run"]
+        reason:
+          type: "string"
+        blocked_by:
+          type: "string"
+        recommended_command:
+          type: "array"
+          items:
+            type: "string"
+
+effects:
+  side_effects: ["local_command_execution", "filesystem_write"]
+  risk_tier: "medium"
+  idempotency: false
+  idempotency_level: "conditional"
+  reversibility: "reversible_internal"
+  requires_confirmation: false
+
+security:
+  auth: []
+  data_access:
+    pii: "possible"
+    secrets: "read"
+  sandbox:
+    required: true
+    network_egress: []
+
+performance:
+  expected_p50_ms: 5000
+  timeout_ms: 300000
+  rate_limit:
+    qps: 1
+    burst: 2
+
+observability:
+  log_redaction: ["stdout", "stderr", "env_values"]
+  emit_metrics: ["validation_invocation", "validation_verdict"]
+
+governance:
+  publisher: "navi.programmer"
+  signed: false
+  deprecates: []
+  replaces: []
+  trust_tier: "builtin"
+
+capability:
+  tags: ["programming", "validation", "build", "test", "lint"]
+  domains: ["coding", "repository-management"]
+  provides:
+    - "bounded-command-validation"
+    - "validation-evidence-capture"
+    - "validation-not-run-recording"
+  requires:
+    - "workspace-binding"
+  command_type: "invoke"
+
+reliability:
+  expected_failure_modes:
+    - "command_not_allowed"
+    - "path_out_of_scope"
+    - "executable_not_found"
+    - "command_failed"
+    - "timeout"
+    - "output_truncated"
+    - "sandbox_unavailable"
+    - "validation_not_applicable"
+  retry_policy: "conditional"
+
+python_runtime:
+  python_version: "3.11"
+  venv_strategy: "per_skill"
+  lifecycle: "cold"
+  spawn_timeout_ms: 5000
+  io_format: "json_stdio"
+  max_input_bytes: 1048576
+  max_output_bytes: 2097152
+  timeout_ms: 300000
+  max_memory_mb: 256
+  max_cpu_percent: 100
+  network_access: false
+  allow_fs_write: true
+  tmpdir_mb: 64
+  maturity: "prototype"

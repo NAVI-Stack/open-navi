@@ -1,0 +1,239 @@
+{
+  "fixture_id": "np-fixture-self-update-candidate-pass",
+  "kind": "task_fixture",
+  "version": "0.1.0",
+  "description": "Self-update candidate task with isolated candidate context and explicit validation evidence.",
+  "task": {
+    "source": "chat",
+    "raw_task": "Improve NAVI Programmer reporting in an isolated candidate workspace.",
+    "current_repo": ".",
+    "allowed_scope": [
+      "plugins/navi-programmer"
+    ],
+    "acceptance_hint": "Candidate change is validated and promotion readiness is reported separately."
+  },
+  "expected": {
+    "task_class": "self_update_candidate",
+    "mutation_intent": "mutative",
+    "requires_mutation": true,
+    "required_evidence": [
+      "raw_task_input",
+      "normalized_task",
+      "workspace_binding",
+      "repo_status",
+      "inspected_files",
+      "execution_plan",
+      "mutation_attempts",
+      "changed_files",
+      "diff_summary",
+      "validation_results",
+      "smoke_results",
+      "promotion_readiness_summary",
+      "lifecycle_summary"
+    ],
+    "expected_skill_interfaces": [
+      "navi-programmer.task-normalize.normalize_task",
+      "navi-programmer.task-normalize.bind_scope",
+      "navi-programmer.repo-inspect.read_file",
+      "navi-programmer.patch-apply.apply_patch",
+      "navi-programmer.run-validation.run_command",
+      "navi-programmer.git-lifecycle.prepare_handoff"
+    ]
+  },
+  "runner_input": {
+    "current_state": "review_ready",
+    "target_state": "completed",
+    "task_class": "self_update_candidate",
+    "available_skills": [
+      "navi-programmer.task-normalize",
+      "navi-programmer.repo-inspect",
+      "navi-programmer.patch-apply",
+      "navi-programmer.run-validation",
+      "navi-programmer.git-lifecycle"
+    ],
+    "evidence": {
+      "raw_task_input": {
+        "source": "chat",
+        "content": "Improve NAVI Programmer reporting in an isolated candidate workspace.",
+        "received_at": "2026-05-09T00:00:00Z"
+      },
+      "normalized_task": {
+        "summary": "Improve NAVI Programmer reporting in an isolated candidate workspace.",
+        "task_class": "self_update_candidate",
+        "mutation_intent": "mutative",
+        "acceptance_target": "Candidate change is validated and promotion readiness is reported separately.",
+        "validation_hints": {
+          "required": true,
+          "classes": [
+            "test"
+          ],
+          "candidate_commands": [
+            [
+              "python",
+              "-m",
+              "unittest",
+              "discover",
+              "plugins/navi-programmer/tests"
+            ]
+          ]
+        }
+      },
+      "workspace_binding": {
+        "repo_root": ".",
+        "allowed_scope": [
+          "plugins/navi-programmer"
+        ],
+        "is_self_update": true,
+        "candidate_context": {
+          "candidate_repo_root": ".candidate/navi-programmer",
+          "trusted_runtime_untouched": true
+        }
+      },
+      "repo_status": {
+        "is_git_repo": true,
+        "dirty": true,
+        "status_lines": [
+          " M plugins/navi-programmer/tests/evals/README.md"
+        ]
+      },
+      "inspected_files": [
+        {
+          "path": "plugins/navi-programmer/tests/evals/README.md",
+          "reason": "candidate reporting surface",
+          "content_hash_or_read_window": "read_file:weekly report docs"
+        }
+      ],
+      "execution_plan": {
+        "steps": [
+          "Bind the self-update candidate workspace.",
+          "Apply the bounded reporting change inside the candidate context.",
+          "Run candidate validation.",
+          "Report promotion readiness separately."
+        ],
+        "intended_file_touch_set": [
+          "plugins/navi-programmer/tests/evals/README.md"
+        ],
+        "validation_plan": [
+          {
+            "validation_kind": "test",
+            "method": "run_command",
+            "command": [
+              "python",
+              "-m",
+              "unittest",
+              "discover",
+              "plugins/navi-programmer/tests"
+            ]
+          }
+        ]
+      },
+      "mutation_attempts": [
+        {
+          "skill": "navi-programmer.patch-apply.apply_patch",
+          "status": "success",
+          "target": "plugins/navi-programmer/tests/evals/README.md"
+        }
+      ],
+      "changed_files": [
+        {
+          "path": "plugins/navi-programmer/tests/evals/README.md",
+          "action": "update",
+          "summary": "Clarified candidate reporting requirements."
+        }
+      ],
+      "diff_summary": {
+        "files_changed": 1,
+        "insertions": 4,
+        "deletions": 0
+      },
+      "validation_results": [
+        {
+          "validation_kind": "test",
+          "command": [
+            "python",
+            "-m",
+            "unittest",
+            "discover",
+            "plugins/navi-programmer/tests"
+          ],
+          "cwd": ".candidate/navi-programmer",
+          "verdict": "passed",
+          "exit_code": 0,
+          "duration_ms": 1800,
+          "stdout": "OK",
+          "stderr": ""
+        }
+      ],
+      "smoke_results": [
+        {
+          "check": "boot",
+          "verdict": "pass",
+          "command": ["go", "build", "./cmd/navid"],
+          "cwd": ".candidate/navi-programmer",
+          "duration_ms": 900,
+          "reason": "",
+          "candidate_runtime": {
+            "port": 6384,
+            "config_dir": ".candidate/navi-programmer/.navi-config",
+            "state_dir": ".candidate/navi-programmer/.navi-state",
+            "connectors_mode": "disabled"
+          }
+        },
+        {
+          "check": "health",
+          "verdict": "pass",
+          "command": ["go", "test", "./cmd/navid"],
+          "cwd": ".candidate/navi-programmer",
+          "duration_ms": 600,
+          "reason": ""
+        },
+        {
+          "check": "basic_request",
+          "verdict": "pass",
+          "command": ["python", "-m", "unittest", "discover", "plugins/navi-programmer/tests"],
+          "cwd": ".candidate/navi-programmer",
+          "duration_ms": 500,
+          "reason": ""
+        },
+        {
+          "check": "skill_surface_bootstrap",
+          "verdict": "pass",
+          "command": ["go", "test", "./internal/navi/..."],
+          "cwd": ".candidate/navi-programmer",
+          "duration_ms": 500,
+          "reason": ""
+        },
+        {
+          "check": "governance_path",
+          "verdict": "pass",
+          "command": ["go", "test", "./internal/governor/..."],
+          "cwd": ".candidate/navi-programmer",
+          "duration_ms": 500,
+          "reason": ""
+        },
+        {
+          "check": "clean_shutdown",
+          "verdict": "pass",
+          "command": ["go", "test", "./cmd/navi/..."],
+          "cwd": ".candidate/navi-programmer",
+          "duration_ms": 500,
+          "reason": ""
+        }
+      ],
+      "promotion_readiness_summary": {
+        "all_validation_layers_ran": true,
+        "skipped_layers_have_reasons": true,
+        "any_validation_failed": false,
+        "candidate_runtime_passed": true,
+        "unresolved_risks": [],
+        "promotion_recommendation": "recommended"
+      },
+      "lifecycle_summary": {
+        "branch": "candidate/programmer-reporting",
+        "commit": "9876abc",
+        "remote_actions": [],
+        "review_surface": "Candidate workspace validated; promotion readiness remains a separate decision."
+      }
+    }
+  }
+}

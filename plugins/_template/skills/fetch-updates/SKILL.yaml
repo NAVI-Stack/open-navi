@@ -1,0 +1,105 @@
+oss27_version: 1.0
+skill_id: navi.example.messaging.fetch_updates
+semver: 0.1.0
+
+display:
+  name: Fetch Example Messaging Updates
+  description: Fetches recent inbound messages or update events from the Example Messaging connector.
+  emoji: "📥"
+
+interfaces:
+  - name: fetch_recent
+    description: Fetch recent inbound message events after an optional cursor.
+    transport:
+      type: internal
+      connector: navi.connector.example_messaging
+      operation: fetch_updates
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        cursor:
+          type: string
+          description: Optional provider cursor for incremental sync.
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 25
+    output_schema:
+      type: object
+      additionalProperties: false
+      required:
+        - updates
+      properties:
+        next_cursor:
+          type: string
+        updates:
+          type: array
+          items:
+            type: object
+            required:
+              - update_id
+              - received_at
+              - sender
+              - body
+            properties:
+              update_id:
+                type: string
+              received_at:
+                type: string
+                format: date-time
+              sender:
+                type: string
+              body:
+                type: string
+
+effects:
+  side_effects:
+    - reads_external_system
+  risk_tier: medium
+  requires_confirmation: false
+  idempotency_level: idempotent
+  reversibility: reversible_internal
+
+security:
+  auth:
+    type: api_key
+    env:
+      - EXAMPLE_MESSAGING_API_KEY
+  data_access:
+    pii: possible
+    secrets: forbidden
+  sandbox:
+    required: true
+    network_egress: allowlist
+
+performance:
+  timeout_ms: 5000
+  rate_limit:
+    qps: 5
+    burst: 10
+
+governance:
+  publisher: navi.local
+  signed: false
+  trust_tier: local
+
+capability:
+  tags:
+    - messaging
+    - updates
+    - sync
+  domains:
+    - communication
+  provides:
+    - messaging.fetch_updates
+  requires:
+    - navi.connector.example_messaging
+
+reliability:
+  expected_failure_modes:
+    - permission_denied
+    - rate_limited
+    - connector_unavailable
+  retry_policy: safe

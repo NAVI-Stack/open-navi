@@ -1,0 +1,361 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://navi.dev/schema/event.json",
+    "title": "NAVI AI Platform — Event Schema",
+    "definitions": {
+        "Event": {
+            "type": "object",
+            "description": "Envelope for every message on the bus.",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "type": {
+                    "$ref": "enums.json#/definitions/EventType"
+                },
+                "kind": {
+                    "$ref": "enums.json#/definitions/EventKind"
+                },
+                "correlation_id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "causal_parent": {
+                    "type": "string"
+                },
+                "source_agent": {
+                    "$ref": "enums.json#/definitions/AgentType"
+                },
+                "target_agent": {
+                    "$ref": "enums.json#/definitions/AgentType"
+                },
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "payload": {},
+                "schema_version": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "type",
+                "kind",
+                "correlation_id",
+                "source_agent",
+                "timestamp",
+                "payload",
+                "schema_version"
+            ]
+        },
+        "TaskCreatePayload": {
+            "type": "object",
+            "properties": {
+                "task": {
+                    "$ref": "task.json#/definitions/Task"
+                }
+            },
+            "required": [
+                "task"
+            ]
+        },
+        "TaskAssignPayload": {
+            "type": "object",
+            "properties": {
+                "task_id": {
+                    "type": "string"
+                },
+                "assign_to": {
+                    "$ref": "enums.json#/definitions/AgentType"
+                }
+            },
+            "required": [
+                "task_id",
+                "assign_to"
+            ]
+        },
+        "TaskCancelPayload": {
+            "type": "object",
+            "properties": {
+                "task_id": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "task_id",
+                "reason"
+            ]
+        },
+        "TaskUpdatePayload": {
+            "type": "object",
+            "properties": {
+                "task_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "enums.json#/definitions/TaskStatus"
+                }
+            },
+            "required": [
+                "task_id",
+                "status"
+            ]
+        },
+        "ClaimAcquirePayload": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "agent_id": {
+                    "type": "string"
+                },
+                "agent_type": {
+                    "$ref": "enums.json#/definitions/AgentType"
+                },
+                "ttl": {
+                    "type": "integer",
+                    "description": "TTL in nanoseconds."
+                }
+            },
+            "required": [
+                "path",
+                "agent_id",
+                "agent_type",
+                "ttl"
+            ]
+        },
+        "ClaimReleasePayload": {
+            "type": "object",
+            "properties": {
+                "claim_id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "claim_id"
+            ]
+        },
+        "AgentRegisterPayload": {
+            "type": "object",
+            "properties": {
+                "agent_id": {
+                    "type": "string"
+                },
+                "agent_type": {
+                    "$ref": "enums.json#/definitions/AgentType"
+                }
+            },
+            "required": [
+                "agent_id",
+                "agent_type"
+            ]
+        },
+        "AgentRetirePayload": {
+            "type": "object",
+            "properties": {
+                "agent_id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "agent_id"
+            ]
+        },
+        "TaskCreatedPayload": {
+            "type": "object",
+            "properties": {
+                "task": {
+                    "$ref": "task.json#/definitions/Task"
+                }
+            },
+            "required": [
+                "task"
+            ]
+        },
+        "TaskAssignedPayload": {
+            "type": "object",
+            "properties": {
+                "task_id": {
+                    "type": "string"
+                },
+                "assign_to": {
+                    "$ref": "enums.json#/definitions/AgentType"
+                }
+            },
+            "required": [
+                "task_id",
+                "assign_to"
+            ]
+        },
+        "TaskStartedPayload": {
+            "type": "object",
+            "properties": {
+                "task_id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "task_id"
+            ]
+        },
+        "TaskCompletedPayload": {
+            "type": "object",
+            "properties": {
+                "task_id": {
+                    "type": "string"
+                },
+                "cost": {
+                    "$ref": "task.json#/definitions/CostAttribution"
+                }
+            },
+            "required": [
+                "task_id",
+                "cost"
+            ]
+        },
+        "TaskFailedPayload": {
+            "type": "object",
+            "properties": {
+                "task_id": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "task_id",
+                "error"
+            ]
+        },
+        "TaskCancelledPayload": {
+            "type": "object",
+            "properties": {
+                "task_id": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "task_id",
+                "reason"
+            ]
+        },
+        "ClaimAcquiredPayload": {
+            "type": "object",
+            "properties": {
+                "claim": {
+                    "$ref": "claim.json#/definitions/SurfaceClaim"
+                }
+            },
+            "required": [
+                "claim"
+            ]
+        },
+        "ClaimReleasedPayload": {
+            "type": "object",
+            "properties": {
+                "claim_id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "claim_id"
+            ]
+        },
+        "ClaimExpiredPayload": {
+            "type": "object",
+            "properties": {
+                "claim_id": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "claim_id",
+                "path"
+            ]
+        },
+        "ClaimConflictPayload": {
+            "type": "object",
+            "properties": {
+                "requested_path": {
+                    "type": "string"
+                },
+                "blocking_claim_id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "requested_path",
+                "blocking_claim_id"
+            ]
+        },
+        "AgentRegisteredPayload": {
+            "type": "object",
+            "properties": {
+                "agent_id": {
+                    "type": "string"
+                },
+                "agent_type": {
+                    "$ref": "enums.json#/definitions/AgentType"
+                }
+            },
+            "required": [
+                "agent_id",
+                "agent_type"
+            ]
+        },
+        "AgentRetiredPayload": {
+            "type": "object",
+            "properties": {
+                "agent_id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "agent_id"
+            ]
+        },
+        "CostRecordedPayload": {
+            "type": "object",
+            "properties": {
+                "cost": {
+                    "$ref": "task.json#/definitions/CostAttribution"
+                }
+            },
+            "required": [
+                "cost"
+            ]
+        },
+        "GovernorTrippedPayload": {
+            "type": "object",
+            "properties": {
+                "governor_type": {
+                    "type": "string"
+                },
+                "limit": {
+                    "type": "string"
+                },
+                "actual": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "governor_type",
+                "limit",
+                "actual"
+            ]
+        }
+    }
+}

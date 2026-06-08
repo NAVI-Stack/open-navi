@@ -1,0 +1,161 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://navi.dev/schema/task.json",
+    "title": "NAVI AI Platform — Task Schema",
+    "definitions": {
+        "DAGEdge": {
+            "type": "object",
+            "description": "Dependency edge from one task to another.",
+            "properties": {
+                "from_task_id": {
+                    "type": "string"
+                },
+                "to_task_id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "from_task_id",
+                "to_task_id"
+            ]
+        },
+        "SurfaceDeclaration": {
+            "type": "object",
+            "description": "Filesystem surface a task intends to touch.",
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "access_mode": {
+                    "type": "string",
+                    "enum": [
+                        "read",
+                        "write"
+                    ]
+                }
+            },
+            "required": [
+                "path",
+                "access_mode"
+            ]
+        },
+        "VerificationContract": {
+            "type": "object",
+            "description": "How a task's output is verified.",
+            "properties": {
+                "method": {
+                    "type": "string"
+                },
+                "commands": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "success_code": {
+                    "type": "integer"
+                },
+                "timeout": {
+                    "type": "integer",
+                    "description": "Timeout in nanoseconds (Go time.Duration)."
+                }
+            },
+            "required": [
+                "method",
+                "commands",
+                "success_code",
+                "timeout"
+            ]
+        },
+        "CostAttribution": {
+            "type": "object",
+            "description": "Actual cost incurred by a task.",
+            "properties": {
+                "tokens_in": {
+                    "type": "integer"
+                },
+                "tokens_out": {
+                    "type": "integer"
+                },
+                "api_calls": {
+                    "type": "integer"
+                },
+                "estimated_usd": {
+                    "type": "number"
+                },
+                "tier": {
+                    "$ref": "enums.json#/definitions/CostTier"
+                }
+            },
+            "required": [
+                "tokens_in",
+                "tokens_out",
+                "api_calls",
+                "estimated_usd",
+                "tier"
+            ]
+        },
+        "Task": {
+            "type": "object",
+            "description": "Central work unit in the NAVI AI platform.",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "title": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "description": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "enums.json#/definitions/TaskStatus"
+                },
+                "risk": {
+                    "$ref": "enums.json#/definitions/RiskLevel"
+                },
+                "assigned_to": {
+                    "$ref": "enums.json#/definitions/AgentType"
+                },
+                "dependencies": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/DAGEdge"
+                    }
+                },
+                "surfaces": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SurfaceDeclaration"
+                    }
+                },
+                "verification": {
+                    "$ref": "#/definitions/VerificationContract"
+                },
+                "cost": {
+                    "$ref": "#/definitions/CostAttribution"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "required": [
+                "id",
+                "title",
+                "description",
+                "status",
+                "risk",
+                "assigned_to",
+                "created_at",
+                "updated_at"
+            ]
+        }
+    }
+}

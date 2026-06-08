@@ -1,0 +1,78 @@
+{
+  "fixture_id": "np-fixture-readonly-runner-validation",
+  "kind": "task_fixture",
+  "version": "0.1.0",
+  "description": "Read-only comprehension task that inspects the bounded mutation runner without emitting mutation evidence.",
+  "task": {
+    "source": "chat",
+    "raw_task": "Explain how the bounded mutation runner enforces validation in workflows/bounded_mutation_runner.py. No filesystem writes are permitted.",
+    "current_repo": ".",
+    "acceptance_hint": "Summarize the validation gate behavior with references to inspected files."
+  },
+  "expected": {
+    "task_class": "read_only_comprehension",
+    "mutation_intent": "read_only",
+    "requires_mutation": false,
+    "required_evidence": [
+      "raw_task_input",
+      "normalized_task",
+      "repo_status",
+      "inspected_files",
+      "result_summary"
+    ],
+    "must_not_emit": [
+      "changed_files",
+      "mutation_attempts",
+      "diff_summary"
+    ],
+    "expected_skill_interfaces": [
+      "navi-programmer.task-normalize.normalize_task",
+      "navi-programmer.repo-inspect.repo_status",
+      "navi-programmer.repo-inspect.read_file",
+      "navi-programmer.repo-inspect.search_text"
+    ]
+  },
+  "sample_evidence": {
+    "raw_task_input": {
+      "source": "chat",
+      "content": "Explain how the bounded mutation runner enforces validation in workflows/bounded_mutation_runner.py. No filesystem writes are permitted.",
+      "received_at": "2026-04-29T00:00:00Z"
+    },
+    "normalized_task": {
+      "summary": "Explain how the bounded mutation runner enforces validation in workflows/bounded_mutation_runner.py.",
+      "task_class": "read_only_comprehension",
+      "mutation_intent": "read_only",
+      "acceptance_target": "Summarize the validation gate behavior with references to inspected files.",
+      "validation_hints": {
+        "required": false,
+        "classes": [],
+        "candidate_commands": [],
+        "not_run_reason": "read_only_task"
+      },
+      "likely_affected_areas": [
+        {
+          "path": "workflows/bounded_mutation_runner.py",
+          "reason": "explicit_path_hint"
+        }
+      ]
+    },
+    "repo_status": {
+      "is_git_repo": true,
+      "dirty": false,
+      "status_lines": []
+    },
+    "inspected_files": [
+      {
+        "path": "workflows/bounded_mutation_runner.py",
+        "reason": "requested implementation path",
+        "content_hash_or_read_window": "read_file:validation gate functions"
+      }
+    ],
+    "result_summary": {
+      "summary": "The runner blocks mutation completion when changed files exist and validation evidence is missing, and it treats not_run validation as acceptable only with an explicit reason.",
+      "referenced_files": [
+        "workflows/bounded_mutation_runner.py"
+      ]
+    }
+  }
+}

@@ -1,0 +1,90 @@
+/* page-wide splash overlay */
+#navi-splash-screen {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  background: #0a0a0a;
+  transition: opacity 0.5s ease-out;
+}
+
+#navi-splash-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#navi-splash-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+#navi-splash-brand {
+  visibility: hidden;
+}
+
+#navi-splash-brand[data-font='1'] {
+  visibility: visible;
+}
+
+/* shared loader */
+.navi-loader {
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+  font-size: var(--navi-loader-font-size, clamp(2.25rem, 6vw, 3.25rem));
+  font-weight: 600;
+  line-height: 1.1;
+  color: rgb(255 255 255 / 0.92);
+  white-space: nowrap;
+  position: relative;
+  isolation: isolate;
+  user-select: none;
+
+  /* Shift initial position so Navi is centered while the hidden word is concealed. */
+  transform: translateX(calc(-0.9em));
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navi-loader--console {
+  text-align: left;
+}
+
+.navi-loader[data-expanded='1'] {
+  transform: translateX(0);
+}
+
+.navi-loader__visible {
+  display: inline-block;
+  opacity: 1;
+}
+
+.navi-loader__hidden {
+  display: inline-block;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navi-loader[data-expanded='1'] .navi-loader__hidden {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navi-loader {
+    transition: transform 0.2s ease;
+  }
+  .navi-loader__hidden {
+    transition: opacity 0.2s ease;
+  }
+}

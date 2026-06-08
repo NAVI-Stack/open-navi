@@ -1,0 +1,11 @@
+id: navi.summarize
+name: Summarize
+description: Built-in text summarization guidance capability.
+version: 1.0.0
+kind: domain
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/summarize
+      skill_id: summarize

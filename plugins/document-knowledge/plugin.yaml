@@ -1,0 +1,11 @@
+id: navi.document_knowledge
+name: Document Knowledge
+description: Document parsing, entity extraction, summarization, and durable knowledge promotion.
+version: 1.0.0
+kind: domain
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/document-knowledge
+      skill_id: document-knowledge

@@ -1,0 +1,60 @@
+id: onboarding
+name: Onboarding
+description: Utilities for the initial setup and configuration of NAVI.
+version: 1.0.0
+interfaces:
+  - name: set_setup_complete
+    description: Marks the initial onboarding and setup as complete. This should be called once the user has confirmed their goals and setup choices.
+    input_schema:
+      type: object
+      properties:
+        confirmed:
+          type: boolean
+          description: Whether the user has confirmed they are ready to proceed.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the confirmation occurred
+      required: [confirmed]
+    output_schema:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success, error]
+        message:
+          type: string
+      required: [status]
+  - name: get_onboarding_status
+    description: Retrieves the current onboarding status
+    input_schema:
+      type: object
+      properties: {}
+    output_schema:
+      type: object
+      properties:
+        is_complete:
+          type: boolean
+        steps_completed:
+          type: array
+          items:
+            type: string
+        current_step:
+          type: string
+      required: [is_complete]
+security:
+  auth:
+    - type: none
+  data_access:
+    level: minimal
+performance:
+  expected_p50_ms: 100
+  timeout_ms: 3000
+  rate_limit:
+    qps: 10
+    burst: 5
+effects:
+  side_effects:
+    - updates_user_profile
+  risk_tier: low
+  requires_confirmation: false

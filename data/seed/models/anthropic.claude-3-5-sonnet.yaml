@@ -1,0 +1,53 @@
+kind: LLMProfile
+schema_version: 1
+llm_id: anthropic.claude-3-5-sonnet
+canonical_name: Claude 3.5 Sonnet
+aliases:
+  - claude-3.5-sonnet
+  - claude sonnet 3.5
+identity:
+  provider: anthropic
+  publisher: Anthropic
+  release_channel: stable
+  hosting_modes_supported:
+    - api
+capabilities:
+  primary_use_cases:
+    - chat
+    - analysis
+    - summarization
+    - coding
+  interaction_modes:
+    - conversational
+    - tool_using
+    - structured_output
+    - long_context
+  agentic_class: capable
+  coding_class: strong
+  reasoning_class: strong
+  instruction_following_class: strong
+  tool_discipline_class: competent
+  schema_reliability_class: competent
+  multimodal_class: competent
+technical_profile:
+  supports_tools: true
+  supports_parallel_tools: false
+  supports_json_schema: true
+  supports_streaming: true
+  supports_vision: true
+  supports_audio_in: false
+  supports_audio_out: false
+  max_output_tokens: 8192
+  input_price_per_1k: 0.003
+  output_price_per_1k: 0.015
+  context_window:
+    input_tokens: 200000
+routing_profile:
+  preferred_for:
+    - coding
+    - reasoning
+    - long_context
+  cost_tier: expensive
+  latency_tier: medium
+  max_risk_tier_allowed: medium
+  autonomy_ceiling: autonomous

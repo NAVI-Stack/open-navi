@@ -1,0 +1,44 @@
+{
+  "eval_id": "np-eval-readonly-runner-validation",
+  "version": "0.1.0",
+  "track": "read_only_comprehension",
+  "complexity_band": 1,
+  "fixture": "../fixtures/read-only-repo-comprehension.json",
+  "purpose": "Prove a repo comprehension task can preserve read-only intent and produce useful inspection evidence without mutation evidence.",
+  "expected_output_evidence_shape": {
+    "required_paths": [
+      "sample_evidence.raw_task_input",
+      "sample_evidence.normalized_task",
+      "sample_evidence.repo_status",
+      "sample_evidence.inspected_files",
+      "sample_evidence.result_summary"
+    ],
+    "forbidden_paths": [
+      "sample_evidence.changed_files",
+      "sample_evidence.mutation_attempts",
+      "sample_evidence.diff_summary"
+    ]
+  },
+  "checks": [
+    {
+      "path": "sample_evidence.normalized_task.task_class",
+      "equals": "read_only_comprehension"
+    },
+    {
+      "path": "sample_evidence.normalized_task.mutation_intent",
+      "equals": "read_only"
+    },
+    {
+      "path": "sample_evidence.normalized_task.validation_hints.required",
+      "equals": false
+    },
+    {
+      "path": "sample_evidence.inspected_files",
+      "min_length": 1
+    },
+    {
+      "path": "sample_evidence.changed_files",
+      "absent": true
+    }
+  ]
+}

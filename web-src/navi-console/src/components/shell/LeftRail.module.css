@@ -1,0 +1,485 @@
+.rail {
+  display: flex;
+  flex-direction: column;
+  width: var(--navi-rail-width);
+  height: 100vh;
+  background: var(--navi-bg-subtle);
+  border-right: 1px solid var(--navi-border);
+  transition: width var(--navi-transition-slow);
+  z-index: var(--navi-z-rail);
+}
+
+.railCollapsed {
+  width: var(--navi-rail-collapsed-width);
+}
+
+.brand {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: var(--navi-space-sm);
+  height: var(--navi-topbar-height);
+  padding: 0 10px;
+  border-bottom: 1px solid var(--navi-border-subtle);
+  overflow: hidden;
+}
+
+.railCollapsed .brand {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  padding: 0;
+}
+
+.brandHome {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-sm);
+  min-width: 0;
+  font-family: var(--navi-font-sans);
+  font-weight: var(--navi-font-weight-bold);
+  font-size: var(--navi-font-size);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brandHome:hover {
+  text-decoration: none;
+}
+
+.brandMark {
+  color: var(--navi-text);
+  letter-spacing: 0.05em;
+}
+
+.brandSub {
+  color: var(--navi-text-tertiary);
+  font-weight: var(--navi-font-weight-medium);
+}
+
+.collapseBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: var(--navi-radius-sm);
+  color: var(--navi-text-tertiary);
+  cursor: pointer;
+  outline: none;
+  transition: all var(--navi-transition-fast);
+  flex-shrink: 0;
+}
+
+.collapseBtn:hover {
+  background: var(--navi-panel-hover);
+  color: var(--navi-text);
+}
+
+.primaryAction {
+  padding: var(--navi-space-md);
+}
+
+.newChatBtn {
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.2);
+}
+
+.newChatBtnCollapsed {
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.2);
+}
+
+.navGroups {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--navi-space-md);
+  padding-bottom: var(--navi-space-xl);
+}
+
+.navGroups::-webkit-scrollbar {
+  display: none;
+}
+
+.disclosure {
+  display: flex;
+  flex-direction: column;
+}
+
+.groupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--navi-space-xs) var(--navi-space-md);
+  background: transparent;
+  border: none;
+  color: var(--navi-text-tertiary);
+  font-size: 11px;
+  font-weight: var(--navi-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  outline: none;
+  transition: color var(--navi-transition-fast);
+}
+
+.groupHeader:hover {
+  color: var(--navi-text-secondary);
+}
+
+.groupChevron {
+  transition: transform var(--navi-transition-fast);
+}
+
+.groupHeader[data-expanded] .groupChevron {
+  transform: rotate(90deg);
+}
+
+.hidden {
+  opacity: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.groupContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 var(--navi-space-sm);
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-sm);
+  padding: var(--navi-space-sm) var(--navi-space-md);
+  height: 36px;
+  border-radius: var(--navi-radius-sm);
+  color: var(--navi-text-secondary);
+  font-size: var(--navi-font-size-sm);
+  font-weight: var(--navi-font-weight-medium);
+  text-decoration: none;
+  transition: all var(--navi-transition-fast);
+  border-left: 3px solid transparent;
+  white-space: nowrap;
+}
+
+.navItem:hover {
+  background: var(--navi-panel-hover);
+  color: var(--navi-text);
+  text-decoration: none;
+}
+
+.navItemActive {
+  background: var(--navi-panel-active);
+  color: var(--navi-text);
+  border-left-color: var(--navi-accent);
+}
+
+.navIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+.navLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recentChatsDisclosure {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--navi-space-sm);
+  padding: 0 var(--navi-space-xs);
+}
+
+.recentChatsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+.recentChatsTrigger {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-xs);
+  background: transparent;
+  border: none;
+  color: var(--navi-text-tertiary);
+  font-size: 11px;
+  font-weight: var(--navi-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  padding: var(--navi-space-xs) 4px;
+  outline: none;
+  text-align: left;
+  transition: color var(--navi-transition-fast);
+  flex: 1;
+}
+
+.recentChatsTrigger:hover {
+  color: var(--navi-text-secondary);
+}
+
+.recentChatsChevron {
+  transition: transform var(--navi-transition-fast);
+  color: var(--navi-text-tertiary);
+}
+
+.recentChatsTrigger[data-expanded] .recentChatsChevron {
+  transform: rotate(90deg);
+}
+
+.viewAllBtn {
+  font-size: 11px;
+  color: var(--navi-text-tertiary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: opacity var(--navi-transition-fast), color var(--navi-transition-fast);
+  cursor: pointer;
+  padding: var(--navi-space-xs) 4px;
+  white-space: nowrap;
+}
+
+.recentChatsHeader:hover .viewAllBtn {
+  opacity: 1;
+}
+
+.viewAllBtn:hover {
+  color: var(--navi-accent);
+  text-decoration: none;
+}
+
+.recentChatsPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 6px;
+  margin-top: var(--navi-space-xs);
+}
+
+.recentChatRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--navi-radius-sm);
+  transition: all var(--navi-transition-fast);
+  padding-right: 2px;
+}
+
+.recentChatRow:hover {
+  background: var(--navi-panel-hover);
+}
+
+.recentChatRow .kebabBtn {
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recentChatRow:hover .kebabBtn,
+.recentChatRow:focus-within .kebabBtn {
+  opacity: 1;
+}
+
+.recentChatLink {
+  display: flex;
+  align-items: center;
+  color: var(--navi-text-secondary);
+  font-size: 12px;
+  text-decoration: none;
+  padding: 6px 8px;
+  border-radius: var(--navi-radius-sm);
+  transition: all var(--navi-transition-fast);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.recentChatLink:hover {
+  color: var(--navi-text);
+  text-decoration: none;
+}
+
+.recentChatTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Project Accordion ── */
+
+.projectEntry {
+  display: flex;
+  flex-direction: column;
+}
+
+.projectRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: var(--navi-radius-sm);
+  cursor: pointer;
+  transition: all var(--navi-transition-fast);
+  user-select: none;
+}
+
+.projectRow:hover {
+  background: var(--navi-panel-hover);
+}
+
+.projectRowActive {
+  background: var(--navi-panel-active);
+}
+
+.projectChevron {
+  flex-shrink: 0;
+  color: var(--navi-text-tertiary);
+  transition: transform var(--navi-transition-fast);
+}
+
+.projectChevronExpanded {
+  transform: rotate(90deg);
+}
+
+.projectIcon {
+  flex-shrink: 0;
+}
+
+.projectName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: var(--navi-font-weight-medium);
+  color: var(--navi-text-secondary);
+}
+
+.projectRow:hover .projectName {
+  color: var(--navi-text);
+}
+
+.projectRowActive .projectName {
+  color: var(--navi-text);
+}
+
+.projectActionBtn {
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--navi-text-tertiary);
+  transition: opacity var(--navi-transition-fast), color var(--navi-transition-fast);
+}
+
+.projectRow:hover .projectActionBtn,
+.projectRow:focus-within .projectActionBtn {
+  opacity: 1;
+}
+
+.projectActionBtn:hover {
+  color: var(--navi-text);
+}
+
+.projectChildren {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-left: 20px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.projectChatRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--navi-radius-sm);
+  transition: all var(--navi-transition-fast);
+  padding-right: 2px;
+}
+
+.projectChatRow:hover {
+  background: var(--navi-panel-hover);
+}
+
+.projectChatActive {
+  background: var(--navi-panel-active);
+}
+
+.projectChatLink {
+  display: flex;
+  align-items: center;
+  color: var(--navi-text-secondary);
+  font-size: 12px;
+  text-decoration: none;
+  padding: 5px 8px;
+  border-radius: var(--navi-radius-sm);
+  transition: all var(--navi-transition-fast);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.projectChatLink:hover {
+  color: var(--navi-text);
+  text-decoration: none;
+}
+
+.projectChatActive .projectChatLink {
+  color: var(--navi-text);
+}
+
+.projectChatRow .kebabBtn {
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projectChatRow:hover .kebabBtn,
+.projectChatRow:focus-within .kebabBtn {
+  opacity: 1;
+}
+
+.projectChatsLoading,
+.projectChatsEmpty {
+  font-size: 11px;
+  color: var(--navi-text-tertiary);
+  padding: 4px 8px;
+  font-style: italic;
+}

@@ -1,0 +1,318 @@
+oss27_version: "1.0"
+skill_id: "navi-programmer.repo-inspect"
+semver: "0.1.0"
+
+display:
+  name: "NAVI Programmer Repo Inspect"
+  description: "Read-only repository inspection for listing files, reading scoped files, searching text, and reporting Git status."
+
+interfaces:
+  - name: "list_tree"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+          description: "Optional repository or workspace root. Defaults to NAVI_WORKSPACE_DIR, then the skill process cwd."
+        path:
+          type: "string"
+          description: "Directory path to list, relative to root unless absolute and still inside root."
+        recursive:
+          type: "boolean"
+          description: "Whether to traverse descendants."
+        max_depth:
+          type: "integer"
+          minimum: 1
+          maximum: 8
+        max_entries:
+          type: "integer"
+          minimum: 1
+          maximum: 2000
+        include_hidden:
+          type: "boolean"
+          description: "Include hidden paths and dot-prefixed paths that are skipped by default."
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        root:
+          type: "string"
+        base_path:
+          type: "string"
+        entries:
+          type: "array"
+          items:
+            type: "object"
+        truncated:
+          type: "boolean"
+
+  - name: "read_file"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+          description: "Optional repository or workspace root. Defaults to NAVI_WORKSPACE_DIR, then the skill process cwd."
+        path:
+          type: "string"
+          description: "File path to read, relative to root unless absolute and still inside root."
+        start_line:
+          type: "integer"
+          minimum: 1
+        end_line:
+          type: "integer"
+          minimum: 1
+        max_bytes:
+          type: "integer"
+          minimum: 1
+          maximum: 1048576
+        encoding:
+          type: "string"
+        include_hidden:
+          type: "boolean"
+          description: "Allow hidden paths and dot-prefixed paths that are denied by default."
+      required: ["path"]
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        path:
+          type: "string"
+        content:
+          type: "string"
+        truncated:
+          type: "boolean"
+        bytes_read:
+          type: "integer"
+
+  - name: "search_text"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+          description: "Optional repository or workspace root. Defaults to NAVI_WORKSPACE_DIR, then the skill process cwd."
+        path:
+          type: "string"
+          description: "Directory or file path to search, relative to root unless absolute and still inside root."
+        query:
+          type: "string"
+        regex:
+          type: "boolean"
+        case_sensitive:
+          type: "boolean"
+        max_matches:
+          type: "integer"
+          minimum: 1
+          maximum: 1000
+        max_files:
+          type: "integer"
+          minimum: 1
+          maximum: 5000
+        max_file_bytes:
+          type: "integer"
+          minimum: 1
+          maximum: 5242880
+        include_hidden:
+          type: "boolean"
+          description: "Include hidden paths and dot-prefixed paths that are skipped by default."
+      required: ["query"]
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        query:
+          type: "string"
+        matches:
+          type: "array"
+          items:
+            type: "object"
+        files_scanned:
+          type: "integer"
+        truncated:
+          type: "boolean"
+
+  - name: "repo_status"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+          description: "Optional repository or workspace root. Defaults to NAVI_WORKSPACE_DIR, then the skill process cwd."
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        git_available:
+          type: "boolean"
+        is_git_repo:
+          type: "boolean"
+        repo_root:
+          type: "string"
+        branch:
+          type: "string"
+        head:
+          type: "string"
+        dirty:
+          type: "boolean"
+        status_lines:
+          type: "array"
+          items:
+            type: "string"
+
+  - name: "inspect_diff"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+          description: "Optional repository or workspace root. Defaults to NAVI_WORKSPACE_DIR, then the skill process cwd."
+        path:
+          type: "string"
+          description: "Optional file or directory path to scope the diff, relative to root unless absolute and still inside root."
+        staged:
+          type: "boolean"
+          description: "Inspect the staged diff instead of the working tree diff."
+        include_untracked:
+          type: "boolean"
+          description: "Include untracked files in the structured changed-file set for working tree diffs."
+        context_lines:
+          type: "integer"
+          minimum: 0
+          maximum: 20
+        max_bytes:
+          type: "integer"
+          minimum: 1
+          maximum: 1048576
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        git_available:
+          type: "boolean"
+        is_git_repo:
+          type: "boolean"
+        repo_root:
+          type: "string"
+        path_filter:
+          type: "string"
+        staged:
+          type: "boolean"
+        files_changed:
+          type: "array"
+          items:
+            type: "object"
+        untracked_files:
+          type: "array"
+          items:
+            type: "string"
+        patch:
+          type: "string"
+        truncated:
+          type: "boolean"
+        bytes_read:
+          type: "integer"
+
+effects:
+  side_effects: []
+  risk_tier: "low"
+  idempotency: true
+  idempotency_level: "idempotent"
+  reversibility: "reversible_internal"
+  requires_confirmation: false
+
+security:
+  auth: []
+  data_access:
+    pii: "possible"
+    secrets: "read"
+  sandbox:
+    required: false
+    network_egress: []
+
+performance:
+  expected_p50_ms: 250
+  timeout_ms: 30000
+  rate_limit:
+    qps: 4
+    burst: 8
+
+observability:
+  log_redaction: ["file_content", "search_preview"]
+  emit_metrics: ["repo_inspect_invocation"]
+
+governance:
+  publisher: "navi.programmer"
+  signed: false
+  deprecates: []
+  replaces: []
+  trust_tier: "builtin"
+
+capability:
+  tags: ["programming", "repository", "inspection", "read-only"]
+  domains: ["coding", "repository-management"]
+  provides:
+    - "repository-tree-listing"
+    - "scoped-file-reading"
+    - "repository-text-search"
+    - "git-status-inspection"
+    - "repository-diff-inspection"
+  requires: []
+  command_type: "query"
+
+reliability:
+  expected_failure_modes:
+    - "path_out_of_scope"
+    - "path_denied"
+    - "file_not_found"
+    - "binary_file"
+    - "invalid_regex"
+    - "git_unavailable"
+    - "output_truncated"
+  retry_policy: "safe"
+
+python_runtime:
+  python_version: "3.11"
+  venv_strategy: "per_skill"
+  lifecycle: "cold"
+  spawn_timeout_ms: 5000
+  io_format: "json_stdio"
+  max_input_bytes: 1048576
+  max_output_bytes: 1048576
+  timeout_ms: 30000
+  max_memory_mb: 256
+  max_cpu_percent: 100
+  network_access: false
+  allow_fs_write: false
+  tmpdir_mb: 16
+  maturity: "prototype"

@@ -1,0 +1,11 @@
+id: navi.llm.anthropic
+name: Anthropic LLM Provider
+description: Built-in Anthropic inference provider plugin.
+version: 0.1.0
+kind: llm-provider
+status: active
+trust_tier: builtin
+components:
+  providers:
+    - path: providers/anthropic
+      provider_id: anthropic

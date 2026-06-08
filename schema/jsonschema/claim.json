@@ -1,0 +1,95 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://navi.dev/schema/claim.json",
+    "title": "NAVI AI Platform — Claim Schema",
+    "definitions": {
+        "SurfaceClaim": {
+            "type": "object",
+            "description": "Agent's exclusive write lock on a directory surface.",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "path": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "agent_id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "agent_type": {
+                    "$ref": "enums.json#/definitions/AgentType"
+                },
+                "status": {
+                    "$ref": "enums.json#/definitions/ClaimStatus"
+                },
+                "ttl": {
+                    "type": "integer",
+                    "description": "TTL in nanoseconds (Go time.Duration)."
+                },
+                "acquired_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "expires_at": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "required": [
+                "id",
+                "path",
+                "agent_id",
+                "agent_type",
+                "status",
+                "ttl",
+                "acquired_at",
+                "expires_at"
+            ]
+        },
+        "ClaimRequest": {
+            "type": "object",
+            "description": "Input to a claim acquisition.",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "agent_id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "agent_type": {
+                    "$ref": "enums.json#/definitions/AgentType"
+                },
+                "ttl": {
+                    "type": "integer",
+                    "description": "TTL in nanoseconds."
+                }
+            },
+            "required": [
+                "path",
+                "agent_id",
+                "agent_type",
+                "ttl"
+            ]
+        },
+        "ClaimResponse": {
+            "type": "object",
+            "description": "Result of a claim acquisition attempt.",
+            "properties": {
+                "claim": {
+                    "$ref": "#/definitions/SurfaceClaim"
+                },
+                "conflict": {
+                    "$ref": "#/definitions/SurfaceClaim"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

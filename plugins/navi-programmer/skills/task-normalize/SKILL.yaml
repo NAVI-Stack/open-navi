@@ -1,0 +1,225 @@
+oss27_version: "1.0"
+skill_id: "navi-programmer.task-normalize"
+semver: "0.1.0"
+
+display:
+  name: "NAVI Programmer Task Normalize"
+  description: "Normalize raw programming requests into scoped task targets and conservative repo binding decisions."
+
+interfaces:
+  - name: "normalize_task"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        raw_task:
+          type: "string"
+        source:
+          type: "string"
+          description: "Task source such as chat, linear, issue, directive, or self_generated."
+        source_id:
+          type: "string"
+        acceptance_hint:
+          type: "string"
+        repo_hints:
+          type: "array"
+          items:
+            type: "string"
+        current_repo:
+          type: "string"
+        constraints:
+          type: "array"
+          items:
+            type: "string"
+        metadata:
+          type: "object"
+          additionalProperties: true
+      required: ["raw_task"]
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        state:
+          type: "string"
+          enum: ["normalized", "blocked"]
+        blocked:
+          type: "boolean"
+        blocked_reasons:
+          type: "array"
+          items:
+            type: "string"
+        raw_task:
+          type: "object"
+          additionalProperties: true
+        normalized_task:
+          type: "object"
+          additionalProperties: true
+          properties:
+            summary:
+              type: "string"
+            task_class:
+              type: "string"
+              enum: ["read_only_comprehension", "bounded_mutation", "ticket_driven_mutation", "self_update_candidate", "unknown"]
+            mutation_intent:
+              type: "string"
+              enum: ["read_only", "mutative", "self_update", "ambiguous"]
+            self_update:
+              type: "boolean"
+            acceptance_target:
+              type: "string"
+
+  - name: "bind_scope"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        raw_task:
+          type: "string"
+        normalized_task:
+          type: "object"
+          additionalProperties: true
+        repo_hint:
+          type: "string"
+        explicit_repo:
+          type: "string"
+        current_repo:
+          type: "string"
+        candidate_repos:
+          type: "array"
+          items:
+            type: "object"
+        allowed_scope:
+          type: "array"
+          items:
+            type: "string"
+        require_existing_root:
+          type: "boolean"
+        allow_single_candidate_default:
+          type: "boolean"
+        require_self_update_candidate_context:
+          type: "boolean"
+        candidate_context:
+          type: "object"
+          additionalProperties: true
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        state:
+          type: "string"
+          enum: ["scope_bound", "blocked"]
+        binding_status:
+          type: "string"
+          enum: ["bound", "blocked"]
+        scope_status:
+          type: "string"
+          enum: ["bound", "blocked"]
+        blocked:
+          type: "boolean"
+        blocked_reasons:
+          type: "array"
+          items:
+            type: "string"
+        workspace_binding:
+          type: "object"
+          additionalProperties: true
+          properties:
+            binding_status:
+              type: "string"
+              enum: ["bound", "blocked"]
+            scope_status:
+              type: "string"
+              enum: ["bound", "blocked"]
+            repo_root:
+              type: "string"
+            allowed_scope:
+              type: "array"
+              items:
+                type: "string"
+            is_self_update:
+              type: "boolean"
+            candidate_context:
+              type: "object"
+              additionalProperties: true
+
+effects:
+  side_effects: []
+  risk_tier: "low"
+  idempotency: true
+  idempotency_level: "idempotent"
+  reversibility: "reversible_internal"
+  requires_confirmation: false
+
+security:
+  auth: []
+  data_access:
+    pii: "possible"
+    secrets: "read"
+  sandbox:
+    required: false
+    network_egress: []
+
+performance:
+  expected_p50_ms: 25
+  timeout_ms: 30000
+  rate_limit:
+    qps: 8
+    burst: 16
+
+observability:
+  log_redaction: ["raw_task", "metadata"]
+  emit_metrics: ["task_normalize_invocation", "task_normalize_outcome"]
+
+governance:
+  publisher: "navi.programmer"
+  signed: false
+  deprecates: []
+  replaces: []
+  trust_tier: "builtin"
+
+capability:
+  tags: ["programming", "normalization", "scope-binding", "planning"]
+  domains: ["coding", "workflow"]
+  provides:
+    - "task-normalization"
+    - "mutation-intent-classification"
+    - "repo-scope-binding"
+    - "ambiguity-blocking"
+  requires: []
+  command_type: "query"
+
+reliability:
+  expected_failure_modes:
+    - "missing_raw_task"
+    - "ambiguous_scope"
+    - "repo_not_found"
+    - "multiple_repo_matches"
+    - "scope_out_of_repo"
+    - "candidate_context_required"
+  retry_policy: "safe"
+
+python_runtime:
+  python_version: "3.11"
+  venv_strategy: "per_skill"
+  lifecycle: "cold"
+  spawn_timeout_ms: 5000
+  io_format: "json_stdio"
+  max_input_bytes: 1048576
+  max_output_bytes: 1048576
+  timeout_ms: 30000
+  max_memory_mb: 256
+  max_cpu_percent: 100
+  network_access: false
+  allow_fs_write: false
+  tmpdir_mb: 16
+  maturity: "prototype"

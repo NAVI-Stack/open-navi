@@ -1,0 +1,59 @@
+skill_id: scout-search
+display:
+  name: Scout Web Search
+  description: Search the web for real-time information, facts, and context.
+  emoji: "🔍"
+interfaces:
+  - name: search
+    description: Perform a web search for the given query.
+    input_schema:
+      type: object
+      properties:
+        query:
+          type: string
+          description: The search query.
+        count:
+          type: integer
+          description: Number of results to return (default 5, max 20).
+          minimum: 1
+          maximum: 20
+      required: [query]
+    output_schema:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              url:
+                type: string
+              description:
+                type: string
+    transport:
+      type: internal
+  - name: search_hub
+    description: Search the NAVI skill hub index for installable skills by keyword or capability tag.
+    input_schema:
+      type: object
+      properties:
+        query:
+          type: string
+          description: Keywords or capability tags to search for.
+      required: [query]
+    output_schema:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              skill_id: {type: string}
+              description: {type: string}
+              tags: {type: array, items: {type: string}}
+              trust_tier: {type: string}
+    transport:
+      type: internal

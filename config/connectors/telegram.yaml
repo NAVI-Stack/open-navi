@@ -1,0 +1,31 @@
+# CIP P5 — Telegram per-connector sync policy (CIP §7, §7.1).
+#
+# This file overlays the built-in Go default (internal/intake/policy). Owner
+# runtime edits made in the Console override these values and persist in the
+# connector_sync_policy store; they win over this file at resolve time.
+#
+# Telegram is an event-driven (long-poll / webhook) connector, so the delta
+# cadence is "webhook-triggered" rather than a fixed interval. Budgets bound a
+# pass; cost_ceiling_usd is enforced per pass by the Governor.
+connector_id: telegram
+privacy_class: personal
+visibility: logged
+
+delta:
+  cadence: webhook-triggered
+  cursor: incremental
+  dedupe: by_source_id
+  budget:
+    max_records_per_pass: 500
+    max_bytes_per_pass: 10485760   # 10 MiB
+    cost_ceiling_usd: 0.50
+
+backfill:
+  cadence: manual
+  cursor: incremental
+  dedupe: by_source_id
+  freshness: 30d
+  budget:
+    max_records_per_pass: 2000
+    max_bytes_per_pass: 52428800   # 50 MiB
+    cost_ceiling_usd: 5.00

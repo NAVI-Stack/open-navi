@@ -1,0 +1,168 @@
+.page {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.heading {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 20px;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.metricRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.metricLabel {
+  color: var(--text-muted);
+}
+
+.metricValue {
+  color: var(--accent-light);
+  font-weight: 600;
+}
+
+.eventRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.eventMeta {
+  display: flex;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.eventType {
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.errorRow {
+  display: flex;
+  gap: 12px;
+  padding: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.85rem;
+}
+
+.errorTime {
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.errorContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.errorMessage {
+  color: var(--danger-text);
+  font-weight: 500;
+}
+
+.errorComponent {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.runRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.85rem;
+}
+
+.runId {
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kbRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.85rem;
+}
+
+.kbInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.kbName {
+  font-weight: 600;
+}
+
+.kbMeta {
+  color: var(--text-muted);
+}
+
+.liveRow {
+  display: flex;
+  gap: 12px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+}
+
+.liveTime {
+  color: var(--text-muted);
+}
+
+.liveMethod {
+  color: var(--success-text);
+}
+
+.livePayload {
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}

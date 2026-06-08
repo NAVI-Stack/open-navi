@@ -1,0 +1,135 @@
+:root {
+  /* === Surfaces === */
+  --navi-bg: #0a0e1a;
+  --navi-bg-subtle: #0d1224;
+  --navi-panel: #111827;
+  --navi-panel-hover: #1a2332;
+  --navi-panel-active: #1e293b;
+  --navi-surface: rgba(17, 24, 39, 0.8);
+  --navi-surface-elevated: rgba(30, 41, 59, 0.6);
+  --navi-bg-elevated: #131929;
+  --navi-bg-elevated-hover: #1e293b;
+  --navi-glass: rgba(17, 24, 39, 0.6);
+  --navi-glass-border: rgba(255, 255, 255, 0.06);
+
+  /* === Text === */
+  --navi-text: #e5e7eb;
+  --navi-text-secondary: #9ca3af;
+  --navi-text-tertiary: #6b7280;
+  --navi-text-inverse: #0a0e1a;
+
+  /* === Borders === */
+  --navi-border: #1f2937;
+  --navi-border-subtle: rgba(255, 255, 255, 0.06);
+  --navi-border-strong: #374151;
+
+  /* === Accent === */
+  --navi-accent: #38bdf8;
+  --navi-accent-hover: #7dd3fc;
+  --navi-accent-dim: rgba(56, 189, 248, 0.15);
+  --navi-accent-glow: rgba(56, 189, 248, 0.25);
+
+  /* === Status === */
+  --navi-success: #34d399;
+  --navi-success-dim: rgba(52, 211, 153, 0.15);
+  --navi-warning: #fbbf24;
+  --navi-warning-dim: rgba(251, 191, 36, 0.15);
+  --navi-danger: #f87171;
+  --navi-danger-dim: rgba(248, 113, 113, 0.15);
+  --navi-info: #60a5fa;
+  --navi-info-dim: rgba(96, 165, 250, 0.15);
+
+  /* === Status semantic === */
+  --navi-status-idle: var(--navi-text-tertiary);
+  --navi-status-running: var(--navi-accent);
+  --navi-status-blocked: var(--navi-warning);
+  --navi-status-completed: var(--navi-success);
+  --navi-status-failed: var(--navi-danger);
+
+  /* === NAVI profile presence === */
+  --navi-profile-active: #35d36b;
+  --navi-profile-idle: rgba(236, 173, 46, 0.9);
+  --navi-profile-dreaming: #99f6ff;
+  --navi-profile-working: #ff7000;
+  --navi-profile-busy: #be123c;
+  --navi-profile-offline: #7d828c;
+  --navi-profile-needs-attention: #ff7000;
+  --navi-profile-wants-attention: #b985ff;
+  --navi-profile-avatar-a: #6366f1;
+  --navi-profile-avatar-b: #9333ea;
+
+  /* === Layout === */
+  --navi-rail-width: 260px;
+  --navi-rail-collapsed-width: 56px;
+  --navi-inspector-width: 340px;
+  --navi-topbar-height: 52px;
+  --navi-composer-max-height: 200px;
+
+  /* === Spacing === */
+  --navi-space-xs: 4px;
+  --navi-space-sm: 8px;
+  --navi-space-md: 12px;
+  --navi-space-lg: 16px;
+  --navi-space-xl: 24px;
+  --navi-space-2xl: 32px;
+
+  /* === Radius === */
+  --navi-radius-sm: 4px;
+  --navi-radius: 8px;
+  --navi-radius-lg: 12px;
+  --navi-radius-xl: 16px;
+  --navi-radius-full: 9999px;
+
+  /* === Typography === */
+  --navi-font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --navi-font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', ui-monospace, monospace;
+  --navi-font-size-xs: 11px;
+  --navi-font-size-sm: 13px;
+  --navi-font-size: 14px;
+  --navi-font-size-lg: 16px;
+  --navi-font-size-xl: 20px;
+  --navi-font-size-2xl: 24px;
+  --navi-font-weight-normal: 400;
+  --navi-font-weight-medium: 500;
+  --navi-font-weight-semibold: 600;
+  --navi-font-weight-bold: 700;
+  --navi-line-height: 1.5;
+  --navi-line-height-tight: 1.25;
+
+  /* === Animation === */
+  --navi-transition-fast: 120ms ease;
+  --navi-transition: 200ms ease;
+  --navi-transition-slow: 350ms ease;
+  --navi-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* === Shadows === */
+  --navi-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --navi-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --navi-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --navi-shadow-glow: 0 0 20px var(--navi-accent-glow);
+
+  /* === Z-index === */
+  --navi-z-rail: 100;
+  --navi-z-topbar: 200;
+  --navi-z-inspector: 100;
+  --navi-z-overlay: 500;
+  --navi-z-modal: 600;
+  --navi-z-tooltip: 700;
+
+  /* Legacy compat aliases */
+  --navi-sidebar-width: var(--navi-rail-width);
+  --navi-topbar-height: 52px;
+  --navi-density-unit: 1;
+  --font-mono: var(--navi-font-mono);
+  --color-bg-secondary: var(--navi-panel);
+  --color-bg-tertiary: var(--navi-panel-hover);
+  --color-bg-tertiary-rgb: 26, 35, 50;
+  --color-text-primary: var(--navi-text);
+  --color-text-secondary: var(--navi-text-secondary);
+  --color-text-tertiary: var(--navi-text-tertiary);
+  --color-border: var(--navi-border);
+  --color-accent: var(--navi-accent);
+  --color-warning: var(--navi-warning);
+  --color-danger: var(--navi-danger);
+  --color-success: var(--navi-success);
+}

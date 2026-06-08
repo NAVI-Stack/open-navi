@@ -1,0 +1,11 @@
+id: navi.search
+name: Scout Search
+description: NAVI search and skill-hub discovery capability.
+version: 1.0.0
+kind: agentic
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/navi-search
+      skill_id: scout-search

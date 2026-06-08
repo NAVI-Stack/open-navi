@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-store">
+  <title>NAVI Setup</title>
+  <style>
+    :root {
+      color-scheme: dark;
+
+      --navi-bg: #0b1020;
+      --navi-bg-subtle: #0d1224;
+      --navi-panel: #111827;
+      --navi-panel-hover: #1a2332;
+      --navi-text: #e5e7eb;
+      --navi-muted: #9ca3af;
+      --navi-text-secondary: var(--navi-muted);
+      --navi-text-tertiary: #6b7280;
+      --navi-border: #1f2937;
+      --navi-border-subtle: rgba(255, 255, 255, 0.06);
+      --navi-accent: #3b82f6;
+      --navi-accent-hover: #60a5fa;
+      --navi-accent-dim: rgba(59, 130, 246, 0.16);
+      --navi-danger: #f87171;
+      --navi-danger-dim: rgba(248, 113, 113, 0.16);
+      --navi-warning: #fbbf24;
+      --navi-warning-dim: rgba(251, 191, 36, 0.16);
+      --navi-success: #34d399;
+      --navi-success-dim: rgba(52, 211, 153, 0.16);
+      --navi-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --navi-font-mono: "Cascadia Code", "Fira Code", "JetBrains Mono", ui-monospace, monospace;
+      --navi-font-size-xs: 11px;
+      --navi-font-size-sm: 13px;
+      --navi-font-size: 14px;
+      --navi-font-size-lg: 16px;
+      --navi-font-size-xl: 20px;
+      --navi-font-size-2xl: 24px;
+      --navi-font-weight-medium: 500;
+      --navi-font-weight-semibold: 600;
+      --navi-font-weight-bold: 700;
+      --navi-line-height: 1.5;
+      --navi-line-height-tight: 1.25;
+      --navi-space-xs: 4px;
+      --navi-space-sm: 8px;
+      --navi-space-md: 12px;
+      --navi-space-lg: 16px;
+      --navi-space-xl: 24px;
+      --navi-space-2xl: 32px;
+      --navi-radius: 8px;
+      --navi-radius-full: 9999px;
+      --navi-transition: 200ms ease;
+      --navi-shadow: 0 18px 54px rgba(0, 0, 0, 0.34);
+
+      --bg: var(--navi-bg);
+      --bg-subtle: var(--navi-bg-subtle);
+      --panel: var(--navi-panel);
+      --panel-hover: var(--navi-panel-hover);
+      --ink: var(--navi-text);
+      --muted: var(--navi-muted);
+      --line: var(--navi-border);
+      --accent: var(--navi-accent);
+      --danger: var(--navi-danger);
+      --warn: var(--navi-warning);
+      --soft: var(--navi-accent-dim);
+      --shadow: var(--navi-shadow);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        color-scheme: light;
+        --navi-bg: #f8fafc;
+        --navi-bg-subtle: #eef4fb;
+        --navi-panel: #ffffff;
+        --navi-panel-hover: #f1f5f9;
+        --navi-text: #0f172a;
+        --navi-muted: #64748b;
+        --navi-text-tertiary: #94a3b8;
+        --navi-border: #dbe3ef;
+        --navi-border-subtle: rgba(15, 23, 42, 0.08);
+        --navi-accent: #3b82f6;
+        --navi-accent-hover: #2563eb;
+        --navi-accent-dim: rgba(59, 130, 246, 0.12);
+        --navi-danger: #dc2626;
+        --navi-danger-dim: rgba(220, 38, 38, 0.10);
+        --navi-warning: #d97706;
+        --navi-warning-dim: rgba(217, 119, 6, 0.12);
+        --navi-success: #059669;
+        --navi-success-dim: rgba(5, 150, 105, 0.12);
+        --navi-shadow: 0 16px 44px rgba(15, 23, 42, 0.10);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--navi-font-sans);
+      font-size: var(--navi-font-size);
+      line-height: var(--navi-line-height);
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--bg-subtle) 74%, transparent), transparent 240px),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 28px 18px 48px;
+      display: grid;
+      gap: 18px;
+    }
+
+    header {
+      display: grid;
+      gap: 10px;
+      padding: 8px 0 6px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: var(--navi-line-height-tight);
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: var(--navi-font-size-xl);
+      line-height: var(--navi-line-height-tight);
+    }
+    h3 {
+      font-size: var(--navi-font-size);
+      font-weight: var(--navi-font-weight-semibold);
+    }
+    p, label, .muted { color: var(--muted); }
+
+    .eyebrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--navi-space-sm);
+      align-items: center;
+    }
+
+    .lede {
+      max-width: 760px;
+      font-size: var(--navi-font-size-lg);
+      color: var(--navi-text-secondary);
+    }
+
+    .experience-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--navi-radius);
+      background: var(--line);
+    }
+
+    .experience-item {
+      display: grid;
+      gap: 4px;
+      min-height: 84px;
+      padding: 14px;
+      background: color-mix(in srgb, var(--panel) 94%, var(--bg));
+    }
+
+    .experience-item strong {
+      color: var(--ink);
+      font-weight: var(--navi-font-weight-semibold);
+    }
+
+    .experience-item span {
+      color: var(--muted);
+      font-size: var(--navi-font-size-sm);
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--navi-radius);
+      box-shadow: var(--shadow);
+    }
+
+    .stepper {
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border-radius: var(--navi-radius);
+      border: 1px solid transparent;
+    }
+
+    .step.active {
+      background: var(--soft);
+      border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+    }
+
+    .step.done .dot {
+      background: var(--accent);
+      color: var(--navi-text-inverse, #ffffff);
+    }
+
+    .dot {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--navi-radius-full);
+      display: grid;
+      place-items: center;
+      background: var(--bg-subtle);
+      color: var(--muted);
+      font-weight: var(--navi-font-weight-bold);
+      font-size: var(--navi-font-size-xs);
+    }
+
+    .content {
+      padding: 22px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .stack { display: grid; gap: 12px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      font-size: 0.92rem;
+    }
+
+    input, select, textarea, button {
+      font: inherit;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--navi-radius);
+      background: var(--bg);
+      color: var(--ink);
+      padding: 11px 12px;
+    }
+
+    textarea {
+      min-height: 126px;
+      resize: vertical;
+    }
+
+    button {
+      border: 1px solid transparent;
+      border-radius: var(--navi-radius);
+      padding: 11px 14px;
+      cursor: pointer;
+      background: var(--panel);
+      color: var(--ink);
+      transition: background-color var(--navi-transition), border-color var(--navi-transition), transform 120ms ease;
+    }
+
+    button:hover {
+      background: var(--panel-hover);
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: var(--navi-text-inverse, #ffffff);
+    }
+
+    button.primary:hover {
+      background: var(--navi-accent-hover);
+    }
+
+    button.secondary {
+      border-color: var(--line);
+    }
+
+    button.secondary:hover {
+      background: var(--panel-hover);
+    }
+
+    button.danger {
+      background: var(--danger);
+      color: var(--navi-text-inverse, #ffffff);
+    }
+
+    button.danger:hover {
+      background: color-mix(in srgb, var(--danger) 82%, var(--bg));
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.58;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .notice {
+      border: 1px solid var(--line);
+      border-radius: var(--navi-radius);
+      padding: 12px;
+      background: color-mix(in srgb, var(--panel) 82%, var(--bg));
+    }
+
+    .notice.good {
+      background: var(--navi-success-dim);
+      border-color: color-mix(in srgb, var(--navi-success) 32%, transparent);
+    }
+
+    .notice.warn {
+      background: var(--navi-warning-dim);
+      border-color: color-mix(in srgb, var(--navi-warning) 32%, transparent);
+      color: var(--ink);
+    }
+
+    .notice.error {
+      background: var(--navi-danger-dim);
+      border-color: color-mix(in srgb, var(--navi-danger) 32%, transparent);
+      color: var(--danger);
+    }
+
+    .secret {
+      display: grid;
+      gap: 8px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--navi-radius);
+      background: var(--bg);
+    }
+
+    .secret code {
+      overflow-wrap: anywhere;
+      line-height: 1.5;
+      color: var(--ink);
+      font-family: var(--navi-font-mono);
+    }
+
+    .secret-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      border: 1px solid var(--line);
+      border-radius: var(--navi-radius-full);
+      padding: 5px 9px;
+      font-size: var(--navi-font-size-xs);
+      color: var(--muted);
+      background: var(--panel);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: var(--navi-radius);
+      padding: 10px 12px;
+      background: var(--panel);
+    }
+
+    summary {
+      cursor: pointer;
+      color: var(--ink);
+      font-weight: 650;
+    }
+
+    .hidden { display: none !important; }
+
+    .field-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 780px) {
+      main { padding: 20px 12px 36px; }
+      .shell, .grid, .experience-strip { grid-template-columns: 1fr; }
+      .stepper { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .content { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">
+        <span class="pill">First-run console</span>
+        <span class="pill" id="progress-pill">Checking setup...</span>
+        <span class="pill" id="theme-pill">System theme</span>
+      </div>
+      <h1>NAVI setup</h1>
+      <p class="lede">This is where NAVI becomes yours: owner recovery, a working brain, and an optional first way to talk. Local-first by default, theme-aware from the first screen.</p>
+      <div class="experience-strip" aria-label="NAVI setup principles">
+        <div class="experience-item">
+          <strong>Owner-held</strong>
+          <span>Your recovery passport is created here and shown once.</span>
+        </div>
+        <div class="experience-item">
+          <strong>Local-first</strong>
+          <span>Ollama stays the default when it is available.</span>
+        </div>
+        <div class="experience-item">
+          <strong>Ready to grow</strong>
+          <span>Connect a channel now, or let NAVI meet you in chat after setup.</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="shell">
+      <aside class="panel stepper" aria-label="Setup progress">
+        <div class="step" data-step="recovery">
+          <div class="dot">1</div>
+          <div>
+            <h3>Recovery</h3>
+            <p class="muted">Create and save your owner passport.</p>
+          </div>
+        </div>
+        <div class="step" data-step="provider">
+          <div class="dot">2</div>
+          <div>
+            <h3>Brain</h3>
+            <p class="muted">Pick a provider and model.</p>
+          </div>
+        </div>
+        <div class="step" data-step="connection">
+          <div class="dot">3</div>
+          <div>
+            <h3>Connection</h3>
+            <p class="muted">Optional first communication method.</p>
+          </div>
+        </div>
+        <div class="step" data-step="complete">
+          <div class="dot">4</div>
+          <div>
+            <h3>Ready</h3>
+            <p class="muted">Finish and open NAVI.</p>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel content" id="content">
+        <div class="notice">Loading onboarding status...</div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const DEFAULT_ACCENT = "#3b82f6";
+    const BASE_TOKENS = {
+      light: {
+        background: "#f8fafc",
+        surface: "#ffffff",
+        text: "#0f172a",
+        muted: "#64748b",
+        border: "#dbe3ef",
+        danger: "#dc2626",
+        warning: "#d97706",
+        success: "#059669"
+      },
+      dark: {
+        background: "#0b1020",
+        surface: "#111827",
+        text: "#e5e7eb",
+        muted: "#9ca3af",
+        border: "#1f2937",
+        danger: "#f87171",
+        warning: "#fbbf24",
+        success: "#34d399"
+      }
+    };
+
+    const steps = ["recovery", "provider", "connection", "complete"];
+    let status = null;
+    let latestPassportText = "";
+    let recoverySaveHandle = null;
+
+    const content = document.querySelector("#content");
+    const progressPill = document.querySelector("#progress-pill");
+    const themePill = document.querySelector("#theme-pill");
+
+    function systemMode() {
+      return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+    }
+
+    function effectiveMode(mode) {
+      return mode === "system" ? systemMode() : mode;
+    }
+
+    function isHex(value) {
+      return typeof value === "string" && /^#[0-9a-fA-F]{6}$/.test(value);
+    }
+
+    function hexToRgb(hex) {
+      const parsed = Number.parseInt(hex.replace("#", ""), 16);
+      return {
+        r: (parsed >> 16) & 255,
+        g: (parsed >> 8) & 255,
+        b: parsed & 255
+      };
+    }
+
+    function hexToRgba(hex, alpha) {
+      const { r, g, b } = hexToRgb(hex);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    function normalizeTheme(value) {
+      const source = value && typeof value === "object" ? value : {};
+      const mode = ["light", "dark", "system"].includes(source.mode) ? source.mode : "system";
+      const tokens = source.tokens && typeof source.tokens === "object" ? source.tokens : {};
+      return {
+        mode,
+        accent: isHex(source.accent) ? source.accent : DEFAULT_ACCENT,
+        tokens: {
+          light: normalizeTokens(tokens.light, BASE_TOKENS.light),
+          dark: normalizeTokens(tokens.dark, BASE_TOKENS.dark)
+        }
+      };
+    }
+
+    function normalizeTokens(value, fallback) {
+      const source = value && typeof value === "object" ? value : {};
+      return Object.fromEntries(
+        Object.entries(fallback).map(([key, fallbackValue]) => [
+          key,
+          isHex(source[key]) ? source[key] : fallbackValue
+        ])
+      );
+    }
+
+    function panelHoverFor(mode) {
+      return mode === "light" ? "#f1f5f9" : "#1a2332";
+    }
+
+    function applyTheme(theme) {
+      const normalized = normalizeTheme(theme);
+      const resolvedMode = effectiveMode(normalized.mode);
+      const tokens = normalized.tokens[resolvedMode];
+      const root = document.documentElement;
+
+      root.style.setProperty("color-scheme", resolvedMode);
+      root.style.setProperty("--navi-bg", tokens.background);
+      root.style.setProperty("--navi-bg-subtle", resolvedMode === "light" ? "#eef4fb" : "#0d1224");
+      root.style.setProperty("--navi-panel", tokens.surface);
+      root.style.setProperty("--navi-panel-hover", panelHoverFor(resolvedMode));
+      root.style.setProperty("--navi-text", tokens.text);
+      root.style.setProperty("--navi-muted", tokens.muted);
+      root.style.setProperty("--navi-text-secondary", tokens.muted);
+      root.style.setProperty("--navi-border", tokens.border);
+      root.style.setProperty("--navi-accent", normalized.accent);
+      root.style.setProperty("--navi-accent-hover", resolvedMode === "light" ? "#2563eb" : "#60a5fa");
+      root.style.setProperty("--navi-accent-dim", hexToRgba(normalized.accent, resolvedMode === "light" ? 0.12 : 0.16));
+      root.style.setProperty("--navi-danger", tokens.danger);
+      root.style.setProperty("--navi-danger-dim", hexToRgba(tokens.danger, resolvedMode === "light" ? 0.10 : 0.16));
+      root.style.setProperty("--navi-warning", tokens.warning);
+      root.style.setProperty("--navi-warning-dim", hexToRgba(tokens.warning, resolvedMode === "light" ? 0.12 : 0.16));
+      root.style.setProperty("--navi-success", tokens.success);
+      root.style.setProperty("--navi-success-dim", hexToRgba(tokens.success, resolvedMode === "light" ? 0.12 : 0.16));
+      root.style.setProperty("--navi-shadow", resolvedMode === "light" ? "0 16px 44px rgba(15, 23, 42, 0.10)" : "0 18px 54px rgba(0, 0, 0, 0.34)");
+
+      themePill.textContent = normalized.mode === "system"
+        ? `System ${resolvedMode}`
+        : `${resolvedMode[0].toUpperCase()}${resolvedMode.slice(1)} theme`;
+    }
+
+    async function hydrateAppearance() {
+      applyTheme({ mode: "system", accent: DEFAULT_ACCENT, tokens: BASE_TOKENS });
+      try {
+        const res = await fetch("/api/console/appearance", {
+          credentials: "same-origin",
+          cache: "no-store"
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data?.appearance?.theme) {
+          applyTheme(data.appearance.theme);
+        }
+      } catch {
+        // Onboarding remains usable before authenticated console appearance is available.
+      }
+    }
+
+    window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => {
+      hydrateAppearance();
+    });
+
+    function escapeHTML(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    async function api(path, options = {}) {
+      const timeoutMs = options.timeoutMs || 20000;
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
+      const res = await fetch(path, {
+        ...options,
+        signal: controller.signal,
+        headers: {
+          "Content-Type": "application/json",
+          ...(options.headers || {})
+        },
+        cache: "no-store"
+      }).catch((err) => {
+        if (err.name === "AbortError") {
+          throw new Error("Request timed out. Check that NaviD is still running and try again.");
+        }
+        throw err;
+      }).finally(() => window.clearTimeout(timeout));
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(errorMessage(body, `Request failed (${res.status})`));
+      }
+      return body;
+    }
+
+    function errorMessage(body, fallback) {
+      if (typeof body?.error === "string") return body.error;
+      if (typeof body?.error?.message === "string") return body.error.message;
+      return fallback;
+    }
+
+    async function refresh() {
+      status = await api("/api/onboarding/status", { method: "GET" });
+      render();
+    }
+
+    function activeStep() {
+      if (!status) return "recovery";
+      return status.current_step || "recovery";
+    }
+
+    function updateStepper() {
+      const active = activeStep();
+      const activeIndex = steps.indexOf(active);
+      document.querySelectorAll(".step").forEach((el) => {
+        const idx = steps.indexOf(el.dataset.step);
+        el.classList.toggle("active", idx === activeIndex);
+        el.classList.toggle("done", idx < activeIndex || status?.first_run_state === "complete");
+      });
+      progressPill.textContent = status?.first_run_state === "complete"
+        ? "Setup complete"
+        : `Step ${Math.max(activeIndex + 1, 1)} of 4`;
+    }
+
+    function render(error = "") {
+      updateStepper();
+      const step = activeStep();
+      if (status?.first_run_state === "complete") {
+        renderComplete(error);
+      } else if (step === "provider") {
+        renderProvider(error);
+      } else if (step === "connection") {
+        renderConnection(error);
+      } else {
+        renderRecovery(error);
+      }
+    }
+
+    function renderRecovery(error = "") {
+      const savedPath = status?.recovery_saved_path || "";
+      const mode = recoveryRuntimeMode();
+      const defaultPath = status?.recovery_default_save_path || "";
+      const isContainer = mode === "container";
+      const saveLocation = isContainer
+        ? `
+          <div class="notice">
+            NAVI is running in a container, so the recovery passport should be saved from your browser.
+            After creation, use the download button and choose where to keep it.
+          </div>
+          <input id="save-path" class="hidden" autocomplete="off" value="">
+        `
+        : `
+          <details open>
+            <summary>Save location</summary>
+            <div class="stack" style="margin-top: 12px;">
+              <p>NAVI is running as a local daemon. The default backend save location is <strong>${escapeHTML(defaultPath || "your user folder")}</strong>.</p>
+              <div class="actions">
+                <button class="secondary" id="choose-save-location" type="button">Choose save location</button>
+                <span class="field-note" id="save-location-note">Default user-folder location selected.</span>
+              </div>
+              <label>Backend path
+                <input id="save-path" autocomplete="off" value="${escapeHTML(defaultPath)}" placeholder="Use default user-folder path">
+              </label>
+            </div>
+          </details>
+        `;
+      content.innerHTML = `
+        <div class="stack">
+          <h2>Create your recovery passport</h2>
+          <p>This creates the owner recovery secret, the first API key, and a recovery seed. Save them now; NAVI will not show them again after this step.</p>
+        </div>
+        ${error ? `<div class="notice error">${escapeHTML(error)}</div>` : ""}
+        ${savedPath ? `<div class="notice good">Recovery was already created. Saved path: <strong>${escapeHTML(savedPath)}</strong></div>` : ""}
+        ${saveLocation}
+        <div id="passport-result" class="stack"></div>
+        <div class="actions">
+          <button class="primary" id="create-recovery">${savedPath ? "Continue to brain setup" : "Create recovery passport"}</button>
+          <button class="secondary" id="retry-status">Retry status check</button>
+        </div>
+      `;
+      document.querySelector("#retry-status").onclick = () => refresh().catch((err) => renderRecovery(err.message));
+      const chooseButton = document.querySelector("#choose-save-location");
+      if (chooseButton) {
+        chooseButton.onclick = chooseRecoverySaveLocation;
+      }
+      document.querySelector("#create-recovery").onclick = savedPath ? async () => {
+        await refresh();
+      } : createRecovery;
+    }
+
+    async function createRecovery() {
+      const button = document.querySelector("#create-recovery");
+      // TODO(onboarding-ux): Clean up this button's pending/selected-state flow so "Creating" never feels like a disabled dead end.
+      button.disabled = true;
+      button.textContent = "Creating...";
+      try {
+        const savePathInput = document.querySelector("#save-path");
+        const body = {
+          owner_name: "",
+          device_name: "",
+          save_path: recoveryRuntimeMode() === "container" ? "" : (savePathInput?.value || "").trim()
+        };
+        const result = await api("/api/onboarding/recovery", {
+          method: "POST",
+          body: JSON.stringify(body)
+        });
+        latestPassportText = result.passport_text || "";
+        const browserSaveMessage = await savePassportToSelectedHandle(result.download_filename || "navi-owner-passport.txt");
+        status = {
+          ...(status || {}),
+          first_run_state: "recovery_created",
+          current_step: "provider",
+          recovery_saved_path: result.recovery_saved_path || status?.recovery_saved_path || ""
+        };
+        window.history.replaceState(null, "", "/onboarding");
+        showPassport(result, browserSaveMessage);
+        updateStepper();
+        try {
+          status = await api("/api/onboarding/status", { method: "GET" });
+          updateStepper();
+        } catch (err) {
+          const target = document.querySelector("#passport-result");
+          if (target) {
+            target.insertAdjacentHTML("beforeend", `<div class="notice warn">${escapeHTML(err.message)} Your passport was created; continue to brain setup when ready.</div>`);
+          }
+        }
+      } catch (err) {
+        renderRecovery(err.message);
+      }
+    }
+
+    function showPassport(result, browserSaveMessage = "") {
+      const target = document.querySelector("#passport-result");
+      const isContainer = recoveryRuntimeMode() === "container";
+      const saveMessage = browserSaveMessage
+        ? browserSaveMessage
+        : result.recovery_saved && !isContainer
+        ? `<div class="notice good">Saved to <strong>${escapeHTML(result.recovery_saved_path)}</strong></div>`
+        : `<div class="notice warn">${isContainer ? "Download the passport now and keep it private." : "NAVI could not save the file automatically. Use copy or download now."} ${escapeHTML(result.recovery_save_error || "")}</div>`;
+      target.innerHTML = `
+        ${saveMessage}
+        <div class="notice warn">These secrets are shown once. Keep the downloaded or saved passport private.</div>
+        ${secretBlock("Owner recovery secret", result.admin_secret || "Provided manually", "owner-secret")}
+        ${secretBlock("Primary API key", result.primary_api_key, "api-key")}
+        ${secretBlock("Recovery seed", result.recovery_seed, "recovery-seed")}
+        <div class="actions">
+          <button class="secondary" id="copy-passport">Copy passport</button>
+          <button class="${isContainer ? "primary" : "secondary"}" id="download-passport">Download passport</button>
+          <button class="primary" id="continue-provider">I saved this, continue</button>
+        </div>
+      `;
+      target.querySelectorAll("[data-copy]").forEach((button) => {
+        button.onclick = () => copyText(button.dataset.copy);
+      });
+      document.querySelector("#copy-passport").onclick = () => copyText(latestPassportText);
+      document.querySelector("#download-passport").onclick = () => downloadPassport(result.download_filename || "navi-owner-passport.txt");
+      document.querySelector("#continue-provider").onclick = () => renderProvider();
+    }
+
+    function secretBlock(label, value, id) {
+      return `
+        <div class="secret">
+          <div class="secret-head">
+            <strong>${escapeHTML(label)}</strong>
+            <button class="secondary" data-copy="${escapeHTML(value)}" id="copy-${id}">Copy</button>
+          </div>
+          <code>${escapeHTML(value)}</code>
+        </div>
+      `;
+    }
+
+    async function copyText(value) {
+      await navigator.clipboard.writeText(value || "");
+    }
+
+    function recoveryRuntimeMode() {
+      return status?.runtime_mode === "container" || status?.in_container ? "container" : "daemon";
+    }
+
+    async function chooseRecoverySaveLocation() {
+      const note = document.querySelector("#save-location-note");
+      if (!("showSaveFilePicker" in window)) {
+        if (note) note.textContent = "Use the backend path field, or download after creation.";
+        return;
+      }
+      try {
+        recoverySaveHandle = await window.showSaveFilePicker({
+          suggestedName: "navi-owner-passport.txt",
+          types: [{
+            description: "Text file",
+            accept: { "text/plain": [".txt"] }
+          }]
+        });
+        if (note) note.textContent = `Browser save selected: ${recoverySaveHandle.name}`;
+      } catch (err) {
+        if (err?.name !== "AbortError" && note) {
+          note.textContent = "Could not open the save dialog. Use the backend path or download after creation.";
+        }
+      }
+    }
+
+    async function savePassportToSelectedHandle(filename) {
+      if (!recoverySaveHandle || !latestPassportText) return "";
+      try {
+        const writable = await recoverySaveHandle.createWritable();
+        await writable.write(new Blob([latestPassportText], { type: "text/plain" }));
+        await writable.close();
+        return `<div class="notice good">Saved through your browser as <strong>${escapeHTML(recoverySaveHandle.name || filename)}</strong></div>`;
+      } catch (err) {
+        return `<div class="notice warn">The browser save did not complete. Use download now. ${escapeHTML(err?.message || "")}</div>`;
+      }
+    }
+
+    function downloadPassport(filename) {
+      const blob = new Blob([latestPassportText], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function renderProvider(error = "") {
+      const providers = status?.provider_options || [];
+      const defaultProvider = status?.provider || status?.default_provider || "ollama";
+      const providerOptions = providers.length
+        ? providers.map((p) => `<option value="${escapeHTML(p.key)}" ${p.key === defaultProvider ? "selected" : ""}>${escapeHTML(p.display_name || p.key)}</option>`).join("")
+        : `<option value="ollama" selected>Ollama</option><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option><option value="openrouter">OpenRouter</option>`;
+      const ollama = status?.ollama;
+      const modelControl = renderModelControl(defaultProvider);
+      content.innerHTML = `
+        <div class="stack">
+          <h2>Choose NAVI's brain</h2>
+          <p>Ollama is the local-first default when it is available. You can use another provider now or change this later.</p>
+        </div>
+        ${error ? `<div class="notice error">${escapeHTML(error)}</div>` : ""}
+        ${ollama ? `<div class="notice ${ollama.available ? "good" : "warn"}">Ollama ${ollama.available ? "is available" : "was not detected"}${ollama.model_count ? ` with ${ollama.model_count} model(s)` : ""}.</div>` : ""}
+        <div class="stack">
+          <label>Provider
+            <select id="provider">${providerOptions}</select>
+          </label>
+          <div id="model-field">${modelControl}</div>
+        </div>
+        <details>
+          <summary>Advanced provider settings</summary>
+          <div class="grid" style="margin-top: 12px;">
+            <label>API key
+              <input id="provider-key" type="password" autocomplete="off" placeholder="Only needed for cloud providers">
+            </label>
+            <label>Endpoint
+              <input id="provider-endpoint" autocomplete="off" placeholder="Use provider default">
+            </label>
+          </div>
+        </details>
+        <div class="actions">
+          <button class="primary" id="save-provider">Save brain setup</button>
+          <button class="secondary" id="refresh-provider">Retry detection</button>
+          <button class="danger" id="reset-setup" style="margin-left: auto;">Reset setup</button>
+        </div>
+      `;
+      document.querySelector("#refresh-provider").onclick = () => refresh().catch((err) => renderProvider(err.message));
+      document.querySelector("#provider").onchange = (event) => {
+        document.querySelector("#model-field").innerHTML = renderModelControl(event.target.value);
+        wireModelControl();
+      };
+      wireModelControl();
+      document.querySelector("#save-provider").onclick = saveProvider;
+      document.querySelector("#reset-setup").onclick = resetSetup;
+    }
+
+    function renderModelControl(providerKey) {
+      const models = providerModels(providerKey);
+      const selected = initialModelForProvider(providerKey, models);
+      if (!models.length) {
+        return `
+          <label>Model
+            <input id="model" autocomplete="off" value="${escapeHTML(selected)}" placeholder="llama3:latest">
+          </label>
+        `;
+      }
+      const hasSelected = models.some((model) => model === selected);
+      const useCustom = selected && !hasSelected;
+      const options = [
+        `<option value="">Choose a model</option>`,
+        ...models.map((model) => `<option value="${escapeHTML(model)}" ${model === selected ? "selected" : ""}>${escapeHTML(model)}</option>`),
+        `<option value="__custom" ${useCustom ? "selected" : ""}>Custom model...</option>`
+      ].join("");
+      return `
+        <label>Model
+          <select id="model-select">${options}</select>
+          <input id="model" class="${useCustom ? "" : "hidden"}" autocomplete="off" value="${escapeHTML(useCustom ? selected : "")}" placeholder="model:tag">
+          <span class="field-note">${models.length} ${models.length === 1 ? "model" : "models"} detected for this provider.</span>
+        </label>
+      `;
+    }
+
+    function wireModelControl() {
+      const select = document.querySelector("#model-select");
+      const input = document.querySelector("#model");
+      if (!select || !input) return;
+      const syncCustom = () => {
+        input.classList.toggle("hidden", select.value !== "__custom");
+        if (select.value !== "__custom") input.value = "";
+      };
+      select.onchange = syncCustom;
+      syncCustom();
+    }
+
+    function providerModels(providerKey) {
+      const provider = (status?.provider_options || []).find((p) => p.key === providerKey);
+      return Array.isArray(provider?.models) ? provider.models.filter(Boolean) : [];
+    }
+
+    function initialModelForProvider(providerKey, models) {
+      const configuredProvider = status?.provider || "";
+      const configuredModel = status?.model || "";
+      if (configuredProvider === providerKey && configuredModel) return configuredModel;
+      if (!models.length && status?.default_provider === providerKey && status?.default_model) return status.default_model;
+      if (models.length === 1) return models[0];
+      return "";
+    }
+
+    function selectedModelValue() {
+      const select = document.querySelector("#model-select");
+      const input = document.querySelector("#model");
+      if (!select) return (input?.value || "").trim();
+      if (select.value === "__custom") return (input?.value || "").trim();
+      return select.value.trim();
+    }
+
+    async function saveProvider() {
+      const button = document.querySelector("#save-provider");
+      button.disabled = true;
+      button.textContent = "Saving...";
+      const model = selectedModelValue();
+      if (!model) {
+        renderProvider("Choose a model before saving brain setup.");
+        return;
+      }
+      try {
+        await api("/api/onboarding/provider", {
+          method: "POST",
+          body: JSON.stringify({
+            provider: document.querySelector("#provider").value,
+            model,
+            api_key: document.querySelector("#provider-key").value.trim(),
+            endpoint: document.querySelector("#provider-endpoint").value.trim()
+          })
+        });
+        await refresh();
+      } catch (err) {
+        renderProvider(err.message);
+      }
+    }
+
+    function renderConnection(error = "") {
+      const options = status?.connection_options || [];
+      const optionHTML = options.map((opt) => `<option value="${escapeHTML(opt.type)}">${escapeHTML(opt.display_name || opt.type)}</option>`).join("");
+      const isConfigured = status?.connection_status === "configured";
+      content.innerHTML = `
+        <div class="stack">
+          <h2>Optional connection</h2>
+          <p>You can connect a first communication method if this backend already supports it. Skipping is fine and will not block setup.</p>
+        </div>
+        ${error ? `<div class="notice error">${escapeHTML(error)}</div>` : ""}
+        ${status?.connection_status ? `<div class="notice good">Connection step is ${escapeHTML(status.connection_status)}.</div>` : ""}
+        <label>Connection method
+          <select id="connection-type">
+            <option value="none">None for now</option>
+            ${optionHTML}
+          </select>
+        </label>
+        <div id="connection-fields" class="stack"></div>
+        <div class="actions">
+          ${isConfigured
+            ? `<button class="primary" id="finish-setup">Finish setup</button>`
+            : `<button class="primary" id="skip-finish">Skip and finish setup</button>`
+          }
+          <button class="secondary" id="save-connection">Save connection</button>
+          <button class="danger" id="reset-setup" style="margin-left: auto;">Reset setup</button>
+        </div>
+      `;
+      document.querySelector("#connection-type").onchange = renderConnectionFields;
+      if (isConfigured) {
+        document.querySelector("#finish-setup").onclick = completeSetup;
+      } else {
+        document.querySelector("#skip-finish").onclick = skipAndComplete;
+      }
+      document.querySelector("#save-connection").onclick = saveConnection;
+      document.querySelector("#reset-setup").onclick = resetSetup;
+      renderConnectionFields();
+    }
+
+    function renderConnectionFields() {
+      const selected = document.querySelector("#connection-type").value;
+      const option = (status?.connection_options || []).find((item) => item.type === selected);
+      const target = document.querySelector("#connection-fields");
+      if (!option) {
+        target.innerHTML = "";
+        return;
+      }
+      target.innerHTML = (option.fields || []).map((field) => `
+        <label>${escapeHTML(field.label || field.key)}
+          <input data-conn-field="${escapeHTML(field.key)}" ${field.secret ? "type=\"password\"" : ""} autocomplete="off" placeholder="${escapeHTML(field.description || "")}">
+        </label>
+      `).join("");
+    }
+
+    async function saveConnection() {
+      const connType = document.querySelector("#connection-type").value;
+      if (connType === "none") {
+        await skipAndComplete();
+        return;
+      }
+      const params = {};
+      document.querySelectorAll("[data-conn-field]").forEach((input) => {
+        params[input.dataset.connField] = input.value;
+      });
+      try {
+        await api("/api/onboarding/connection", {
+          method: "POST",
+          body: JSON.stringify({ type: connType, params })
+        });
+        await refresh();
+      } catch (err) {
+        renderConnection(err.message);
+      }
+    }
+
+    async function skipAndComplete() {
+      try {
+        await api("/api/onboarding/connection", {
+          method: "POST",
+          body: JSON.stringify({ skip: true })
+        });
+        await completeSetup();
+      } catch (err) {
+        renderConnection(err.message);
+      }
+    }
+
+    async function completeSetup() {
+      try {
+        await api("/api/onboarding/complete", {
+          method: "POST",
+          body: JSON.stringify({})
+        });
+        await refresh();
+      } catch (err) {
+        const step = activeStep();
+        if (step === "connection") {
+          renderConnection(err.message);
+        } else {
+          renderComplete(err.message);
+        }
+      }
+    }
+
+    async function resetSetup() {
+      if (!confirm("Are you sure you want to reset the setup? This will clear all onboarding progress.")) {
+        return;
+      }
+      try {
+        await api("/api/onboarding/reset", {
+          method: "POST",
+          body: JSON.stringify({})
+        });
+        window.location.reload();
+      } catch (err) {
+        const step = activeStep();
+        if (step === "provider") {
+          renderProvider(err.message);
+        } else if (step === "connection") {
+          renderConnection(err.message);
+        } else {
+          renderRecovery(err.message);
+        }
+      }
+    }
+
+    function renderComplete(error = "") {
+      content.innerHTML = `
+        <div class="stack">
+          <h2>NAVI is ready</h2>
+          <p>Setup is complete. The normal backend page is available now.</p>
+        </div>
+        ${error ? `<div class="notice error">${escapeHTML(error)}</div>` : ""}
+        <div class="actions">
+          <button class="primary" id="open-navi">Open NAVI</button>
+        </div>
+      `;
+      document.querySelector("#open-navi").onclick = () => window.location.replace("/");
+    }
+
+    hydrateAppearance();
+    refresh().catch((err) => {
+      content.innerHTML = `<div class="notice error">${escapeHTML(err.message)}</div><div class="actions"><button class="secondary" onclick="location.reload()">Retry</button></div>`;
+    });
+  </script>
+</body>
+</html>

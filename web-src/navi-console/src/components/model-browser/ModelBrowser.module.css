@@ -1,0 +1,505 @@
+/* ─── Backdrop — transparent full-screen layer to capture click-outside ─── */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--navi-z-overlay) - 1);
+  background: transparent;
+  cursor: default;
+}
+
+/* ─── Browser panel ──────────────────────────────────────────────────────── */
+
+.panel {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(580px, calc(100vw - var(--navi-space-xl)));
+  height: 34rem;
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  border: 1px solid var(--navi-border);
+  border-radius: var(--navi-radius-xl);
+  background: var(--navi-panel);
+  box-shadow: var(--navi-shadow-lg);
+  overflow: hidden;
+  z-index: var(--navi-z-overlay);
+}
+
+.panelTop {
+  bottom: calc(100% + var(--navi-space-sm));
+  animation: panelInTop 140ms var(--navi-transition);
+}
+
+.panelBottom {
+  top: calc(100% + var(--navi-space-sm));
+  animation: panelInBottom 140ms var(--navi-transition);
+}
+
+@keyframes panelInTop {
+  from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes panelInBottom {
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ─── Provider rail ──────────────────────────────────────────────────────── */
+
+.rail {
+  border-right: 1px solid var(--navi-border-subtle);
+  background: color-mix(in srgb, var(--navi-panel) 80%, #000);
+  padding: var(--navi-space-sm) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--navi-space-xs);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.rail::-webkit-scrollbar { display: none; }
+
+.railBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--navi-radius);
+  border: none;
+  background: transparent;
+  color: var(--navi-text-tertiary);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 800;
+  transition: background var(--navi-transition-fast), color var(--navi-transition-fast);
+  flex-shrink: 0;
+}
+
+.railBtn:hover { background: var(--navi-panel-hover); color: var(--navi-text); }
+
+.railBtnActive {
+  background: var(--navi-panel-active);
+  color: var(--navi-text);
+}
+
+/* Subtle right-edge indicator for active provider */
+.railBtnActive::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 16px;
+  border-radius: var(--navi-radius-full);
+  background: var(--navi-accent);
+}
+
+/* Status tint on background for known states (non-active) */
+.railBtnConnected:not(.railBtnActive):hover { background: color-mix(in srgb, var(--navi-success-dim) 60%, transparent); }
+.railBtnOffline:not(.railBtnActive) { color: var(--navi-danger); opacity: 0.6; }
+.railBtnOffline:not(.railBtnActive):hover { background: var(--navi-danger-dim); opacity: 1; }
+.railBtnUnavailable { opacity: 0.38; }
+
+/* Small status dot (bottom-right corner of icon) */
+.railStatusDot {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: 1px solid var(--navi-panel);
+}
+.dotConnected { background: var(--navi-success); }
+.dotOffline   { background: var(--navi-danger); }
+.dotUnknown   { background: var(--navi-text-tertiary); }
+.dotUnavailable { background: var(--navi-warning); }
+
+/* ─── Right content area ─────────────────────────────────────────────────── */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  position: relative; /* scopes ModelDetailsPanel's position:absolute to this column */
+}
+
+/* ─── Top bar ─────────────────────────────────────────────────────────────── */
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--navi-space-sm) var(--navi-space-md);
+  border-bottom: 1px solid var(--navi-border-subtle);
+  background: color-mix(in srgb, var(--navi-panel-active) 40%, transparent);
+  flex-shrink: 0;
+}
+
+.topBarLabel {
+  font-size: var(--navi-font-size-xs);
+  font-weight: var(--navi-font-weight-semibold);
+  color: var(--navi-text-secondary);
+}
+
+.topBarSort {
+  font-weight: var(--navi-font-weight-medium);
+  color: var(--navi-text-tertiary);
+}
+
+.topBarActions {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-sm);
+}
+
+.topBarBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--navi-space-xs);
+  padding: 3px var(--navi-space-sm);
+  border-radius: var(--navi-radius);
+  border: 1px solid var(--navi-border);
+  background: var(--navi-panel-hover);
+  color: var(--navi-text-secondary);
+  font-size: var(--navi-font-size-xs);
+  font-weight: var(--navi-font-weight-semibold);
+  cursor: pointer;
+  transition: background var(--navi-transition-fast), color var(--navi-transition-fast);
+}
+
+.topBarBtn:hover { background: var(--navi-panel-active); color: var(--navi-text); }
+
+/* ─── Search bar ──────────────────────────────────────────────────────────── */
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-sm);
+  padding: var(--navi-space-sm) var(--navi-space-md);
+  border-bottom: 1px solid var(--navi-border-subtle);
+  flex-shrink: 0;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--navi-text);
+  font: inherit;
+  font-size: var(--navi-font-size-sm);
+}
+
+.searchInput::placeholder { color: var(--navi-text-tertiary); }
+/* suppress browser-native clear button on type="search" — we render our own */
+.searchInput::-webkit-search-cancel-button,
+.searchInput::-webkit-search-decoration { display: none; }
+
+.searchIcon { color: var(--navi-text-tertiary); flex-shrink: 0; }
+
+.searchClearBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--navi-radius-full);
+  border: none;
+  background: var(--navi-panel-hover);
+  color: var(--navi-text-secondary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.searchClearBtn:hover { background: var(--navi-panel-active); color: var(--navi-text); }
+
+.filterBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--navi-radius);
+  border: 1px solid var(--navi-border);
+  background: transparent;
+  color: var(--navi-text-secondary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--navi-transition-fast), color var(--navi-transition-fast);
+}
+
+.filterBtn:hover { background: var(--navi-panel-hover); color: var(--navi-text); }
+
+.filterBtnActive {
+  background: var(--navi-accent-dim);
+  border-color: var(--navi-accent-glow);
+  color: var(--navi-accent);
+}
+
+.filterCount {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  border-radius: var(--navi-radius-full);
+  background: var(--navi-accent);
+  color: var(--navi-text-inverse);
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* ─── Rail separator between virtual and real providers ───────────────────── */
+
+.railSeparator {
+  width: 20px;
+  height: 1px;
+  background: var(--navi-border-subtle);
+  margin: var(--navi-space-xs) auto;
+  flex-shrink: 0;
+}
+
+/* ─── Sort label row — kept for legacy reference, no longer rendered ─────── */
+
+/* ─── Filter dropdown ─────────────────────────────────────────────────────── */
+
+.filterMenu {
+  position: absolute;
+  top: 5.5rem; /* below topBar + search area; sort row removed */
+  right: var(--navi-space-md);
+  width: 240px;
+  border: 1px solid var(--navi-border);
+  border-radius: var(--navi-radius-lg);
+  background: var(--navi-panel-active);
+  box-shadow: var(--navi-shadow-lg);
+  padding: var(--navi-space-sm);
+  z-index: var(--navi-z-tooltip);
+  animation: menuIn 120ms var(--navi-transition);
+}
+
+@keyframes menuIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.filterMenuSection {
+  padding: var(--navi-space-xs) var(--navi-space-sm);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--navi-text-tertiary);
+}
+
+.filterCapBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-sm);
+  width: 100%;
+  padding: var(--navi-space-xs) var(--navi-space-sm);
+  border-radius: var(--navi-radius);
+  border: none;
+  background: transparent;
+  color: var(--navi-text-secondary);
+  font-size: var(--navi-font-size-xs);
+  font-weight: var(--navi-font-weight-medium);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--navi-transition-fast), color var(--navi-transition-fast);
+}
+
+.filterCapBtn:hover { background: var(--navi-panel-hover); color: var(--navi-text); }
+
+.filterCapBtnActive {
+  background: var(--navi-accent-dim);
+  color: var(--navi-accent);
+}
+
+.filterCapCheck {
+  margin-left: auto;
+  color: var(--navi-accent);
+}
+
+.filterMenuDivider {
+  margin: var(--navi-space-xs) 0;
+  border: none;
+  border-top: 1px solid var(--navi-border-subtle);
+}
+
+.sortGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  padding: 0 var(--navi-space-xs);
+}
+
+.sortBtn {
+  padding: var(--navi-space-xs) var(--navi-space-sm);
+  border-radius: var(--navi-radius);
+  border: none;
+  background: transparent;
+  color: var(--navi-text-secondary);
+  font-size: var(--navi-font-size-xs);
+  font-weight: var(--navi-font-weight-medium);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--navi-transition-fast), color var(--navi-transition-fast);
+}
+
+.sortBtn:hover { background: var(--navi-panel-hover); color: var(--navi-text); }
+
+.sortBtnActive {
+  background: var(--navi-accent-dim);
+  color: var(--navi-accent);
+  font-weight: var(--navi-font-weight-semibold);
+}
+
+.clearFiltersBtn {
+  display: block;
+  width: 100%;
+  padding: var(--navi-space-xs) var(--navi-space-sm);
+  border-radius: var(--navi-radius);
+  border: none;
+  background: transparent;
+  color: var(--navi-danger);
+  font-size: var(--navi-font-size-xs);
+  font-weight: var(--navi-font-weight-semibold);
+  cursor: pointer;
+  text-align: left;
+  margin-top: 2px;
+}
+
+.clearFiltersBtn:hover { background: var(--navi-danger-dim); }
+
+/* ─── Model list ──────────────────────────────────────────────────────────── */
+
+.modelList {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--navi-space-xs) var(--navi-space-sm);
+  scrollbar-width: thin;
+  scrollbar-color: var(--navi-border) transparent;
+}
+
+.modelList::-webkit-scrollbar { width: 4px; }
+.modelList::-webkit-scrollbar-thumb { background: var(--navi-border); border-radius: 2px; }
+
+/* ─── Legacy reveal row ───────────────────────────────────────────────────── */
+
+.legacyReveal {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-sm);
+  width: 100%;
+  padding: var(--navi-space-sm) var(--navi-space-md);
+  border: none;
+  border-top: 1px solid var(--navi-border-subtle);
+  background: transparent;
+  color: var(--navi-text-tertiary);
+  font-size: var(--navi-font-size-xs);
+  font-weight: var(--navi-font-weight-semibold);
+  cursor: pointer;
+  text-align: left;
+  margin-top: var(--navi-space-xs);
+}
+
+.legacyReveal:hover { color: var(--navi-text-secondary); background: var(--navi-panel-hover); }
+
+/* ─── Loading state ───────────────────────────────────────────────────────── */
+
+.loadingState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--navi-space-sm);
+  padding: var(--navi-space-2xl) var(--navi-space-xl);
+  color: var(--navi-text-tertiary);
+  font-size: var(--navi-font-size-sm);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.loadingSpinner { animation: spin 1s linear infinite; flex-shrink: 0; }
+
+/* ─── Empty state ─────────────────────────────────────────────────────────── */
+
+.emptyState {
+  padding: var(--navi-space-2xl) var(--navi-space-xl);
+  text-align: center;
+  color: var(--navi-text-tertiary);
+  font-size: var(--navi-font-size-sm);
+}
+
+.emptyStateAction {
+  background: none;
+  border: none;
+  color: var(--navi-accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: inherit;
+  padding: 0;
+  text-decoration: underline;
+}
+
+/* ─── Capability icon dot ─────────────────────────────────────────────────── */
+
+.capDot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.capFast     { background: rgba(251,191,36,.15); color: #fbbf24; }
+.capVision   { background: rgba(52,211,153,.15); color: #34d399; }
+.capReasoning{ background: rgba(167,139,250,.15); color: #a78bfa; }
+.capTools    { background: rgba(251,146,60,.15);  color: #fb923c; }
+.capImage    { background: rgba(248,113,113,.15); color: #f87171; }
+.capPdf      { background: rgba(99,102,241,.15);  color: #818cf8; }
+.capCode     { background: rgba(56,189,248,.15);  color: #38bdf8; }
+
+/* ─── NAVI routing modes stub ─────────────────────────────────────────────── */
+
+.naviModesSection {
+  margin: var(--navi-space-md) var(--navi-space-sm) var(--navi-space-sm);
+  padding: var(--navi-space-md);
+  border-radius: var(--navi-radius);
+  border: 1px dashed var(--navi-border);
+}
+
+.naviModesSectionTitle {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--navi-text-tertiary);
+  margin-bottom: var(--navi-space-xs);
+}
+
+.naviModesComingSoon {
+  font-size: var(--navi-font-size-xs);
+  color: var(--navi-text-tertiary);
+}

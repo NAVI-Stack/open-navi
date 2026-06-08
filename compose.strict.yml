@@ -1,0 +1,38 @@
+# Isolated sandbox: loopback-only port, no host bind mounts, no host.docker.internal.
+# Use this file alone (do not combine with compose.yml — Compose merges lists
+# additively, so a second file cannot remove bind mounts or extra_hosts).
+#
+#   NAVI_OLLAMA_URL=https://api.openai.com/v1 docker compose -f compose.strict.yml up -d --build
+
+services:
+  navid:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: navid
+    ports:
+      - "127.0.0.1:6284:6284"
+    volumes:
+      - navid-data:/navi/data
+    environment:
+      NAVI_SQLITE_PATH: /navi/data/navi.db
+      NAVI_GATEWAY_SHARED_SECRET: "navi-secret-stable"
+      NAVI_LLM_CALL_TIMEOUT: 5m
+      NAVI_OLLAMA_URL: ${NAVI_OLLAMA_URL:?set NAVI_OLLAMA_URL for strict mode (e.g. cloud API or a compose sidecar URL)}
+      TZ: ${TZ:-UTC}
+    restart: unless-stopped
+    networks:
+      - navid-internal
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:6284/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+networks:
+  navid-internal:
+    driver: bridge
+
+volumes:
+  navid-data:

@@ -1,0 +1,87 @@
+oss27_version: "1.0"
+skill_id: "hardware.i2c"
+semver: "1.0.0"
+display:
+  name: "I2C Bus Controller"
+  description: "Interact with I2C peripherals (sensors, displays, controllers) via a high-assurance interface."
+  emoji: "🔌"
+interfaces:
+  - name: "scan"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties:
+        bus:
+          type: "integer"
+          description: "I2C bus number (e.g., 0 or 1)"
+    output_schema:
+      type: "object"
+      properties:
+        addresses:
+          type: "array"
+          items:
+            type: "string"
+            description: "Hex strings of detected addresses"
+  - name: "read"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties:
+        bus:
+          type: "integer"
+        address:
+          type: "string"
+          description: "Device address in hex"
+        length:
+          type: "integer"
+    output_schema:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            type: "integer"
+          description: "Bytes read from the I2C device"
+        length:
+          type: "integer"
+          description: "Number of bytes read"
+  - name: "write"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties:
+        bus:
+          type: "integer"
+        address:
+          type: "string"
+        data:
+          type: "array"
+          items:
+            type: "integer"
+    output_schema:
+      type: "object"
+      properties:
+        bytes_written:
+          type: "integer"
+          description: "Number of bytes written"
+        acknowledged:
+          type: "boolean"
+          description: "Whether the device acknowledged the write"
+effects:
+  side_effects: ["hardware_bus_write"]
+  risk_tier: "high"
+  requires_confirmation: true
+security:
+  auth: []
+  data_access:
+    pii: "none"
+    secrets: "forbidden"
+  sandbox:
+    required: false
+    network_egress: []
+governance:
+  publisher: "navi.official"
+  signed: true

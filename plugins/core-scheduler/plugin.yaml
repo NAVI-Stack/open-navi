@@ -1,0 +1,11 @@
+id: navi.core.scheduler
+name: Core Scheduler
+description: Plugin wrapper for NAVI's core scheduling primitive.
+version: 1.0.0
+kind: system
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/core-scheduler
+      skill_id: core-scheduler

@@ -1,0 +1,39 @@
+---
+description: After modifying NAVI backend, rebuild NaviD image and run a quick smoke test
+globs: internal/navi/**/*.go,cmd/navid/**/*.go,config/personas/*.yaml,internal/gateway/**/*.go,config/runtime.yaml
+alwaysApply: false
+---
+
+# NAVI: Relaunch and test after backend changes
+
+When you **finish modifying** any of these areas, **rebuild the NaviD Docker image** and run a quick smoke test so changes take effect.
+
+**Supported runtime:** Docker Compose only (`compose.yml`). Do not use `go run ./cmd/navid/` for operator workflows.
+
+## Scope (triggers this rule)
+
+- `internal/navi/` (agent loop, persona, skills, session)
+- `cmd/navid/` (NaviD entrypoint — runs inside the container)
+- `config/personas/*.yaml` (persona prompts)
+- `internal/gateway/` (API, auth, OpenAI compat)
+- `config/runtime.yaml` (gateway/LLM config)
+
+## Relaunch steps
+
+1. From **this repo root** (`projects/navi/`):
+   ```bash
+   make build-cli
+   docker compose -f compose.yml up --build -d
+   ```
+   (Optional: rebuild NaviExe only when testing CLI changes.)
+
+2. **Wait** for healthcheck (or ~5–10s).
+
+3. **Smoke test**
+   - `curl -s -o /dev/null -w "%{http_code}" http://localhost:6284/health` → expect `200`
+   - Optional: create a session and confirm NAVI replies.
+
+## When to run
+
+- After editing agent loop, persona prompts, gateway handlers, or daemon wiring.
+- Not required after doc-only or test-only changes unless they affect runtime behavior.

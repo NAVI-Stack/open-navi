@@ -1,0 +1,348 @@
+{
+  "workflow_id": "navi.programmer.ticket_driven_coding",
+  "version": "0.1.0",
+  "name": "Ticket Driven Coding",
+  "status": "compiled_contract",
+  "source_yaml": "ticket-driven-coding.yaml",
+  "description": "Executable representation of the ticket-driven coding workflow contract for local runner validation.",
+  "task_class": {
+    "includes": [
+      "ticket_driven_mutation"
+    ],
+    "excludes": [
+      "read_only_comprehension",
+      "bounded_mutation",
+      "self_update_candidate"
+    ]
+  },
+  "skill_contracts": {
+    "executable_now": [
+      {
+        "skill_id": "navi-programmer.task-normalize",
+        "interfaces": [
+          "normalize_task",
+          "bind_scope"
+        ]
+      },
+      {
+        "skill_id": "navi-programmer.repo-inspect",
+        "interfaces": [
+          "list_tree",
+          "read_file",
+          "search_text",
+          "repo_status",
+          "inspect_diff"
+        ]
+      },
+      {
+        "skill_id": "navi-programmer.file-mutate",
+        "interfaces": [
+          "write_file",
+          "create_file"
+        ]
+      },
+      {
+        "skill_id": "navi-programmer.patch-apply",
+        "interfaces": [
+          "apply_patch",
+          "preview_patch"
+        ]
+      },
+      {
+        "skill_id": "navi-programmer.run-validation",
+        "interfaces": [
+          "run_command",
+          "record_not_run"
+        ]
+      },
+      {
+        "skill_id": "navi-programmer.git-lifecycle",
+        "interfaces": [
+          "inspect_status",
+          "create_branch",
+          "create_commit",
+          "prepare_review"
+        ]
+      },
+      {
+        "skill_id": "navi-programmer.remote-review",
+        "interfaces": [
+          "push_branch",
+          "create_pull_request"
+        ]
+      }
+    ],
+    "planned": []
+  },
+  "state_order": [
+    "received",
+    "normalized",
+    "scope_bound",
+    "inspecting",
+    "planned",
+    "executing",
+    "validating",
+    "synthesizing",
+    "review_ready"
+  ],
+  "states": {
+    "received": {
+      "maps_to_task_state": "received",
+      "purpose": "Preserve the ticket source request and initial metadata.",
+      "required_evidence": [
+        "raw_task_input",
+        "task_source"
+      ],
+      "allowed_next": [
+        "normalized",
+        "blocked",
+        "failed"
+      ]
+    },
+    "normalized": {
+      "maps_to_task_state": "normalized",
+      "purpose": "Convert the ticket into a concrete execution target.",
+      "skills": [
+        "navi-programmer.task-normalize.normalize_task"
+      ],
+      "required_evidence": [
+        "normalized_task",
+        "mutation_intent",
+        "acceptance_target",
+        "validation_requirement"
+      ],
+      "allowed_next": [
+        "scope_bound",
+        "blocked",
+        "failed"
+      ]
+    },
+    "scope_bound": {
+      "maps_to_task_state": "scope_bound",
+      "purpose": "Bind the ticket to an explicit repo/workspace and allowed scope.",
+      "skills": [
+        "navi-programmer.task-normalize.bind_scope"
+      ],
+      "required_evidence": [
+        "workspace_binding",
+        "allowed_scope",
+        "self_update_classification"
+      ],
+      "blocked_when": [
+        "target_repo_ambiguous",
+        "allowed_scope_missing",
+        "self_update_candidate_context_missing"
+      ],
+      "allowed_next": [
+        "inspecting",
+        "blocked",
+        "failed"
+      ]
+    },
+    "inspecting": {
+      "maps_to_task_state": "inspecting",
+      "purpose": "Gather enough repository context to avoid blind mutation.",
+      "skills": [
+        "navi-programmer.repo-inspect.repo_status",
+        "navi-programmer.repo-inspect.list_tree",
+        "navi-programmer.repo-inspect.read_file",
+        "navi-programmer.repo-inspect.search_text",
+        "navi-programmer.repo-inspect.inspect_diff"
+      ],
+      "required_evidence": [
+        "repo_status",
+        "inspected_files",
+        "relevant_patterns"
+      ],
+      "allowed_next": [
+        "planned",
+        "blocked",
+        "failed"
+      ]
+    },
+    "planned": {
+      "maps_to_task_state": "planned",
+      "purpose": "Produce a bounded execution and validation plan.",
+      "required_evidence": [
+        "execution_plan",
+        "intended_file_touch_set",
+        "validation_plan",
+        "rollback_or_recovery_notes"
+      ],
+      "blocked_when": [
+        "validation_strategy_missing_for_code_mutation",
+        "intended_file_touch_set_too_broad"
+      ],
+      "allowed_next": [
+        "executing",
+        "blocked",
+        "failed"
+      ]
+    },
+    "executing": {
+      "maps_to_task_state": "executing",
+      "purpose": "Mutate files inside the bound scope.",
+      "skills": [
+        "navi-programmer.file-mutate.write_file",
+        "navi-programmer.file-mutate.create_file",
+        "navi-programmer.patch-apply.preview_patch",
+        "navi-programmer.patch-apply.apply_patch"
+      ],
+      "required_evidence": [
+        "mutation_attempts",
+        "changed_files",
+        "diff_summary"
+      ],
+      "blocked_when": [
+        "mutation_scope_violation",
+        "required_confirmation_missing"
+      ],
+      "allowed_next": [
+        "validating",
+        "partially_succeeded",
+        "blocked",
+        "failed"
+      ]
+    },
+    "validating": {
+      "maps_to_task_state": "validating",
+      "purpose": "Run or explicitly record validation for the mutation.",
+      "skills": [
+        "navi-programmer.run-validation.run_command",
+        "navi-programmer.run-validation.record_not_run"
+      ],
+      "required_evidence": [
+        "validation_results"
+      ],
+      "gate": {
+        "id": "validation_evidence_required",
+        "rule": "Mutation tasks cannot leave validating without at least one validation result or one explicit not_run result."
+      },
+      "allowed_next": [
+        "synthesizing",
+        "partially_succeeded",
+        "blocked",
+        "failed"
+      ]
+    },
+    "synthesizing": {
+      "maps_to_task_state": "synthesizing",
+      "purpose": "Convert ticket, repo, mutation, and validation evidence into a result surface.",
+      "required_evidence": [
+        "outcome_classification",
+        "result_summary",
+        "residual_risks"
+      ],
+      "allowed_next": [
+        "review_ready",
+        "partially_succeeded",
+        "blocked",
+        "failed"
+      ]
+    },
+    "review_ready": {
+      "maps_to_task_state": "review_ready",
+      "purpose": "Produce reviewable local output.",
+      "skills": [
+        "navi-programmer.git-lifecycle.inspect_status",
+        "navi-programmer.git-lifecycle.create_branch",
+        "navi-programmer.git-lifecycle.create_commit",
+        "navi-programmer.git-lifecycle.prepare_review",
+        "navi-programmer.remote-review.push_branch",
+        "navi-programmer.remote-review.create_pull_request"
+      ],
+      "required_evidence": [
+        "final_changed_files",
+        "final_diff_summary",
+        "validation_summary",
+        "lifecycle_summary",
+        "handoff_summary"
+      ],
+      "allowed_next": [
+        "completed",
+        "blocked",
+        "partially_succeeded"
+      ]
+    }
+  },
+  "terminal_outcomes": {
+    "completed": {
+      "maps_to_task_state": "completed",
+      "requires": [
+        "review_ready evidence exists",
+        "validation outcome is passed or not_run with accepted justification",
+        "no unresolved blocking condition remains"
+      ],
+      "result_meaning": "The ticket-driven mutation achieved its target and has reviewable evidence."
+    },
+    "partially_succeeded": {
+      "maps_to_task_state": "partially_succeeded",
+      "requires_any": [
+        "useful changes exist but validation failed",
+        "useful changes exist but validation timed out",
+        "useful changes exist but lifecycle output is incomplete",
+        "useful changes exist but acceptance target is only partly met"
+      ],
+      "result_meaning": "Preserve reviewable work, but do not claim clean completion."
+    },
+    "blocked": {
+      "maps_to_task_state": "blocked",
+      "requires": [
+        "block_reason",
+        "current_evidence",
+        "needed_resolution"
+      ],
+      "result_meaning": "The workflow paused before unsafe or ambiguous action."
+    },
+    "failed": {
+      "maps_to_task_state": "failed",
+      "requires": [
+        "failure_class",
+        "failure_reason",
+        "evidence_collected"
+      ],
+      "result_meaning": "The workflow could not produce useful reviewable progress."
+    }
+  },
+  "validation_gate": {
+    "required_for": [
+      "changed_files present",
+      "code_files_changed",
+      "config_or_build_files_changed",
+      "tests_changed",
+      "acceptance_target_requires_execution"
+    ],
+    "satisfied_by": [
+      {
+        "verdict": "passed",
+        "effect": "eligible_for_completed"
+      },
+      {
+        "verdict": "failed",
+        "effect": "route_to_partially_succeeded_or_failed"
+      },
+      {
+        "verdict": "timed_out",
+        "effect": "route_to_partially_succeeded_or_blocked"
+      },
+      {
+        "verdict": "not_run",
+        "effect": "eligible_only_with_explicit_reason"
+      }
+    ],
+    "violation": {
+      "condition": "changed_files present and validation_results absent",
+      "outcome": "failed",
+      "failure_class": "validation_missing"
+    }
+  },
+  "governance": {
+    "mutation_requires_workspace_binding": true,
+    "inspection_required_before_mutation": true,
+    "validation_required_for_mutation": true,
+    "remote_actions_require_confirmation": true,
+    "self_update_requires_candidate_context": true,
+    "live_runtime_mutation_for_self_update": false,
+    "completion_requires_reviewable_evidence": true
+  }
+}

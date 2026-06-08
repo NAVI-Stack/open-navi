@@ -1,0 +1,19 @@
+id: navi-coder
+name: NAVI Coder
+description: First-party coding worker runtime plugin for governed repository analysis and validation orchestration.
+version: 0.1.0
+kind: agentic
+status: active
+trust_tier: builtin
+categories:
+  - agentic
+  - workflow
+capabilities:
+  - coder_repo_inspection
+  - coder_project_detection
+  - coder_diff_summarization
+  - governed_validation_orchestration
+components:
+  skills:
+    - path: skills/repo
+      skill_id: navi.coder.repo

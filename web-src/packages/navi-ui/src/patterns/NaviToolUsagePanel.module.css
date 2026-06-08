@@ -1,0 +1,21 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--navi-space-md);
+  padding: var(--navi-space-lg);
+  background: var(--navi-surface);
+  border: 1px solid var(--navi-border-subtle);
+  border-radius: var(--navi-radius-lg);
+}
+
+.head {
+  font-size: var(--navi-font-size-lg);
+  font-weight: 600;
+  color: var(--navi-text);
+}
+
+.metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--navi-space-md);
+}

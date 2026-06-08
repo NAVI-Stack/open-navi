@@ -1,0 +1,17 @@
+plugin_id: navi.example.messaging
+
+limits:
+  send_message:
+    qps: 2
+    burst: 5
+    retry_policy: conditional
+    idempotency_key_required_for_retry: true
+  fetch_updates:
+    qps: 5
+    burst: 10
+    retry_policy: safe
+
+circuit_breaker:
+  failure_threshold: 5
+  window_seconds: 60
+  cooldown_seconds: 300

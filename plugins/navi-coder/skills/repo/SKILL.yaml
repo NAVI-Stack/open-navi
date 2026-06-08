@@ -1,0 +1,171 @@
+oss27_version: "1.0"
+skill_id: "navi.coder.repo"
+semver: "0.1.0"
+
+display:
+  name: "NAVI Coder Repo"
+  description: "Sandboxed repository analysis and governed validation orchestration for coding workflows."
+
+interfaces:
+  - name: "inspect_repo"
+    transport:
+      type: "subprocess"
+      runtime: "python"
+      command: ["python", "/navi/skill/worker.py"]
+      protocol: "jsonrpc_stdio"
+      sandbox_profile: "local-coder-python-network-disabled"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        path:
+          type: "string"
+          description: "Optional path under the mounted workspace to inspect."
+        max_entries:
+          type: "integer"
+          minimum: 1
+          maximum: 2000
+        include_hidden:
+          type: "boolean"
+    output_schema:
+      type: "object"
+      additionalProperties: true
+
+  - name: "detect_project"
+    transport:
+      type: "subprocess"
+      runtime: "python"
+      command: ["python", "/navi/skill/worker.py"]
+      protocol: "jsonrpc_stdio"
+      sandbox_profile: "local-coder-python-network-disabled"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        path:
+          type: "string"
+    output_schema:
+      type: "object"
+      additionalProperties: true
+
+  - name: "summarize_diff"
+    transport:
+      type: "subprocess"
+      runtime: "python"
+      command: ["python", "/navi/skill/worker.py"]
+      protocol: "jsonrpc_stdio"
+      sandbox_profile: "local-coder-python-network-disabled"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        path:
+          type: "string"
+        staged:
+          type: "boolean"
+        max_bytes:
+          type: "integer"
+          minimum: 1
+          maximum: 1048576
+    output_schema:
+      type: "object"
+      additionalProperties: true
+
+  - name: "run_tests"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+        cwd:
+          type: "string"
+        command:
+          oneOf:
+            - type: "array"
+              items:
+                type: "string"
+            - type: "string"
+        test_command:
+          oneOf:
+            - type: "array"
+              items:
+                type: "string"
+            - type: "string"
+        timeout_ms:
+          type: "integer"
+          minimum: 1000
+          maximum: 600000
+        max_output_bytes:
+          type: "integer"
+          minimum: 1024
+          maximum: 5242880
+        expected_exit_codes:
+          type: "array"
+          items:
+            type: "integer"
+        sandbox_profile:
+          type: "string"
+        dry_run:
+          type: "boolean"
+    output_schema:
+      type: "object"
+      additionalProperties: true
+
+effects:
+  side_effects: ["local_command_execution", "filesystem_write"]
+  risk_tier: "medium"
+  idempotency: false
+  idempotency_level: "conditional"
+  reversibility: "reversible_internal"
+  requires_confirmation: false
+
+security:
+  auth: []
+  data_access:
+    pii: "possible"
+    secrets: "read"
+  sandbox:
+    required: true
+    network_egress: []
+
+performance:
+  expected_p50_ms: 500
+  timeout_ms: 300000
+  rate_limit:
+    qps: 1
+    burst: 2
+
+observability:
+  log_redaction: ["file_content", "diff_patch", "stdout", "stderr"]
+  emit_metrics: ["coder_repo_invocation", "coder_validation_invocation"]
+
+governance:
+  publisher: "navi-coder"
+  signed: false
+  deprecates: []
+  replaces: []
+  trust_tier: "builtin"
+
+capability:
+  tags: ["coder", "programming", "repository", "validation"]
+  domains: ["coding", "repository-management"]
+  provides:
+    - "sandboxed-repository-inspection"
+    - "project-toolchain-detection"
+    - "repository-diff-summary"
+    - "governed-test-validation"
+  requires:
+    - "workspace-binding"
+  command_type: "invoke"
+
+reliability:
+  expected_failure_modes:
+    - "path_out_of_scope"
+    - "git_unavailable"
+    - "sandbox_unavailable"
+    - "validation_not_applicable"
+    - "output_truncated"
+  retry_policy: "conditional"

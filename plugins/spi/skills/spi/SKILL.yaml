@@ -1,0 +1,50 @@
+oss27_version: "1.0"
+skill_id: "hardware.spi"
+semver: "1.0.0"
+display:
+  name: "SPI Bus Controller"
+  description: "High-speed communication with SPI peripherals like high-res displays or fast ADCs."
+  emoji: "⚡"
+interfaces:
+  - name: "transfer"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties:
+        bus:
+          type: "integer"
+        device:
+          type: "integer"
+        data:
+          type: "array"
+          items:
+            type: "integer"
+        speed_hz:
+          type: "integer"
+    output_schema:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            type: "integer"
+          description: "Bytes returned by the SPI transfer"
+        bytes_transferred:
+          type: "integer"
+          description: "Number of bytes transferred"
+effects:
+  side_effects: ["hardware_bus_write"]
+  risk_tier: "high"
+  requires_confirmation: true
+security:
+  auth: []
+  data_access:
+    pii: "none"
+    secrets: "forbidden"
+  sandbox:
+    required: false
+    network_egress: []
+governance:
+  publisher: "navi.official"
+  signed: true

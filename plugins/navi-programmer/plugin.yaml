@@ -1,0 +1,89 @@
+id: navi.programmer
+name: NAVI Programmer
+description: First-party programming capability plugin for governed repository comprehension, code mutation, validation, and review-ready software work.
+version: 0.1.0
+kind: agentic
+status: active
+trust_tier: builtin
+categories:
+  - agentic
+  - workflow
+capabilities:
+  - repository_comprehension
+  - bounded_code_mutation
+  - evidence_gated_programming_workflow
+  - validation_execution
+  - repository_lifecycle
+  - confirmation_gated_remote_review
+  - task_driven_programming
+  - self_update_candidate_workflow
+dependencies:
+  required_core:
+    - shared_skill_runtime
+    - shared_governance_path
+    - shared_execution_outcome_reporting
+    - shared_workspace_project_repo_context_resolution
+    - local_filesystem_repo_mutation_access
+    - process_execution_surface
+    - repository_lifecycle_surface
+  required_task_sources:
+    - direct_user_task_input
+  recommended:
+    - linear_issue_task_surface
+    - github_repository_host_surface
+  optional:
+    - web_research_context_acquisition
+    - ci_provider_integration
+    - documentation_system_integration
+contract:
+  workflow_entry_points:
+    - chat_task_to_repo_work
+    - ticket_driven_repo_work
+    - self_update_candidate_work
+  included_behavior:
+    - repository_comprehension
+    - bounded_code_mutation
+    - validation_execution
+    - reviewable_repository_lifecycle
+    - task_driven_programming
+    - isolated_candidate_self_update
+  excluded_behavior:
+    - automatic_self_merge_of_self_authored_prs
+    - automatic_live_instance_replacement
+    - broad_deployment_orchestration_automation
+    - unlimited_arbitrary_machine_scope_shell_access
+  self_update_mode: isolated_candidate
+components:
+  skills:
+    - path: skills/file-mutate
+      skill_id: navi-programmer.file-mutate
+    - path: skills/git-lifecycle
+      skill_id: navi-programmer.git-lifecycle
+    - path: skills/patch-apply
+      skill_id: navi-programmer.patch-apply
+    - path: skills/repo-inspect
+      skill_id: navi-programmer.repo-inspect
+    - path: skills/remote-review
+      skill_id: navi-programmer.remote-review
+    - path: skills/run-validation
+      skill_id: navi-programmer.run-validation
+    - path: skills/task-normalize
+      skill_id: navi-programmer.task-normalize
+runtime:
+  workflow_contracts:
+    - workflow_id: navi.programmer.bounded_mutation
+      name: Bounded Mutation
+      path: workflows/bounded-mutation.yaml
+      runner: workflows/bounded_mutation_runner.py
+      status: contract
+    - workflow_id: navi.programmer.self_update_candidate
+      name: Self Update Candidate
+      path: workflows/self-update-candidate.yaml
+      extends: navi.programmer.bounded_mutation
+      status: contract
+    - workflow_id: navi.programmer.ticket_driven_coding
+      name: Ticket Driven Coding
+      path: workflows/ticket-driven-coding.yaml
+      extends: navi.programmer.bounded_mutation
+      runner: workflows/bounded_mutation_runner.py
+      status: contract

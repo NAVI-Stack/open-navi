@@ -1,0 +1,49 @@
+.banner {
+  background: var(--navi-danger-dim);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: var(--navi-radius-sm);
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--navi-danger);
+}
+
+.message {
+  flex: 1;
+  font-family: var(--navi-font-mono);
+}
+
+.toggle,
+.dismiss {
+  background: none;
+  border: none;
+  color: var(--navi-danger);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  border-radius: var(--navi-radius-sm);
+}
+
+.toggle:hover,
+.dismiss:hover {
+  background: rgba(248, 113, 113, 0.15);
+}
+
+.details {
+  margin-top: 8px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--navi-radius-sm);
+  font-family: var(--navi-font-mono);
+  font-size: 11px;
+  color: var(--navi-text);
+  overflow-x: auto;
+  max-height: 200px;
+  overflow-y: auto;
+}

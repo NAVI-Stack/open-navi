@@ -1,0 +1,198 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card {
+  border: 1px solid var(--navi-border, rgba(255, 255, 255, 0.08));
+  border-radius: var(--navi-radius, 8px);
+  background: rgba(0, 0, 0, 0.18);
+  padding: 12px 14px;
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.cardTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navi-text, #e8e8ea);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 14px;
+  font-size: 12px;
+}
+
+.label {
+  color: var(--navi-text-muted, #9aa0a6);
+}
+
+.value {
+  color: var(--navi-text, #e8e8ea);
+  font-variant-numeric: tabular-nums;
+}
+
+.metricsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 64px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--navi-border, rgba(255, 255, 255, 0.06));
+}
+
+.metricNum {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--navi-text, #e8e8ea);
+  font-variant-numeric: tabular-nums;
+}
+
+.metricLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--navi-text-muted, #9aa0a6);
+}
+
+.editGrid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 12px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--navi-border, rgba(255, 255, 255, 0.12));
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--navi-text, #e8e8ea);
+  font-size: 12px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--navi-border, rgba(255, 255, 255, 0.12));
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--navi-text, #e8e8ea);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.btnPrimary {
+  border-color: var(--navi-accent, #6aa3ff);
+  color: var(--navi-accent, #6aa3ff);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.logList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.logRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--navi-border, rgba(255, 255, 255, 0.05));
+  font-size: 12px;
+}
+
+.logMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.logCounts {
+  color: var(--navi-text-muted, #9aa0a6);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.recordRow {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--navi-border, rgba(255, 255, 255, 0.05));
+  font-size: 12px;
+}
+
+.recordHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.recordSub {
+  color: var(--navi-text-muted, #9aa0a6);
+  font-size: 11px;
+}
+
+.link {
+  color: var(--navi-accent, #6aa3ff);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.muted {
+  color: var(--navi-text-muted, #9aa0a6);
+  font-size: 12px;
+}
+
+.error {
+  color: var(--navi-danger, #ff6b6b);
+  font-size: 12px;
+}

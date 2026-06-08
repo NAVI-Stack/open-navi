@@ -1,0 +1,179 @@
+oss27_version: "1.0"
+skill_id: "navi-programmer.patch-apply"
+semver: "0.1.0"
+
+display:
+  name: "NAVI Programmer Patch Apply"
+  description: "Preview and apply scoped structured text patch operations with reviewable diff evidence."
+
+interfaces:
+  - name: "preview_patch"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+          description: "Repository or workspace root. Defaults to NAVI_WORKSPACE_DIR, then the skill process cwd."
+        operations:
+          type: "array"
+          items:
+            type: "object"
+          minItems: 1
+          maxItems: 100
+        encoding:
+          type: "string"
+        allow_hidden:
+          type: "boolean"
+        max_file_bytes:
+          type: "integer"
+          minimum: 1
+          maximum: 1048576
+      required: ["operations"]
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        outcome:
+          type: "string"
+        changed:
+          type: "boolean"
+        changed_files:
+          type: "array"
+          items:
+            type: "object"
+        operation_results:
+          type: "array"
+          items:
+            type: "object"
+        diff_summary:
+          type: "object"
+
+  - name: "apply_patch"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+          description: "Repository or workspace root. Defaults to NAVI_WORKSPACE_DIR, then the skill process cwd."
+        operations:
+          type: "array"
+          items:
+            type: "object"
+          minItems: 1
+          maxItems: 100
+        encoding:
+          type: "string"
+        allow_hidden:
+          type: "boolean"
+        dry_run:
+          type: "boolean"
+        max_file_bytes:
+          type: "integer"
+          minimum: 1
+          maximum: 1048576
+      required: ["operations"]
+    output_schema:
+      type: "object"
+      additionalProperties: true
+      properties:
+        outcome:
+          type: "string"
+        changed:
+          type: "boolean"
+        changed_files:
+          type: "array"
+          items:
+            type: "object"
+        operation_results:
+          type: "array"
+          items:
+            type: "object"
+        diff_summary:
+          type: "object"
+
+effects:
+  side_effects: ["filesystem_write"]
+  risk_tier: "medium"
+  idempotency: false
+  idempotency_level: "conditional"
+  reversibility: "reversible_internal"
+  requires_confirmation: false
+
+security:
+  auth: []
+  data_access:
+    pii: "possible"
+    secrets: "write"
+  sandbox:
+    required: true
+    network_egress: []
+
+performance:
+  expected_p50_ms: 150
+  timeout_ms: 30000
+  rate_limit:
+    qps: 2
+    burst: 4
+
+observability:
+  log_redaction: ["patch_content", "diff"]
+  emit_metrics: ["patch_apply_invocation", "patch_apply_outcome"]
+
+governance:
+  publisher: "navi.programmer"
+  signed: false
+  deprecates: []
+  replaces: []
+  trust_tier: "builtin"
+
+capability:
+  tags: ["programming", "mutation", "patch", "governed-write"]
+  domains: ["coding", "repository-management"]
+  provides:
+    - "patch-preview"
+    - "scoped-patch-application"
+    - "diff-evidence-capture"
+  requires:
+    - "workspace-binding"
+  command_type: "update"
+
+reliability:
+  expected_failure_modes:
+    - "path_out_of_scope"
+    - "path_denied"
+    - "file_not_found"
+    - "file_exists"
+    - "hash_mismatch"
+    - "anchor_not_found"
+    - "binary_file"
+    - "partial_apply"
+    - "write_failed"
+  retry_policy: "conditional"
+
+python_runtime:
+  python_version: "3.11"
+  venv_strategy: "per_skill"
+  lifecycle: "cold"
+  spawn_timeout_ms: 5000
+  io_format: "json_stdio"
+  max_input_bytes: 2097152
+  max_output_bytes: 2097152
+  timeout_ms: 30000
+  max_memory_mb: 256
+  max_cpu_percent: 100
+  network_access: false
+  allow_fs_write: true
+  tmpdir_mb: 64
+  maturity: "prototype"

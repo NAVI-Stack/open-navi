@@ -1,0 +1,102 @@
+oss27_version: 1.0
+skill_id: navi.native.file_write
+semver: 0.1.0
+
+display:
+  name: Write Native File
+  description: Create or overwrite a file on the host filesystem via the PET desktop bridge.
+  emoji: "✏️"
+
+interfaces:
+  - name: write
+    description: Write UTF-8 text content to a file on the host filesystem using an absolute path relayed through the PET bridge.
+    transport:
+      type: bridge
+      connector: navi.connector.pet_bridge
+      operation: file_write
+    input_schema:
+      type: object
+      additionalProperties: false
+      required:
+        - path
+        - content
+      properties:
+        path:
+          type: string
+          description: Absolute path to the file on the host filesystem.
+        content:
+          type: string
+          description: Complete file contents to write.
+        idempotency_key:
+          type: string
+          description: Optional caller-provided key to prevent duplicate writes when supported.
+    output_schema:
+      type: object
+      additionalProperties: false
+      required:
+        - action
+        - bytes_written
+      properties:
+        action:
+          type: string
+          description: Whether the file was created or updated.
+          enum:
+            - created
+            - updated
+        bytes_written:
+          type: integer
+          description: Number of bytes written.
+        path:
+          type: string
+          description: Resolved absolute path of the written file.
+
+effects:
+  side_effects:
+    - writes_external_system
+  risk_tier: high
+  requires_confirmation: true
+  idempotency_level: conditional
+  reversibility: irreversible
+
+security:
+  auth:
+    type: bridge_token
+    env:
+      - NAVI_PET_BRIDGE_TOKEN
+  data_access:
+    pii: possible
+    secrets: forbidden
+  sandbox:
+    required: true
+    network_egress: none
+
+performance:
+  timeout_ms: 8000
+  rate_limit:
+    qps: 2
+    burst: 5
+
+governance:
+  publisher: navi.builtin
+  signed: false
+  trust_tier: builtin
+
+capability:
+  tags:
+    - filesystem
+    - write
+    - native
+  domains:
+    - workspace
+  provides:
+    - native.file_write
+  requires:
+    - navi.connector.pet_bridge
+
+reliability:
+  expected_failure_modes:
+    - permission_denied
+    - disk_full
+    - bridge_unavailable
+    - path_outside_workspace
+  retry_policy: conditional

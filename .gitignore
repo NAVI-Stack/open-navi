@@ -1,0 +1,121 @@
+# Binaries for programs and plugins
+bin/
+*.exe
+navi
+navi.exe
+!cmd/navi/
+!cmd/navi/**
+!internal/navi/
+!internal/navi/**
+!packages/
+!packages/npm/
+!packages/npm/navi/
+!packages/npm/navi/**
+!python/navi/
+!python/navi/**
+
+# Go / build artifacts
+*.test
+*.out
+
+# SQLite
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Logs and test outputs
+/logs/
+*.log
+test/output/
+audit_*.txt
+final_audit.txt
+filtered_audit.txt
+remaining_references.txt
+*_test_output.txt
+*_fail.txt
+/debug_output*.txt
+/tmp_navid_logs.txt
+/logs.txt
+
+# Central test/debug artifacts
+/artifacts/
+
+# JetStream / NATS runtime data
+/jetstream/jetstream/
+
+# Runtime data (generated at startup / by the agent)
+/config.json
+/workspace/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.env
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local Compose overrides (from compose.custom.example.yml)
+compose.local.yml
+
+# Example Code
+.example_code/
+example-code/
+docs-local/
+
+# Tauri / Rust
+desktop/src-tauri/target/
+desktop/node_modules/
+identity/private.key.enc
+
+# Temporary staging and cache dirs
+# Go must use its default cache paths from `go env GOCACHE` and
+# `go env GOMODCACHE`; these repo-local entries only prevent accidental
+# workaround caches from polluting git status.
+.gocache/
+.gomodcache/
+navi-skill-build-*/
+test_output.txt
+build_err.txt
+test_out.txt
+navid.stderr.log
+navid.stdout.log
+.aider*
+.codex-go-cache/
+.codex-go-modcache/
+.cursor/hooks/state/continual-learning.json
+.claude/settings.local.json
+/scratch/
+.navi/
+
+# NAVI Console build output (source is web-src/navi-console/)
+web/index.html
+web/assets/
+# Frontend workspace dependencies + library build artifacts
+web-src/node_modules/
+web-src/navi-console/node_modules/
+web-src/packages/*/node_modules/
+web-src/packages/*/dist/
+# Ladle static build output (@navi/ui stories)
+web-src/packages/*/build/
+web-src/packages/*/.ladle/.cache/
+
+# Codex-specific Go cache workarounds; do not recreate.
+.codex-gocache/
+.codex-gomodcache/
+
+# Plugin specific files
+plugins/navi-programmer/programmer-sample-reference
+web-src/navi-console/.vite/
+.claude/settings.json
+.cursor/hooks/state/continual-learning-index.json
+web-src/navi-console/.claude/
+docs/.tmp.driveupload*

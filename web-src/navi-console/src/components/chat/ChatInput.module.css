@@ -1,0 +1,141 @@
+.composerWrapper {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  max-width: min(820px, 100%);
+}
+
+.composerBox {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--navi-space-sm);
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--navi-space-sm) var(--navi-space-md);
+  border: 1px solid var(--navi-border);
+  border-radius: var(--navi-radius-xl);
+  background: rgba(20, 26, 40, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(12px);
+  transition: all 0.2s ease;
+}
+
+.composerBox:focus-within {
+  border-color: var(--navi-accent, #3b82f6);
+  box-shadow: 0 8px 32px var(--navi-accent-glow), 0 0 0 2px var(--navi-accent-glow);
+}
+
+.composerPlusBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--navi-text-secondary);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  margin-bottom: 4px;
+}
+
+.composerPlusBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--navi-text);
+}
+
+.composerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-sm);
+  flex-shrink: 0;
+  margin-bottom: 4px;
+}
+
+.composerMicBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--navi-text-secondary);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.composerMicBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--navi-text);
+}
+
+.composerMicBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.composerInput {
+  flex: 1;
+  min-width: 0;
+  display: block;
+  min-height: 40px;
+  max-height: 220px;
+  resize: none;
+  overflow-y: auto;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--navi-text);
+  font: inherit;
+  line-height: 1.5;
+  padding: 8px var(--navi-space-sm);
+}
+
+.composerInput::placeholder {
+  color: var(--navi-text-tertiary);
+}
+
+.composerInput:disabled {
+  opacity: 0.72;
+  cursor: wait;
+}
+
+.sendButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--navi-accent-glow);
+  border-radius: var(--navi-radius-md);
+  background: var(--navi-accent);
+  color: var(--navi-text-inverse);
+  cursor: pointer;
+  transition: transform var(--navi-transition-fast), background var(--navi-transition-fast), opacity var(--navi-transition-fast);
+}
+
+.sendButton:hover {
+  background: var(--navi-accent-hover);
+  transform: translateY(-1px);
+}
+
+.sendButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

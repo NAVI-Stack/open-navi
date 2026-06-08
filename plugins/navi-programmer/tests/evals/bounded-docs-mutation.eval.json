@@ -1,0 +1,81 @@
+{
+  "eval_id": "np-eval-bounded-docs-mutation",
+  "version": "0.1.0",
+  "track": "bounded_local_mutation",
+  "complexity_band": 1,
+  "fixture": "../fixtures/bounded-docs-mutation.json",
+  "purpose": "Prove a docs-only bounded mutation carries the evidence required to leave validation without skipping validation dishonestly.",
+  "expected_output_evidence_shape": {
+    "required_paths": [
+      "runner_input.evidence.raw_task_input",
+      "runner_input.evidence.normalized_task",
+      "runner_input.evidence.workspace_binding",
+      "runner_input.evidence.repo_status",
+      "runner_input.evidence.inspected_files",
+      "runner_input.evidence.relevant_patterns",
+      "runner_input.evidence.execution_plan",
+      "runner_input.evidence.mutation_attempts",
+      "runner_input.evidence.changed_files",
+      "runner_input.evidence.diff_summary",
+      "runner_input.evidence.validation_results"
+    ],
+    "forbidden_paths": []
+  },
+  "checks": [
+    {
+      "path": "runner_input.task_class",
+      "equals": "bounded_mutation"
+    },
+    {
+      "path": "runner_input.evidence.normalized_task.mutation_intent",
+      "equals": "mutative"
+    },
+    {
+      "path": "runner_input.evidence.changed_files",
+      "min_length": 1
+    },
+    {
+      "path": "runner_input.evidence.validation_results.0.verdict",
+      "equals": "not_run"
+    },
+    {
+      "path": "runner_input.evidence.validation_results.0.reason",
+      "present": true
+    }
+  ],
+  "runner": {
+    "enabled": true,
+    "interface": "evaluate_transition",
+    "arguments_path": "runner_input",
+    "expectations": [
+      {
+        "path": "status",
+        "equals": "success"
+      },
+      {
+        "path": "output.blocked",
+        "equals": false
+      },
+      {
+        "path": "output.outcome",
+        "equals": "synthesizing"
+      },
+      {
+        "path": "output.transition_allowed_by_contract",
+        "equals": true
+      },
+      {
+        "path": "output.missing_evidence",
+        "length": 0
+      },
+      {
+        "path": "output.missing_skills",
+        "length": 0
+      },
+      {
+        "path": "output.gate_results.0.effect",
+        "equals": "eligible_only_with_explicit_reason"
+      }
+    ]
+  }
+}

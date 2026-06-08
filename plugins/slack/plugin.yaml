@@ -1,0 +1,32 @@
+id: navi.connector.slack
+name: Slack Connector
+description: Official Slack connector package.
+version: 0.1.0
+kind: integration
+status: active
+trust_tier: builtin
+categories:
+  - integration
+capabilities:
+  - messaging.send
+  - messaging.receive
+components:
+  connectors:
+    - path: connectors/slack
+      connector_id: slack
+connector:
+  driver_id: slack
+  display_name: Slack
+  kind: builtin
+  setup:
+    required_params:
+      - key: bot_token
+        label: Bot Token
+        secret: true
+      - key: app_token
+        label: App Token
+        secret: true
+    setup_hint: Configure Slack bot and app tokens before enabling the connector.
+  capabilities:
+    - name: messaging.send
+      side_effect_class: unconstrained

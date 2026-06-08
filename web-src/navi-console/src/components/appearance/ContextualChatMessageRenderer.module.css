@@ -1,0 +1,117 @@
+.userMessage {
+  padding: 12px 16px;
+  background-color: var(--navi-panel-hover);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  align-self: flex-end;
+  max-width: 90%;
+  color: var(--navi-text);
+  font-size: 14px;
+}
+
+.assistantMessage {
+  padding: 12px 16px;
+  background-color: transparent;
+  margin-bottom: 16px;
+  color: var(--navi-text);
+  font-size: 14px;
+}
+
+.assistantHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--navi-accent);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.assistantText {
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.proposalCard {
+  background-color: var(--navi-panel);
+  border: 1px solid var(--navi-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.proposalHeader {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--navi-text);
+}
+
+.proposalRationale {
+  color: var(--navi-muted);
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.proposalActions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.previewBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background-color: var(--navi-panel-hover);
+  color: var(--navi-text);
+  border: 1px solid var(--navi-border);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.previewBtn:hover {
+  background-color: var(--navi-border);
+}
+
+.revertBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background-color: var(--navi-panel-hover);
+  color: var(--navi-warning);
+  border: 1px solid var(--navi-warning-dim);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.revertBtn:hover {
+  background-color: var(--navi-warning-dim);
+}
+
+.applyBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background-color: var(--navi-accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.applyBtn:hover {
+  filter: brightness(1.1);
+}
+
+.applyBtn[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

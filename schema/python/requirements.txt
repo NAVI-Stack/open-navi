@@ -1,0 +1,2 @@
+datamodel-code-generator[http]>=0.25.0
+pydantic>=2.0,<3.0

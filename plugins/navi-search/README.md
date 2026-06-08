@@ -1,0 +1,1 @@
+This was the old scout-search skill, now refactoring into a plugin and renaming as navi-search.

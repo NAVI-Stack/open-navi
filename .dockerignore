@@ -1,0 +1,16 @@
+.git
+bin
+**/node_modules
+artifacts
+test/e2e/artifacts
+example-code
+**/.venv
+**/venv
+docs-local
+.cursor
+*.db
+*.db-wal
+*.db-shm
+jetstream
+workspace/plugin-test-tmp
+pytest-cache-files-*

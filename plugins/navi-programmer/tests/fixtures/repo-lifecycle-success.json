@@ -1,0 +1,168 @@
+{
+  "fixture_id": "np-fixture-repo-lifecycle-success",
+  "kind": "task_fixture",
+  "version": "0.1.0",
+  "description": "Bounded mutation task with clean validation and local branch/commit review output.",
+  "task": {
+    "source": "chat",
+    "raw_task": "Add a bounded regression test and prepare a local review handoff.",
+    "current_repo": ".",
+    "allowed_scope": [
+      "internal",
+      "test"
+    ],
+    "acceptance_hint": "Regression test exists and the local branch/commit are ready for review."
+  },
+  "expected": {
+    "task_class": "bounded_mutation",
+    "mutation_intent": "mutative",
+    "requires_mutation": true,
+    "required_evidence": [
+      "raw_task_input",
+      "normalized_task",
+      "workspace_binding",
+      "repo_status",
+      "inspected_files",
+      "execution_plan",
+      "mutation_attempts",
+      "changed_files",
+      "diff_summary",
+      "validation_results",
+      "lifecycle_summary"
+    ],
+    "expected_skill_interfaces": [
+      "navi-programmer.task-normalize.normalize_task",
+      "navi-programmer.task-normalize.bind_scope",
+      "navi-programmer.repo-inspect.repo_status",
+      "navi-programmer.repo-inspect.read_file",
+      "navi-programmer.patch-apply.apply_patch",
+      "navi-programmer.run-validation.run_command",
+      "navi-programmer.git-lifecycle.create_branch",
+      "navi-programmer.git-lifecycle.create_commit"
+    ]
+  },
+  "runner_input": {
+    "current_state": "review_ready",
+    "target_state": "completed",
+    "task_class": "bounded_mutation",
+    "available_skills": [
+      "navi-programmer.task-normalize",
+      "navi-programmer.repo-inspect",
+      "navi-programmer.patch-apply",
+      "navi-programmer.run-validation",
+      "navi-programmer.git-lifecycle"
+    ],
+    "evidence": {
+      "raw_task_input": {
+        "source": "chat",
+        "content": "Add a bounded regression test and prepare a local review handoff.",
+        "received_at": "2026-05-09T00:00:00Z"
+      },
+      "normalized_task": {
+        "summary": "Add a bounded regression test and prepare a local review handoff.",
+        "task_class": "bounded_mutation",
+        "mutation_intent": "mutative",
+        "acceptance_target": "Regression test exists and the local branch/commit are ready for review.",
+        "validation_hints": {
+          "required": true,
+          "classes": [
+            "test"
+          ],
+          "candidate_commands": [
+            [
+              "go",
+              "test",
+              "./internal/navi/..."
+            ]
+          ]
+        }
+      },
+      "workspace_binding": {
+        "repo_root": ".",
+        "allowed_scope": [
+          "internal",
+          "test"
+        ],
+        "is_self_update": false,
+        "candidate_context": {}
+      },
+      "repo_status": {
+        "is_git_repo": true,
+        "dirty": true,
+        "status_lines": [
+          " M internal/navi/store/chat_store_test.go"
+        ]
+      },
+      "inspected_files": [
+        {
+          "path": "internal/navi/store/chat_store_test.go",
+          "reason": "existing regression coverage",
+          "content_hash_or_read_window": "read_file:chat store regression test"
+        }
+      ],
+      "execution_plan": {
+        "steps": [
+          "Inspect the existing regression test.",
+          "Add the bounded regression case.",
+          "Run the targeted Go test.",
+          "Prepare local review handoff."
+        ],
+        "intended_file_touch_set": [
+          "internal/navi/store/chat_store_test.go"
+        ],
+        "validation_plan": [
+          {
+            "validation_kind": "test",
+            "method": "run_command",
+            "command": [
+              "go",
+              "test",
+              "./internal/navi/..."
+            ]
+          }
+        ]
+      },
+      "mutation_attempts": [
+        {
+          "skill": "navi-programmer.patch-apply.apply_patch",
+          "status": "success",
+          "target": "internal/navi/store/chat_store_test.go"
+        }
+      ],
+      "changed_files": [
+        {
+          "path": "internal/navi/store/chat_store_test.go",
+          "action": "update",
+          "summary": "Added one bounded regression test."
+        }
+      ],
+      "diff_summary": {
+        "files_changed": 1,
+        "insertions": 12,
+        "deletions": 0
+      },
+      "validation_results": [
+        {
+          "validation_kind": "test",
+          "command": [
+            "go",
+            "test",
+            "./internal/navi/..."
+          ],
+          "cwd": ".",
+          "verdict": "passed",
+          "exit_code": 0,
+          "duration_ms": 1600,
+          "stdout": "ok",
+          "stderr": ""
+        }
+      ],
+      "lifecycle_summary": {
+        "branch": "feat/programmer-eval-regression",
+        "commit": "abc1234",
+        "remote_actions": [],
+        "review_surface": "Local branch and commit ready for human review."
+      }
+    }
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "fixture_id": "np-fixture-ticket-driven-mutation",
+  "kind": "task_fixture",
+  "version": "0.1.0",
+  "description": "Ticket-driven mutation task with Linear provenance and explicit acceptance target.",
+  "task": {
+    "source": "linear",
+    "source_id": "OMN-277",
+    "raw_task": "Implement the evaluation harness so weekly review can summarize real evidence instead of anecdotes.",
+    "current_repo": ".",
+    "allowed_scope": [
+      "plugins/navi-programmer"
+    ],
+    "acceptance_hint": "Structured eval records and weekly maturity summary exist."
+  },
+  "expected": {
+    "task_class": "ticket_driven_mutation",
+    "mutation_intent": "mutative",
+    "requires_mutation": true,
+    "required_evidence": [
+      "raw_task_input",
+      "normalized_task",
+      "workspace_binding",
+      "repo_status",
+      "inspected_files",
+      "execution_plan",
+      "mutation_attempts",
+      "changed_files",
+      "diff_summary",
+      "validation_results",
+      "lifecycle_summary"
+    ],
+    "expected_skill_interfaces": [
+      "navi-programmer.task-normalize.normalize_task",
+      "navi-programmer.task-normalize.bind_scope",
+      "navi-programmer.repo-inspect.read_file",
+      "navi-programmer.patch-apply.apply_patch",
+      "navi-programmer.run-validation.run_command",
+      "navi-programmer.git-lifecycle.prepare_handoff"
+    ]
+  },
+  "runner_input": {
+    "current_state": "review_ready",
+    "target_state": "completed",
+    "task_class": "ticket_driven_mutation",
+    "available_skills": [
+      "navi-programmer.task-normalize",
+      "navi-programmer.repo-inspect",
+      "navi-programmer.patch-apply",
+      "navi-programmer.run-validation",
+      "navi-programmer.git-lifecycle"
+    ],
+    "evidence": {
+      "raw_task_input": {
+        "source": "linear",
+        "source_id": "OMN-277",
+        "content": "Implement the evaluation harness so weekly review can summarize real evidence instead of anecdotes.",
+        "received_at": "2026-05-09T00:00:00Z"
+      },
+      "normalized_task": {
+        "summary": "Implement the evaluation harness so weekly review can summarize real evidence instead of anecdotes.",
+        "task_class": "ticket_driven_mutation",
+        "mutation_intent": "mutative",
+        "acceptance_target": "Structured eval records and weekly maturity summary exist.",
+        "validation_hints": {
+          "required": true,
+          "classes": [
+            "test"
+          ],
+          "candidate_commands": [
+            [
+              "python",
+              "-m",
+              "unittest",
+              "discover",
+              "plugins/navi-programmer/tests"
+            ]
+          ]
+        }
+      },
+      "workspace_binding": {
+        "repo_root": ".",
+        "allowed_scope": [
+          "plugins/navi-programmer"
+        ],
+        "is_self_update": false,
+        "candidate_context": {}
+      },
+      "repo_status": {
+        "is_git_repo": true,
+        "dirty": true,
+        "status_lines": [
+          " M plugins/navi-programmer/tests/evals/eval_harness.py"
+        ]
+      },
+      "inspected_files": [
+        {
+          "path": "plugins/navi-programmer/tests/evals/eval_harness.py",
+          "reason": "ticket target implementation",
+          "content_hash_or_read_window": "read_file:evaluation harness"
+        }
+      ],
+      "execution_plan": {
+        "steps": [
+          "Preserve Linear provenance in the normalized task.",
+          "Implement the structured evaluation record builder.",
+          "Run the plugin-local Python tests.",
+          "Prepare review handoff."
+        ],
+        "intended_file_touch_set": [
+          "plugins/navi-programmer/tests/evals/eval_harness.py",
+          "plugins/navi-programmer/tests/test_eval_harness.py"
+        ],
+        "validation_plan": [
+          {
+            "validation_kind": "test",
+            "method": "run_command",
+            "command": [
+              "python",
+              "-m",
+              "unittest",
+              "discover",
+              "plugins/navi-programmer/tests"
+            ]
+          }
+        ]
+      },
+      "mutation_attempts": [
+        {
+          "skill": "navi-programmer.patch-apply.apply_patch",
+          "status": "success",
+          "target": "plugins/navi-programmer/tests/evals/eval_harness.py"
+        }
+      ],
+      "changed_files": [
+        {
+          "path": "plugins/navi-programmer/tests/evals/eval_harness.py",
+          "action": "update",
+          "summary": "Added structured evaluation record and report generation."
+        }
+      ],
+      "diff_summary": {
+        "files_changed": 2,
+        "insertions": 85,
+        "deletions": 4
+      },
+      "validation_results": [
+        {
+          "validation_kind": "test",
+          "command": [
+            "python",
+            "-m",
+            "unittest",
+            "discover",
+            "plugins/navi-programmer/tests"
+          ],
+          "cwd": ".",
+          "verdict": "passed",
+          "exit_code": 0,
+          "duration_ms": 2100,
+          "stdout": "OK",
+          "stderr": ""
+        }
+      ],
+      "lifecycle_summary": {
+        "branch": "feat/programmer",
+        "commit": "def5678",
+        "remote_actions": [],
+        "review_surface": "Ticket-driven review summary preserved with validation evidence."
+      }
+    }
+  }
+}

@@ -1,0 +1,123 @@
+.chatBarContainer {
+  background-color: var(--navi-panel);
+  border: 1px solid var(--navi-border);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: var(--navi-panel-hover);
+  cursor: pointer;
+  user-select: none;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--navi-text);
+}
+
+.toggleBtn {
+  background: none;
+  border: none;
+  color: var(--navi-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.toggleBtn:hover {
+  background-color: var(--navi-border);
+  color: var(--navi-text);
+}
+
+.messageList {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+  border-top: 1px solid var(--navi-border);
+  border-bottom: 1px solid var(--navi-border);
+}
+
+.emptyState {
+  color: var(--navi-muted);
+  text-align: center;
+  padding: 24px 0;
+  font-size: 14px;
+}
+
+.loadingState {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--navi-muted);
+  padding: 12px;
+  font-size: 13px;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.inputForm {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  gap: 8px;
+  background-color: var(--navi-panel);
+}
+
+.inputField {
+  flex: 1;
+  background-color: var(--navi-bg);
+  border: 1px solid var(--navi-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--navi-text);
+  font-size: 14px;
+  outline: none;
+}
+
+.inputField:focus {
+  border-color: var(--navi-accent);
+}
+
+.sendBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: var(--navi-accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sendBtn:hover {
+  filter: brightness(1.1);
+}
+
+.sendBtn[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

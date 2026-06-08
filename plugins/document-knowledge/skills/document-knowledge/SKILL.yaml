@@ -1,0 +1,136 @@
+oss27_version: "1.0"
+skill_id: "document-knowledge"
+semver: "1.0.0"
+
+display:
+  name: "document-knowledge"
+  description: "Parses local documents, extracts structured text and entities, summarizes content, and promotes durable knowledge into NAVI memory."
+  emoji: "📄"
+
+interfaces:
+  - name: "extract_entities"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "bridge.py"
+        function: "extract_entities"
+    input_schema:
+      type: "object"
+      required: ["path"]
+      properties:
+        path:
+          type: "string"
+          description: "Relative path to the document inside the workspace."
+    output_schema:
+      type: "object"
+      properties:
+        path: { type: "string" }
+        document_type: { type: "string" }
+        page_count: { type: "integer" }
+        text: { type: "string" }
+        text_preview: { type: "string" }
+        entities:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              text: { type: "string" }
+              type: { type: "string" }
+
+  - name: "summarize_document"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["path"]
+      properties:
+        path:
+          type: "string"
+          description: "Relative path to the document inside the workspace."
+    output_schema:
+      type: "object"
+      properties:
+        path: { type: "string" }
+        document_type: { type: "string" }
+        page_count: { type: "integer" }
+        summary: { type: "string" }
+        text_preview: { type: "string" }
+        facts:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              key: { type: "string" }
+              value: { type: "string" }
+              category: { type: "string" }
+
+  - name: "ingest_document"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["path"]
+      properties:
+        path:
+          type: "string"
+          description: "Relative path to the document inside the workspace."
+        chat_id:
+          type: "string"
+          description: "Optional explicit chat scope override."
+        owner_id:
+          type: "string"
+          description: "Optional explicit owner scope override."
+    output_schema:
+      type: "object"
+      properties:
+        path: { type: "string" }
+        document_type: { type: "string" }
+        page_count: { type: "integer" }
+        summary: { type: "string" }
+        memory_id: { type: "string" }
+        stored_fact_ids:
+          type: "array"
+          items: { type: "string" }
+        knowledge_scopes:
+          type: "array"
+          items: { type: "string" }
+        entities:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              text: { type: "string" }
+              type: { type: "string" }
+
+effects:
+  side_effects: ["filesystem_read", "memory_write"]
+  risk_tier: "low"
+  idempotency: true
+  requires_confirmation: false
+
+security:
+  auth: []
+  data_access:
+    pii: "possible"
+    secrets: "forbidden"
+  sandbox:
+    required: false
+    network_egress: []
+
+performance:
+  expected_p50_ms: 800
+  timeout_ms: 12000
+
+python_runtime:
+  python_version: "3.11"
+  lifecycle: "cold"
+  io_format: "json_stdio"
+  timeout_ms: 12000
+  max_memory_mb: 128
+  network_access: false
+  allow_fs_write: false
+  maturity: "stable"
+
+governance:
+  publisher: "navi.official"
+  signed: false

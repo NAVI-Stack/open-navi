@@ -1,0 +1,3 @@
+/* Design tokens are owned by the shared @navi/ui library and imported here so
+   the Console and every other NAVI app share one source of truth. */
+@import '@navi/ui/tokens.css';

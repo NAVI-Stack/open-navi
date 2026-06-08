@@ -1,0 +1,37 @@
+id: navi.connector.telegram
+name: Telegram Connector
+description: Official Telegram bot connector.
+version: 0.1.0
+kind: integration
+status: active
+trust_tier: builtin
+categories:
+  - integration
+capabilities:
+  - messaging.send
+  - messaging.receive
+components:
+  skills:
+    - path: skills/telegram
+      skill_id: telegram
+  connectors:
+    - path: connectors/telegram
+      connector_id: telegram
+connector:
+  driver_id: telegram
+  display_name: Telegram
+  kind: builtin
+  setup:
+    required_params:
+      - key: bot_token
+        label: Bot Token
+        description: From @BotFather
+        secret: true
+    optional_params:
+      - key: owner_chat_id
+        label: Your Chat ID
+        description: From @userinfobot, optional for owner-directed replies
+    setup_hint: Get bot token from @BotFather. Add your numeric Chat ID from @userinfobot if you want owner-directed replies.
+  capabilities:
+    - name: messaging.send
+      side_effect_class: unconstrained

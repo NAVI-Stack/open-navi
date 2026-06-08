@@ -1,0 +1,108 @@
+gateway:
+  addr: ":6284"
+  jwt_secret: ""          # overridden by NAVI_GATEWAY_JWT_SECRET env var
+  shared_secret: ""       # overridden by NAVI_GATEWAY_SHARED_SECRET env var
+  static_dir: "web"
+  # WebSocket / CORS: allowed origins for /ws/live and browser. Empty = allow localhost only (dev). Set to deployment origin in production.
+  origin_patterns:
+    - "http://localhost:6284"
+    - "http://localhost:5173"
+    - "http://localhost:3000"
+    - "http://127.0.0.1:6284"
+    - "http://127.0.0.1:5173"
+    - "http://127.0.0.1:3000"
+
+nats:
+  url: "embedded"             # use embedded in-process NATS; override with NAVI_NATS_URL=nats://nats:4222 for Docker
+
+sqlite:
+  path: "navi.db"             # local dev path; override with NAVI_SQLITE_PATH=/navi/data/navi.db for Docker
+
+telegram:
+  bot_token: ""               # overridden by NAVI_TELEGRAM_BOT_TOKEN env var
+  owner_chat_id: 0            # FILL THIS IN - your Telegram chat ID
+  allow_from: []              # additional allowed chat IDs (besides owner_chat_id)
+  pairing_code: ""            # optional: /pair <code> to authorize new chats dynamically
+  gateway_url: "http://localhost:6284"
+  groups: {}                  # per-group behavior, keyed by group chat ID or "*" (wildcard default).
+                              # In groups the bot only replies when @mentioned or replied-to, unless
+                              # require_mention is disabled. DMs always respond. Example:
+                              #   groups:
+                              #     "*":           { require_mention: true }    # default for all groups
+                              #     "-1001234567": { require_mention: false }   # this group: answer everything
+                              #     "-1009999999": { enabled: false }           # ignore this group entirely
+  accounts: []                # optional multi-account list; when set, legacy single-account fields above are ignored
+
+slack:
+  bot_token: ""
+  app_token: ""
+  gateway_url: "http://localhost:6284"
+  allowed_user_ids: []
+
+llm:
+  ollama_url: "http://localhost:11434/v1"   # Default for native API; Docker uses host.docker.internal override
+  ollama_model: "llama3:latest"
+  orchestrator_model: "llama3:latest"
+  coder_model: "llama3:latest"
+  chat_model: "llama3:latest"
+  anthropic_key: ""
+  openai_key: ""
+  openrouter_key: ""
+
+cron:
+  enabled: true
+  max_concurrent_runs: 2
+  missed_job_stagger_ms: 5000
+  max_missed_jobs_per_restart: 5
+  default_timeout_ms: 300000                  # 5m per job exec (context timeout)
+  retry:
+    max_attempts: 3
+    backoff_ms: [30000, 60000, 300000]
+    retry_on: []
+  failure_alert:
+    enabled: false                            # set true to surface repeated failures (log / callback)
+    after: 2
+    cooldown_ms: 3600000
+
+lsp:
+  workspace_root: ""
+
+navi:
+  workspace_dir: "workspace"              # local dev; override with NAVI_WORKSPACE_DIR=/navi/data/workspace for Docker
+  experience_profiles_dir: "config/personas" # standard/wizard experience profile overrides
+  initial_experience_mode: "navi"         # onboarding may force wizard; all other values normalize to the standard NAVI experience
+  prompts_dir: "prompts"                 # editable LLM prompt templates; override with NAVI_PROMPTS_DIR; set NAVI_PROMPT_WATCH=0 to disable fs watch
+  prompt_watch_enabled: true              # hot-reload prompts when files change under prompts_dir
+  context_recent_messages: 12             # direct conversation window kept verbatim for the LLM
+  context_pinned_messages: 2              # opening messages preserved to retain original task framing
+  enable_run_scratchpad: true             # ephemeral per-run scratchpad injected into prompt assembly
+  heartbeat_enabled: true
+  heartbeat_interval: "30m"               # minimum 5m; override via NAVI_HEARTBEAT_INTERVAL
+  heartbeat_quiet_hours_start: ""         # optional local quiet-hours start, e.g. "22:00"
+  heartbeat_quiet_hours_end: ""           # optional local quiet-hours end, e.g. "08:00"
+  heartbeat_dnd_enabled: false            # suppress proactive heartbeat surfacing entirely
+  reflection_consolidation_interval: "30m" # background subconscious consolidation cadence
+  llm_call_timeout: "5m"                  # foreground turn deadline; override via NAVI_LLM_CALL_TIMEOUT
+  debug: false                            # enable slog debug level; set true or use NAVI_DEBUG=1 for dev
+
+# Governor limits for the orchestrator loop. Omit or set 0 to use defaults.
+governor:
+  max_action_budget: 1000                 # max actions per run; increase if you hit "governor tripped: action_budget"
+  max_retries: 5
+  cost_ceiling: 50.0                      # USD
+  autonomous_duration: "72h"              # e.g. 24h, 72h
+  max_repetitions: 3                      # trip after N identical consecutive responses; <=0 disables the check
+  event_retention_days: 30                # default event TTL when no per-type override applies
+  event_retention_by_type:
+    "reflection.queued": 7
+    "assistant.token.delta": 3
+
+# Autonomy presets control how broadly NAVI is allowed to act without asking.
+# Global preset applies to all domains unless overridden; domain_overrides can
+# tune autonomy per domain (messaging, scheduling, coding, memory, plugins,
+# workflow, delegation, configuration).
+#autonomy:
+#  global_preset: "balanced"              # one of: conservative, balanced, high
+#  domain_overrides:
+#    messaging: "high"
+#    coding: "conservative"

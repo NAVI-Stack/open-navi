@@ -1,0 +1,11 @@
+id: navi.workflow.verification_loop
+name: Verification Loop
+description: Reusable verification workflow guidance.
+version: 1.0.0
+kind: workflow
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/verification-loop
+      skill_id: verification-loop

@@ -1,0 +1,243 @@
+/* ─── Details panel ───────────────────────────────────────────────────────── */
+
+.panel {
+  position: absolute;
+  inset: 0;
+  background: var(--navi-panel);
+  border-radius: 0 var(--navi-radius-xl) var(--navi-radius-xl) 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--navi-space-lg);
+  z-index: 10;
+  animation: slideIn 150ms var(--navi-transition);
+  scrollbar-width: thin;
+  scrollbar-color: var(--navi-border) transparent;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── Header ──────────────────────────────────────────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--navi-space-sm);
+  margin-bottom: var(--navi-space-lg);
+}
+
+.headerInfo { min-width: 0; }
+
+.name {
+  font-size: var(--navi-font-size);
+  font-weight: var(--navi-font-weight-semibold);
+  color: var(--navi-text);
+  margin: 0 0 var(--navi-space-xs);
+}
+
+.modelId {
+  font-size: var(--navi-font-size-xs);
+  color: var(--navi-text-tertiary);
+  font-family: var(--navi-font-mono);
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--navi-radius-full);
+  border: none;
+  background: transparent;
+  color: var(--navi-text-tertiary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.closeBtn:hover { background: var(--navi-panel-active); color: var(--navi-text); }
+
+/* ─── Section ─────────────────────────────────────────────────────────────── */
+
+.section { margin-bottom: var(--navi-space-lg); }
+
+.sectionTitle {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--navi-text-tertiary);
+  margin-bottom: var(--navi-space-sm);
+}
+
+/* ─── Meta grid ───────────────────────────────────────────────────────────── */
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--navi-space-sm) var(--navi-space-xl);
+}
+
+.metaItem {}
+
+.metaLabel {
+  font-size: 10px;
+  color: var(--navi-text-tertiary);
+  margin-bottom: 2px;
+}
+
+.metaValue {
+  font-size: var(--navi-font-size-xs);
+  font-weight: var(--navi-font-weight-medium);
+  color: var(--navi-text-secondary);
+}
+
+/* ─── Capability pills ────────────────────────────────────────────────────── */
+
+.capPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--navi-space-xs);
+}
+
+.capPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--navi-radius-full);
+  font-size: 11px;
+  font-weight: var(--navi-font-weight-medium);
+  border: 1px solid transparent;
+}
+
+/* cap-specific colors reuse browserStyles — replicated here for independence */
+.capPillFast      { background: rgba(251,191,36,.12);  color: #fbbf24; border-color: rgba(251,191,36,.2); }
+.capPillVision    { background: rgba(52,211,153,.12);  color: #34d399; border-color: rgba(52,211,153,.2); }
+.capPillReasoning { background: rgba(167,139,250,.12); color: #a78bfa; border-color: rgba(167,139,250,.2); }
+.capPillTools     { background: rgba(251,146,60,.12);  color: #fb923c; border-color: rgba(251,146,60,.2); }
+.capPillImage     { background: rgba(248,113,113,.12); color: #f87171; border-color: rgba(248,113,113,.2); }
+.capPillPdf       { background: rgba(99,102,241,.12);  color: #818cf8; border-color: rgba(99,102,241,.2); }
+.capPillCode      { background: rgba(56,189,248,.12);  color: #38bdf8; border-color: rgba(56,189,248,.2); }
+
+/* ─── Score bars ──────────────────────────────────────────────────────────── */
+
+.scoreList { display: flex; flex-direction: column; gap: var(--navi-space-sm); }
+
+.scoreRow {
+  display: grid;
+  grid-template-columns: 6rem 1fr auto;
+  align-items: center;
+  gap: var(--navi-space-sm);
+}
+
+.scoreLabel {
+  font-size: var(--navi-font-size-xs);
+  color: var(--navi-text-secondary);
+  white-space: nowrap;
+}
+
+.scoreTrack {
+  height: 4px;
+  border-radius: var(--navi-radius-full);
+  background: var(--navi-border);
+  overflow: hidden;
+}
+
+.scoreBar {
+  height: 100%;
+  border-radius: var(--navi-radius-full);
+  background: var(--navi-accent);
+  transition: width 400ms var(--navi-spring);
+}
+
+.scoreNum {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--navi-text-tertiary);
+  text-align: right;
+  min-width: 2.2em;
+}
+
+/* ─── LLM KB callout ──────────────────────────────────────────────────────── */
+
+.kbCallout {
+  padding: var(--navi-space-sm) var(--navi-space-md);
+  border-radius: var(--navi-radius);
+  border: 1px solid var(--navi-accent-glow);
+  background: var(--navi-accent-dim);
+  font-size: var(--navi-font-size-xs);
+  color: var(--navi-text-secondary);
+  line-height: 1.5;
+}
+
+.kbCalloutTitle {
+  font-weight: var(--navi-font-weight-semibold);
+  color: var(--navi-accent);
+  margin-bottom: 4px;
+}
+
+.kbDelta {
+  font-weight: var(--navi-font-weight-semibold);
+  font-family: var(--navi-font-mono);
+  font-size: 11px;
+}
+
+.kbDeltaPos { color: var(--navi-success); }
+.kbDeltaNeg { color: var(--navi-danger); }
+
+/* ─── Decision guidance ───────────────────────────────────────────────────── */
+
+.decisionGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--navi-space-sm);
+}
+
+.decisionRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--navi-space-sm);
+  font-size: var(--navi-font-size-xs);
+}
+
+.decisionLabel {
+  flex-shrink: 0;
+  width: 90px;
+  color: var(--navi-text-tertiary);
+  padding-top: 2px;
+}
+
+.decisionPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.decisionPill {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: var(--navi-font-weight-medium);
+}
+
+.decisionPillGood {
+  background: color-mix(in srgb, var(--navi-success, #22c55e) 15%, transparent);
+  color: var(--navi-success, #22c55e);
+}
+
+.decisionPillBad {
+  background: color-mix(in srgb, var(--navi-danger) 15%, transparent);
+  color: var(--navi-danger);
+}
+
+.decisionValue {
+  color: var(--navi-text-secondary);
+}
+
+.decisionValueGood { color: var(--navi-success, #22c55e); }
+.decisionValueBad  { color: var(--navi-danger); }

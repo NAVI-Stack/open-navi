@@ -1,0 +1,215 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://navi.dev/schema/skill-python-runtime.json",
+  "title": "NAVI AI Platform — Python Skill Runtime Schema",
+  "description": "Extends OSS-27 SKILL.yaml with Python subprocess execution metadata.",
+  "definitions": {
+
+    "SubprocessPythonTransport": {
+      "type": "object",
+      "description": "Transport config for interfaces[].transport when type=subprocess_python.",
+      "properties": {
+        "entrypoint": {
+          "type": "string",
+          "description": "Python file to invoke, relative to the skill's base directory.",
+          "examples": ["main.py", "src/handler.py"]
+        },
+        "function": {
+          "type": "string",
+          "default": "run",
+          "description": "Callable inside the entrypoint module. Must accept a single dict and return a JSON-serializable value."
+        }
+      },
+      "required": ["entrypoint"]
+    },
+
+    "VenvStrategy": {
+      "type": "string",
+      "enum": ["per_skill", "per_category", "shared"],
+      "description": "per_skill: full isolation, high startup cost. per_category: skills sharing skill_id prefix share a venv. shared: no isolation, minimal cost."
+    },
+
+    "Lifecycle": {
+      "type": "string",
+      "enum": ["cold", "warm"],
+      "description": "cold: spawn on demand, exit after result. warm: keep idle worker in pool between invocations."
+    },
+
+    "IOFormat": {
+      "type": "string",
+      "enum": ["json_stdio"],
+      "description": "Wire format for subprocess I/O. json_stdio: newline-delimited JSON over stdin/stdout. msgpack_stdio reserved."
+    },
+
+    "SkillMaturity": {
+      "type": "string",
+      "enum": ["prototype", "stable", "hardened"],
+      "description": "prototype: fast iteration, loose deps, not for high-frequency use. stable: pinned deps, tested, production-ready. hardened: candidate for Go port."
+    },
+
+    "SkillResult": {
+      "type": "object",
+      "description": "Mandatory envelope returned by every Python skill invocation on stdout.",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["success", "error", "timeout", "killed", "truncated"],
+          "description": "success: normal. error: Python exception. timeout: wall-clock exceeded. killed: OOM or SIGKILL. truncated: output capped at max_output_bytes."
+        },
+        "output": {
+          "description": "Skill-defined return value. Populated on success and truncated only.",
+          "oneOf": [
+            { "type": "object" },
+            { "type": "array" },
+            { "type": "string" },
+            { "type": "number" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ]
+        },
+        "error": {
+          "type": ["object", "null"],
+          "properties": {
+            "type": { "type": "string", "description": "Exception class name or runner error category." },
+            "message": { "type": "string" },
+            "traceback": { "type": "string", "description": "Python traceback. Populated in debug builds only; redacted in production." }
+          },
+          "required": ["type", "message"]
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Wall-clock execution time in milliseconds, measured by the Go runner."
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "python_version": { "type": "string" },
+            "skill_id": { "type": "string" },
+            "interface": { "type": "string" },
+            "invocation_id": { "type": "string", "format": "uuid" }
+          }
+        }
+      },
+      "required": ["status", "duration_ms"]
+    },
+
+    "PythonRuntimeSpec": {
+      "type": "object",
+      "description": "Top-level python_runtime block in SKILL.yaml. Controls environment, lifecycle, I/O, resource limits, isolation, and maturity.",
+      "properties": {
+
+        "python_version": {
+          "type": "string",
+          "default": "3.11",
+          "description": "Minimum required Python version. Skill is skipped by the loader if not satisfied.",
+          "examples": ["3.11", "3.12"]
+        },
+
+        "venv_strategy": {
+          "$ref": "#/definitions/VenvStrategy",
+          "default": "per_category"
+        },
+
+        "requirements_file": {
+          "type": "string",
+          "default": "requirements.txt",
+          "description": "Path to pip requirements file, relative to skill directory. Omit if no file-based deps."
+        },
+
+        "dependencies": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Inline pip specifiers merged with requirements_file.",
+          "examples": [["openai>=1.0", "tiktoken", "numpy"]]
+        },
+
+        "lifecycle": {
+          "$ref": "#/definitions/Lifecycle",
+          "default": "cold"
+        },
+
+        "warm_pool_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16,
+          "default": 1,
+          "description": "Maximum idle worker processes per category when lifecycle=warm. Ignored for cold skills."
+        },
+
+        "spawn_timeout_ms": {
+          "type": "integer",
+          "minimum": 500,
+          "default": 5000,
+          "description": "Maximum time allowed for process spawn and readiness before the attempt is aborted."
+        },
+
+        "io_format": {
+          "$ref": "#/definitions/IOFormat",
+          "default": "json_stdio"
+        },
+
+        "max_input_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1048576,
+          "description": "Input payload size cap in bytes. Runner rejects oversized inputs before spawn. Default: 1 MiB."
+        },
+
+        "max_output_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 5242880,
+          "description": "Output read cap in bytes. Bytes beyond this are truncated; result status becomes truncated. Default: 5 MiB."
+        },
+
+        "timeout_ms": {
+          "type": "integer",
+          "minimum": 100,
+          "default": 30000,
+          "description": "Wall-clock execution timeout in milliseconds. Overrides performance.timeout_ms for subprocess skills. On expiry: SIGTERM → 500ms grace → SIGKILL."
+        },
+
+        "max_memory_mb": {
+          "type": "integer",
+          "minimum": 16,
+          "default": 256,
+          "description": "Soft RSS cap in MiB. Exceeded: SIGKILL. Result status becomes killed."
+        },
+
+        "max_cpu_percent": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "description": "Optional CPU throttle percentage hint. Advisory only if platform does not support cgroups or cpulimit."
+        },
+
+        "network_access": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow outbound network from the subprocess. Should only be true when security.sandbox.network_egress is also declared."
+        },
+
+        "allow_fs_write": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow subprocess writes outside its provisioned tmpdir. Rarely needed."
+        },
+
+        "tmpdir_mb": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 64,
+          "description": "Writable scratch space in MiB, provisioned per invocation and cleaned up after. 0 disables tmpdir."
+        },
+
+        "maturity": {
+          "$ref": "#/definitions/SkillMaturity",
+          "default": "prototype"
+        }
+      },
+      "required": []
+    }
+  }
+}

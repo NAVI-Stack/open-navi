@@ -1,0 +1,11 @@
+id: navi.skill_creator
+name: Skill Creator
+description: Built-in governed skill creation guidance.
+version: 1.0.0
+kind: system
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/skill-creator
+      skill_id: skill-creator

@@ -1,0 +1,130 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 12px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--navi-text);
+}
+
+/* Collapsible panels section */
+.panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 900px) {
+  .panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panelToggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--navi-panel);
+  border: 1px solid var(--navi-border);
+  border-radius: var(--navi-radius);
+  color: var(--navi-text);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.panelToggle:hover {
+  background: var(--navi-panel-hover);
+}
+
+.panelBody {
+  padding: 8px 10px;
+  background: var(--navi-panel);
+  border: 1px solid var(--navi-border);
+  border-top: none;
+  border-radius: 0 0 var(--navi-radius) var(--navi-radius);
+}
+
+.panelToggle[aria-expanded="true"] {
+  border-radius: var(--navi-radius) var(--navi-radius) 0 0;
+}
+
+/* Summary grid */
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 6px;
+}
+
+.summaryItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: var(--navi-radius-sm);
+  font-size: 12px;
+}
+
+.summaryType {
+  color: var(--navi-text);
+  font-weight: 500;
+}
+
+.summaryCount {
+  font-family: var(--navi-font-mono);
+  font-weight: 600;
+  color: var(--navi-danger);
+}
+
+.summaryEmpty {
+  color: var(--navi-muted);
+  font-size: 12px;
+  padding: 8px;
+}
+
+/* Timeline section fills remaining space */
+.timelineSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.sectionLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--navi-muted);
+  margin-bottom: 6px;
+}
+
+/* Loading states */
+.loadingRow {
+  padding: 6px 8px;
+  font-size: 12px;
+  color: var(--navi-muted);
+  font-style: italic;
+}
+
+.errorRow {
+  padding: 6px 8px;
+  font-size: 12px;
+  color: var(--navi-danger);
+}

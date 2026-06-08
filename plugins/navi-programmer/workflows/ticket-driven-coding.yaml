@@ -1,0 +1,24 @@
+workflow_id: navi.programmer.ticket_driven_coding
+name: Ticket Driven Coding
+version: 0.1.0
+status: contract
+description: Normalize an external task or issue into a bounded programming workflow.
+extends: navi.programmer.bounded_mutation
+source_specs:
+  - ../docs/specs/navi-programmer-task-execution.md
+  - ../docs/specs/navi-programmer-plugin-v1.md
+task_class:
+  includes:
+    - ticket_driven_mutation
+intake_sources:
+  - linear
+  - github_issue
+  - project_task
+  - chat
+required_evidence:
+  - source_reference
+  - raw_task_input
+  - acceptance_target
+  - workspace_binding
+  - validation_results
+  - outcome_summary

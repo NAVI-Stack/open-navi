@@ -1,0 +1,11 @@
+id: navi.llm.ollama
+name: Ollama LLM Provider
+description: Built-in local Ollama inference provider plugin.
+version: 0.1.0
+kind: llm-provider
+status: active
+trust_tier: builtin
+components:
+  providers:
+    - path: providers/ollama
+      provider_id: ollama

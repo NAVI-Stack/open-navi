@@ -1,0 +1,83 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--navi-topbar-height);
+  padding: 0 var(--navi-space-lg);
+  background: var(--navi-bg);
+  border-bottom: 1px solid var(--navi-border-subtle);
+  z-index: var(--navi-z-topbar);
+  flex-shrink: 0;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-lg);
+}
+
+.statusSection {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-md);
+  font-size: var(--navi-font-size-sm);
+}
+
+.connection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconConnected {
+  color: var(--navi-success);
+}
+
+.iconDisconnected {
+  color: var(--navi-danger);
+}
+
+.agentState {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-xs);
+}
+
+.stateLabel {
+  color: var(--navi-text-tertiary);
+}
+
+.stateValue {
+  color: var(--navi-text);
+  font-weight: var(--navi-font-weight-medium);
+}
+
+.stateDetail {
+  color: var(--navi-text-secondary);
+}
+
+.degradedBadge {
+  background: var(--navi-warning-dim);
+  color: var(--navi-warning);
+  padding: 2px 6px;
+  border-radius: var(--navi-radius-sm);
+  font-size: var(--navi-font-size-xs);
+  font-weight: var(--navi-font-weight-medium);
+  text-transform: uppercase;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-md);
+}
+
+.version {
+  color: var(--navi-text-tertiary);
+  font-size: var(--navi-font-size-xs);
+  font-family: var(--navi-font-mono);
+}
+
+.inspectorToggle {
+  color: var(--navi-text-secondary);
+}

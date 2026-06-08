@@ -1,0 +1,156 @@
+/* ─── Model row ───────────────────────────────────────────────────────────── */
+
+.row {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--navi-space-sm);
+  padding: var(--navi-space-sm) var(--navi-space-sm);
+  border-radius: var(--navi-radius);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    background var(--navi-transition-fast),
+    border-color var(--navi-transition-fast),
+    color var(--navi-transition-fast);
+  color: var(--navi-text-secondary);
+}
+
+.row:hover {
+  background: var(--navi-panel-hover);
+  color: var(--navi-text);
+}
+
+.rowSelected {
+  background: var(--navi-panel-active);
+  border-color: var(--navi-accent-glow);
+  color: var(--navi-text);
+}
+
+.rowSelected:hover { background: var(--navi-panel-active); }
+
+/* ─── Provider kind icon ──────────────────────────────────────────────────── */
+
+.kindIcon {
+  color: var(--navi-text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rowSelected .kindIcon { color: var(--navi-accent); }
+
+/* ─── Name + meta ─────────────────────────────────────────────────────────── */
+
+.nameBlock { min-width: 0; }
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-sm);
+  min-width: 0;
+}
+
+.name {
+  font-size: var(--navi-font-size-sm);
+  font-weight: var(--navi-font-weight-semibold);
+  color: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rowSelected .name, .row:hover .name { color: var(--navi-text); }
+
+.scoreHint {
+  font-size: 10px;
+  font-weight: var(--navi-font-weight-medium);
+  color: var(--navi-text-tertiary);
+  white-space: nowrap;
+}
+
+/* ─── Badges ──────────────────────────────────────────────────────────────── */
+
+.badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 3px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 5px;
+  border-radius: var(--navi-radius-full);
+  font-size: 10px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  line-height: 1.4;
+}
+
+.badgeAuto    { background: rgba(56,189,248,.12); color: var(--navi-accent); border-color: var(--navi-accent-glow); }
+.badgeCloud   { background: rgba(96,165,250,.12); color: var(--navi-info); border-color: rgba(96,165,250,.2); }
+.badgeLocal   { background: rgba(52,211,153,.12); color: var(--navi-success); border-color: rgba(52,211,153,.2); }
+.badgeLegacy  { background: rgba(107,114,128,.1); color: var(--navi-text-tertiary); border-color: var(--navi-border-subtle); }
+
+/* ─── Right action area ───────────────────────────────────────────────────── */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-top: 1px;
+  flex-shrink: 0;
+}
+
+.capIcons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--navi-radius-full);
+  border: none;
+  background: transparent;
+  color: var(--navi-text-tertiary);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    background var(--navi-transition-fast),
+    color var(--navi-transition-fast),
+    opacity var(--navi-transition-fast);
+  flex-shrink: 0;
+}
+
+/* Reveal on hover, keyboard focus, and when row is selected */
+.row:hover .iconBtn,
+.row:focus-within .iconBtn,
+.rowSelected .iconBtn { opacity: 1; }
+
+.iconBtn:hover { background: var(--navi-panel-active); color: var(--navi-text); }
+
+/* Favorited star is always visible so users know the model is saved */
+.starActive {
+  color: #fbbf24;
+  opacity: 1;
+}
+
+/* Provider name subtitle (shown in multi-provider views) */
+.providerSub {
+  font-size: 10px;
+  color: var(--navi-text-tertiary);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

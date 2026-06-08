@@ -1,0 +1,39 @@
+.card {
+  background: var(--navi-surface);
+  border: 1px solid var(--navi-border-subtle);
+  border-radius: var(--navi-radius-lg);
+  padding: var(--navi-space-lg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all var(--navi-transition-fast);
+}
+
+.elevated {
+  background: var(--navi-surface-elevated);
+  box-shadow: var(--navi-shadow);
+  border-color: var(--navi-border);
+}
+
+.outlined {
+  background: transparent;
+  border-color: var(--navi-border);
+}
+
+.hoverable {
+  cursor: pointer;
+}
+
+.hoverable:hover {
+  transform: translateY(-2px);
+  border-color: var(--navi-border-strong);
+  box-shadow: var(--navi-shadow);
+}
+
+.hoverable:active {
+  transform: translateY(0);
+}
+
+.hoverable:focus-visible {
+  outline: 2px solid var(--navi-accent);
+  outline-offset: 2px;
+}

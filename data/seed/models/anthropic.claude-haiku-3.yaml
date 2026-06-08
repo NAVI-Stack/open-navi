@@ -1,0 +1,51 @@
+kind: LLMProfile
+schema_version: 1
+llm_id: anthropic.claude-haiku-3
+canonical_name: Claude Haiku 3
+aliases:
+  - claude-haiku-3
+  - claude haiku 3
+identity:
+  provider: anthropic
+  publisher: Anthropic
+  release_channel: stable
+  hosting_modes_supported:
+    - api
+capabilities:
+  primary_use_cases:
+    - chat
+    - summarization
+    - structured_output
+  interaction_modes:
+    - conversational
+    - structured_output
+    - streaming
+  agentic_class: constrained
+  coding_class: basic
+  reasoning_class: competent
+  instruction_following_class: good
+  tool_discipline_class: competent
+  schema_reliability_class: good
+  multimodal_class: fair
+technical_profile:
+  supports_tools: true
+  supports_parallel_tools: false
+  supports_json_schema: true
+  supports_streaming: true
+  supports_vision: false
+  supports_audio_in: false
+  supports_audio_out: false
+  max_output_tokens: 4096
+  input_price_per_1k: 0.00025
+  output_price_per_1k: 0.00125
+  context_window:
+    input_tokens: 200000
+routing_profile:
+  preferred_for:
+    - chat
+    - lightweight
+    - summarization
+  cost_tier: cheap
+  latency_tier: low
+  max_risk_tier_allowed: low
+  autonomy_ceiling: chat

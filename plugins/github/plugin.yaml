@@ -1,0 +1,11 @@
+id: navi.integration.github
+name: GitHub
+description: GitHub repository, issue, pull request, and CI workflow guidance.
+version: 1.0.0
+kind: integration
+status: active
+trust_tier: builtin
+components:
+  skills:
+    - path: skills/github
+      skill_id: github

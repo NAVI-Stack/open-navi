@@ -1,0 +1,490 @@
+oss27_version: "1.0"
+skill_id: "navi-contacts"
+semver: "1.0.0"
+
+display:
+  name: "NAVI Contacts"
+  description: >
+    Manage NAVI's unified contact graph. Create, edit, delete, search, and list contacts
+    (people, organizations, services, and other NAVI agents). NAVI keeps its own contacts
+    (owner_type: navi) separately from contacts imported from the owner's address book
+    (owner_type: owner). Supports trust levels (unknown → verified), identity linking
+    (email, phone, navi_id deduplication), timestamped interaction tracking (capped history
+    of 50 events), and vCard 3.0 import/export for Google Contacts and Apple Contacts.
+  emoji: "👤"
+
+interfaces:
+  - name: "create_contact"
+    description: >
+      Create a new contact owned by NAVI. Use this when NAVI needs to remember a person,
+      organization, or service it has encountered.
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["name"]
+      properties:
+        name:
+          type: "string"
+          description: "Full display name of the contact."
+        kind:
+          type: "string"
+          description: "Contact kind: person, organization, service, or navi (for NAVI-to-NAVI contacts)."
+          enum: ["person", "organization", "service", "navi"]
+        trust_level:
+          type: "string"
+          description: "How much to trust this contact. Defaults to 'unknown'."
+          enum: ["unknown", "low", "medium", "high", "verified"]
+        first_name:
+          type: "string"
+          description: "First (given) name."
+        last_name:
+          type: "string"
+          description: "Last (family) name."
+        emails:
+          type: "array"
+          description: "Email addresses with optional labels."
+          items:
+            type: "object"
+            properties:
+              value: { type: "string" }
+              label: { type: "string", description: "work, home, or other" }
+        phones:
+          type: "array"
+          description: "Phone numbers with optional labels."
+          items:
+            type: "object"
+            properties:
+              value: { type: "string" }
+              label: { type: "string", description: "mobile, work, home, fax" }
+        addresses:
+          type: "array"
+          description: "Postal addresses."
+          items:
+            type: "object"
+            properties:
+              street:  { type: "string" }
+              city:    { type: "string" }
+              state:   { type: "string" }
+              zip:     { type: "string" }
+              country: { type: "string" }
+              label:   { type: "string", description: "home or work" }
+        organization:
+          type: "object"
+          description: "Employer / organization details."
+          properties:
+            company: { type: "string" }
+            title:   { type: "string" }
+        birthday:
+          type: "string"
+          description: "ISO date: YYYY-MM-DD"
+        notes:
+          type: "string"
+          description: "Free-form notes about this contact."
+        tags:
+          type: "array"
+          description: "Custom tags for grouping."
+          items: { type: "string" }
+        photo_url:
+          type: "string"
+          description: "URL to a profile photo."
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        id:          { type: "string" }
+        name:        { type: "string" }
+        kind:        { type: "string" }
+        owner_type:  { type: "string" }
+        trust_level: { type: "string" }
+        created_at:  { type: "string" }
+
+  - name: "get_contact"
+    description: "Retrieve a contact by its ID, returning all stored fields."
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["id"]
+      properties:
+        id:
+          type: "string"
+          description: "Contact ID (UUID)."
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        id:          { type: "string" }
+        name:        { type: "string" }
+        kind:        { type: "string" }
+        owner_type:  { type: "string" }
+        trust_level: { type: "string" }
+        metadata:    { type: "object" }
+        created_at:  { type: "string" }
+        updated_at:  { type: "string" }
+
+  - name: "list_contacts"
+    description: >
+      List contacts with optional filters. Defaults to NAVI's own contacts (owner_type: navi).
+      Use owner_type 'owner' to see the owner's imported contacts, or 'all' for both.
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties:
+        owner_type:
+          type: "string"
+          description: "Filter by ownership. 'navi' (default), 'owner', or 'all'."
+          enum: ["navi", "owner", "all"]
+        kind:
+          type: "string"
+          description: "Filter by contact kind."
+          enum: ["person", "organization", "service", "navi"]
+        trust_level:
+          type: "string"
+          description: "Filter by trust level (only return contacts at this level)."
+          enum: ["unknown", "low", "medium", "high", "verified"]
+        name_prefix:
+          type: "string"
+          description: "Prefix filter on display name."
+        limit:
+          type: "integer"
+          description: "Maximum results (1–200, default 50)."
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        contacts: { type: "array" }
+        total:    { type: "integer" }
+
+  - name: "update_contact"
+    description: >
+      Update one or more fields of an existing contact. Only fields provided in the call
+      are changed — absent fields are left untouched (true partial update).
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["id"]
+      properties:
+        id:          { type: "string" }
+        name:        { type: "string" }
+        kind:
+          type: "string"
+          enum: ["person", "organization", "service", "navi"]
+        trust_level:
+          type: "string"
+          enum: ["unknown", "low", "medium", "high", "verified"]
+        first_name:  { type: "string" }
+        last_name:   { type: "string" }
+        emails:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              value: { type: "string" }
+              label: { type: "string" }
+        phones:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              value: { type: "string" }
+              label: { type: "string" }
+        addresses:
+          type: "array"
+          items: { type: "object" }
+        organization:
+          type: "object"
+          properties:
+            company: { type: "string" }
+            title:   { type: "string" }
+        birthday:  { type: "string" }
+        notes:     { type: "string" }
+        tags:
+          type: "array"
+          items: { type: "string" }
+        photo_url: { type: "string" }
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        id:          { type: "string" }
+        name:        { type: "string" }
+        trust_level: { type: "string" }
+        updated_at:  { type: "string" }
+
+  - name: "delete_contact"
+    description: "Permanently delete a contact. This action is irreversible."
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["id"]
+      properties:
+        id:
+          type: "string"
+          description: "Contact ID to delete."
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        deleted: { type: "boolean" }
+        id:      { type: "string" }
+
+  - name: "search_contacts"
+    description: >
+      Search contacts by any text that might appear in their name, email, phone,
+      notes, or other metadata. Returns the closest matches.
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["query"]
+      properties:
+        query:
+          type: "string"
+          description: "Search term matched across name and all metadata fields."
+        owner_type:
+          type: "string"
+          description: "Optionally restrict to 'navi', 'owner', or 'all' (default all)."
+          enum: ["navi", "owner", "all"]
+        limit:
+          type: "integer"
+          description: "Maximum results (default 20)."
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        results: { type: "array" }
+        total:   { type: "integer" }
+
+  - name: "import_vcf"
+    description: >
+      Parse a vCard 3.0 VCF string and import the contacts. Supports single or multi-card files.
+      Compatible with exports from Google Contacts and Apple Contacts.
+      Returns a summary of created, skipped, and errored records.
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["vcf"]
+      properties:
+        vcf:
+          type: "string"
+          description: "Raw VCF text (one or more vCard 3.0 records)."
+        owner_type:
+          type: "string"
+          description: >
+            Owner tag for imported contacts. Use 'navi' (default) for NAVI's own contacts,
+            or 'owner' when importing the human owner's personal address book.
+          enum: ["navi", "owner"]
+        merge_duplicates:
+          type: "boolean"
+          description: "If true, update existing contacts with the same name instead of creating duplicates. Default false."
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        imported: { type: "integer" }
+        skipped:  { type: "integer" }
+        errors:   { type: "integer" }
+        ids:
+          type: "array"
+          items: { type: "string" }
+
+  - name: "export_vcf"
+    description: >
+      Export contacts as a vCard 3.0 VCF string, compatible with Google Contacts and Apple Contacts.
+      Defaults to exporting NAVI's own contacts. Use owner_type 'owner' to export the owner's
+      imported contacts, or provide a list of specific IDs.
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties:
+        owner_type:
+          type: "string"
+          description: "Which contacts to export. Default 'navi'."
+          enum: ["navi", "owner", "all"]
+        kind:
+          type: "string"
+          description: "Optionally filter by contact kind."
+          enum: ["person", "organization", "service", "navi"]
+        ids:
+          type: "array"
+          description: "Export only these specific contact IDs (overrides owner_type filter)."
+          items: { type: "string" }
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        vcf:   { type: "string", description: "Complete VCF text ready to save as a .vcf file." }
+        count: { type: "integer" }
+
+  - name: "share_contact"
+    description: >
+      Export a single contact as a VCF string, suitable for sharing via message, email, or file.
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["id"]
+      properties:
+        id:
+          type: "string"
+          description: "Contact ID to share."
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        vcf:  { type: "string" }
+        name: { type: "string" }
+
+  - name: "link_identity"
+    description: >
+      Link an email address, phone number, or navi_id identifier to an existing contact.
+      Prevents duplicate identifiers across contacts. Records an interaction event.
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["contact_id", "identifier_type", "identifier_value"]
+      properties:
+        contact_id:
+          type: "string"
+          description: "ID of the contact to update."
+        identifier_type:
+          type: "string"
+          description: "The type of identifier to link."
+          enum: ["email", "phone", "navi_id"]
+        identifier_value:
+          type: "string"
+          description: "The identifier value (e.g. user@example.com or a NAVI agent ID)."
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        success: { type: "boolean" }
+        message: { type: "string" }
+
+  - name: "record_interaction"
+    description: >
+      Record a timestamped interaction event on a contact (e.g. message_sent, meeting_held).
+      Maintains an interaction count and capped history of up to 50 events.
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      required: ["contact_id", "kind"]
+      properties:
+        contact_id:
+          type: "string"
+          description: "ID of the contact."
+        kind:
+          type: "string"
+          description: "Event kind (e.g. message_sent, meeting_held, note_added)."
+        note:
+          type: "string"
+          description: "Optional free-form detail about the interaction."
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        success:           { type: "boolean" }
+        interaction_count: { type: "integer" }
+        last_interaction:  { type: "string" }
+
+effects:
+  side_effects: ["db_write"]
+  risk_tier: "low"
+  idempotency_level: "conditional"
+  reversibility: "reversible_internal"
+  requires_confirmation: false
+
+security:
+  auth: []
+  data_access:
+    pii: "possible"
+    secrets: "forbidden"
+  sandbox:
+    required: false
+    network_egress: []
+
+performance:
+  expected_p50_ms: 50
+  timeout_ms: 5000
+
+observability:
+  log_redaction: ["emails", "phones", "addresses"]
+  emit_metrics: []
+
+governance:
+  publisher: "navi.official"
+  signed: false
+  trust_tier: "builtin"
+
+capability:
+  tags: ["contacts", "vcf", "vcard", "pim", "address-book"]
+  domains: ["identity", "memory"]
+  provides: ["contacts.read", "contacts.write", "contacts.vcf"]
+  command_type: "invoke"
+
+ui_surfaces:
+  - id: "contacts.console"
+    title: "NAVI Contacts"
+    description: "Headless Console surface for browsing and managing NAVI contacts through governed skill interfaces."
+    target_surfaces: ["console"]
+    render_mode: "headless"
+    schema:
+      type: "entity_manager"
+      entity: "contact"
+      list:
+        action: "list_contacts"
+        result_path: "contacts"
+        primary_field: "name"
+        secondary_fields: ["kind", "owner_type", "trust_level"]
+      detail:
+        action: "get_contact"
+        id_field: "id"
+      search:
+        action: "search_contacts"
+        query_field: "query"
+      forms:
+        create:
+          action: "create_contact"
+        update:
+          action: "update_contact"
+          id_field: "id"
+      import_export:
+        import_action: "import_vcf"
+        export_action: "export_vcf"
+    actions:
+      - id: "list"
+        label: "List"
+        interface: "list_contacts"
+      - id: "search"
+        label: "Search"
+        interface: "search_contacts"
+      - id: "create"
+        label: "Create"
+        interface: "create_contact"
+      - id: "update"
+        label: "Update"
+        interface: "update_contact"
+      - id: "delete"
+        label: "Delete"
+        interface: "delete_contact"
+        confirm: true
+      - id: "import"
+        label: "Import VCF"
+        interface: "import_vcf"
+      - id: "export"
+        label: "Export VCF"
+        interface: "export_vcf"
+      - id: "link_identity"
+        label: "Link Identity"
+        interface: "link_identity"
+      - id: "record_interaction"
+        label: "Record Interaction"
+        interface: "record_interaction"

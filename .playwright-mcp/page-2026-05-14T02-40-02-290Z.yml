@@ -1,0 +1,30 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: Checking setup...
+    - heading "NAVI setup" [level=1] [ref=e5]
+    - paragraph [ref=e6]: "Three local-first steps: save your recovery passport, choose a brain, and optionally connect a way to talk."
+  - generic [ref=e7]:
+    - complementary "Setup progress" [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: "1"
+        - generic [ref=e11]:
+          - heading "Recovery" [level=3] [ref=e12]
+          - paragraph [ref=e13]: Create and save your owner passport.
+      - generic [ref=e14]:
+        - generic [ref=e15]: "2"
+        - generic [ref=e16]:
+          - heading "Brain" [level=3] [ref=e17]
+          - paragraph [ref=e18]: Pick a provider and model.
+      - generic [ref=e19]:
+        - generic [ref=e20]: "3"
+        - generic [ref=e21]:
+          - heading "Connection" [level=3] [ref=e22]
+          - paragraph [ref=e23]: Optional first communication method.
+      - generic [ref=e24]:
+        - generic [ref=e25]: "4"
+        - generic [ref=e26]:
+          - heading "Ready" [level=3] [ref=e27]
+          - paragraph [ref=e28]: Finish and open NAVI.
+    - generic [ref=e29]:
+      - generic [ref=e30]: Request failed (404)
+      - button "Retry" [ref=e32] [cursor=pointer]

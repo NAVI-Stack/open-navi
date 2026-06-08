@@ -1,0 +1,169 @@
+oss27_version: "1.0"
+skill_id: "navi-programmer.remote-review"
+semver: "0.1.0"
+
+display:
+  name: "NAVI Programmer Remote Review"
+  description: "Push review branches and create pull requests only through explicit confirmation-gated remote actions."
+
+interfaces:
+  - name: "push_branch"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+        branch_name:
+          type: "string"
+        remote:
+          type: "string"
+        set_upstream:
+          type: "boolean"
+        force_with_lease:
+          type: "boolean"
+        dry_run:
+          type: "boolean"
+        title:
+          type: "string"
+        summary:
+          type: "string"
+        validation_summary:
+          type: "string"
+        review_handoff:
+          type: "string"
+        changed_files:
+          type: "array"
+          items:
+            anyOf:
+              - type: "string"
+              - type: "object"
+                additionalProperties: true
+        confirmation:
+          type: "object"
+          additionalProperties: true
+    output_schema:
+      type: "object"
+      additionalProperties: true
+
+  - name: "create_pull_request"
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "run"
+    input_schema:
+      type: "object"
+      additionalProperties: false
+      properties:
+        root:
+          type: "string"
+        head_branch:
+          type: "string"
+        base_branch:
+          type: "string"
+        gh_executable:
+          type: "string"
+        title:
+          type: "string"
+        summary:
+          type: "string"
+        validation_summary:
+          type: "string"
+        review_handoff:
+          type: "string"
+        changed_files:
+          type: "array"
+          items:
+            anyOf:
+              - type: "string"
+              - type: "object"
+                additionalProperties: true
+        draft:
+          type: "boolean"
+        dry_run:
+          type: "boolean"
+        confirmation:
+          type: "object"
+          additionalProperties: true
+    output_schema:
+      type: "object"
+      additionalProperties: true
+
+effects:
+  side_effects: ["git_remote_push", "pull_request_create"]
+  risk_tier: "high"
+  idempotency: false
+  idempotency_level: "conditional"
+  reversibility: "compensable_external"
+  requires_confirmation: true
+
+security:
+  auth: []
+  data_access:
+    pii: "possible"
+    secrets: "read"
+  sandbox:
+    required: true
+    network_egress: ["git-remote", "github-cli"]
+
+performance:
+  expected_p50_ms: 500
+  timeout_ms: 60000
+  rate_limit:
+    qps: 1
+    burst: 1
+
+observability:
+  log_redaction: ["pull_request_body"]
+  emit_metrics: ["remote_review_invocation", "remote_review_outcome"]
+
+governance:
+  publisher: "navi.programmer"
+  signed: false
+  deprecates: []
+  replaces: []
+  trust_tier: "builtin"
+
+capability:
+  tags: ["programming", "git", "review", "remote"]
+  domains: ["coding", "repository-management"]
+  provides:
+    - "git-remote-push"
+    - "pull-request-creation"
+  requires:
+    - "workspace-binding"
+    - "owner-confirmation"
+  command_type: "invoke"
+
+reliability:
+  expected_failure_modes:
+    - "not_git_repo"
+    - "branch_detached"
+    - "remote_not_found"
+    - "missing_dependency"
+    - "remote_push_failed"
+    - "pull_request_failed"
+    - "blocked_requires_confirmation"
+  retry_policy: "conditional"
+
+python_runtime:
+  python_version: "3.11"
+  venv_strategy: "per_skill"
+  lifecycle: "cold"
+  spawn_timeout_ms: 5000
+  io_format: "json_stdio"
+  max_input_bytes: 1048576
+  max_output_bytes: 2097152
+  timeout_ms: 60000
+  max_memory_mb: 256
+  max_cpu_percent: 100
+  network_access: true
+  allow_fs_write: true
+  tmpdir_mb: 64
+  maturity: "prototype"

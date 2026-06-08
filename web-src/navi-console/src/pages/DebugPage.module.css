@@ -1,0 +1,56 @@
+.container {
+  padding: var(--navi-space-xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: var(--navi-space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--navi-space-sm);
+}
+
+.titleInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-md);
+}
+
+.title {
+  font-size: var(--navi-font-size-2xl);
+  font-weight: var(--navi-font-weight-bold);
+  color: var(--navi-text);
+  margin: 0;
+}
+
+.description {
+  color: var(--navi-text-secondary);
+  font-size: var(--navi-font-size);
+  max-width: 600px;
+}
+
+.tabSwitcher {
+  display: flex;
+  gap: var(--navi-space-md);
+  border-bottom: 1px solid var(--navi-border);
+  margin-top: var(--navi-space-lg);
+}
+
+.tabActive {
+  color: var(--navi-accent) !important;
+  border-bottom-color: var(--navi-accent) !important;
+}
+
+.tabIcon {
+  margin-right: var(--navi-space-sm);
+  vertical-align: middle;
+}
+
+.content {
+  margin-top: var(--navi-space-lg);
+}
+
+.legacyWrapper {
+  background: var(--navi-bg);
+}

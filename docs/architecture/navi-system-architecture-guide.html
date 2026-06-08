@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NAVI Architecture Guide</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --panel: #0d1b2f;
+      --panel2: #12223a;
+      --text: #e6edf7;
+      --muted: #aab8cc;
+      --line: #263a59;
+      --accent: #7dd3fc;
+      --accent2: #c084fc;
+      --ok: #34d399;
+      --warn: #fbbf24;
+      --bad: #fb7185;
+      --info: #60a5fa;
+      --partial: #f59e0b;
+      --missing: #ef4444;
+      --shadow: 0 18px 70px rgba(0,0,0,.32);
+      --radius: 18px;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: radial-gradient(circle at top left, #17345e 0, transparent 35%), var(--bg); color: var(--text); line-height:1.5; }
+    a { color: var(--accent); }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    header { padding: 46px 28px 28px; border-bottom:1px solid var(--line); background: linear-gradient(135deg, rgba(125,211,252,.14), rgba(192,132,252,.10)); }
+    .wrap { max-width: 1280px; margin: 0 auto; }
+    h1 { margin:0 0 10px; font-size: clamp(2.2rem, 5vw, 4.8rem); letter-spacing:-.06em; line-height:.95; }
+    h2 { font-size:1.55rem; margin:0; letter-spacing:-.025em; }
+    h3 { margin:0 0 8px; font-size:1.05rem; }
+    p { margin:.4rem 0 .9rem; color: var(--muted); }
+    .subtitle { font-size:1.08rem; max-width: 880px; color:#d7e3f5; }
+    .meta { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+    .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 9px; border-radius:999px; border:1px solid var(--line); background: rgba(255,255,255,.05); color:#dce7f7; font-size:.77rem; white-space:nowrap; }
+    .badge.ok { border-color: rgba(52,211,153,.35); color:#bbf7d0; background:rgba(52,211,153,.1); }
+    .badge.partial { border-color: rgba(245,158,11,.42); color:#fde68a; background:rgba(245,158,11,.1); }
+    .badge.missing { border-color: rgba(239,68,68,.45); color:#fecdd3; background:rgba(239,68,68,.1); }
+    .badge.warn { border-color: rgba(251,191,36,.45); color:#fde68a; background:rgba(251,191,36,.1); }
+    .toolbar { position: sticky; top:0; z-index:50; padding:12px 28px; background: rgba(8,17,31,.92); backdrop-filter: blur(12px); border-bottom:1px solid var(--line); }
+    .toolbar-inner { max-width:1280px; margin:0 auto; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    input[type="search"] { flex:1 1 320px; min-width: 220px; border:1px solid var(--line); border-radius:12px; padding:11px 14px; color:var(--text); background:#0b1628; outline:none; }
+    button { cursor:pointer; border:1px solid var(--line); background:#12223a; color:var(--text); padding:10px 13px; border-radius:12px; font-weight:650; }
+    button:hover { border-color: var(--accent); }
+    main { padding:28px; }
+    section { margin:0 auto 24px; max-width:1280px; border:1px solid var(--line); border-radius:var(--radius); background:rgba(13,27,47,.82); box-shadow: var(--shadow); overflow:hidden; }
+    .section-head { display:flex; justify-content:space-between; gap:16px; align-items:center; padding:18px 20px; border-bottom:1px solid var(--line); background:rgba(255,255,255,.025); }
+    .section-body { padding:20px; }
+    .collapsed .section-body { display:none; }
+    .grid { display:grid; gap:14px; }
+    .grid.cards { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .card { border:1px solid var(--line); background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015)); border-radius:16px; padding:15px; position:relative; transition:.16s ease; }
+    .card:hover { transform: translateY(-2px); border-color: rgba(125,211,252,.55); }
+    .card.selected { outline:2px solid var(--accent); background:rgba(125,211,252,.10); }
+    .card.dependency { outline:2px solid var(--accent2); background:rgba(192,132,252,.10); }
+    .card.dimmed { opacity:.38; }
+    .card .path { color:#b5c7df; font-size:.8rem; margin-top:8px; word-break:break-word; }
+    .tags { display:flex; flex-wrap:wrap; gap:6px; margin:10px 0; }
+    .detail { border-top:1px dashed var(--line); margin-top:10px; padding-top:10px; }
+    .high-level .detail { display:none; }
+    .layers { display:flex; flex-direction:column; gap:10px; }
+    .layer { border:1px solid var(--line); border-left:5px solid var(--accent); border-radius:14px; padding:12px 14px; background:rgba(255,255,255,.035); }
+    .layer:nth-child(2n) { border-left-color: var(--accent2); }
+    .layer-title { display:flex; align-items:center; justify-content:space-between; gap:12px; font-weight:800; }
+    .mini { color:var(--muted); font-size:.88rem; }
+    .component-map { display:grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap:12px; }
+    .map-card { min-height:130px; }
+    .flow { display:grid; gap:10px; counter-reset: step; }
+    .step { display:grid; grid-template-columns:44px 1fr; gap:10px; align-items:start; border:1px solid var(--line); border-radius:14px; padding:12px; background:#0b1628; }
+    .step:before { counter-increment: step; content: counter(step); display:flex; width:30px; height:30px; align-items:center; justify-content:center; border-radius:50%; background:linear-gradient(135deg, var(--accent), var(--accent2)); color:#06101f; font-weight:900; }
+    table { width:100%; border-collapse:collapse; overflow:hidden; border-radius:14px; }
+    th, td { text-align:left; padding:10px 11px; border-bottom:1px solid var(--line); vertical-align:top; }
+    th { color:#d9e8fb; background:rgba(255,255,255,.05); font-size:.82rem; text-transform:uppercase; letter-spacing:.04em; }
+    td { color:#c8d6ea; font-size:.92rem; }
+    .tree { background:#06101f; border:1px solid var(--line); border-radius:16px; padding:14px; overflow:auto; }
+    .tree code { color:#dce7f7; white-space:pre; display:block; }
+    .callout { border:1px solid rgba(251,191,36,.35); background:rgba(251,191,36,.08); border-radius:16px; padding:14px; }
+    .two { display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:14px; }
+    .legend { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .hidden { display:none !important; }
+    .print-note { display:none; }
+    @media (max-width: 700px) { header, main, .toolbar { padding-left:14px; padding-right:14px; } .section-head { align-items:flex-start; flex-direction:column; } }
+    @media print { .toolbar, .toggle-section { display:none; } body { background:white; color:black; } section { box-shadow:none; break-inside:avoid; } .print-note { display:block; } }
+  </style>
+</head>
+<body class="high-level">
+  <header>
+    <div class="wrap">
+      <h1>NAVI Architecture Guide</h1>
+      <p class="subtitle">A living, code-grounded visual guide to NAVI: local-first AI runtime, daemon, CLI, browser console, governance, inference control, tools, world model, persistence, workers, connectors, and deployment boundaries.</p>
+      <div class="meta">
+        <span class="badge ok">Status: Active</span>
+        <span class="badge">Last Reviewed: 2026-06-02</span>
+        <span class="badge">Repo: NAVI-Stack/NAVI</span>
+        <span class="badge">Default branch: master</span>
+        <span class="badge">Primary runtime: Go 1.24</span>
+        <span class="badge partial">Living document</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="toolbar-inner">
+      <input id="search" type="search" placeholder="Search components, paths, risks, flows..." />
+      <button id="viewToggle">Switch to Detailed View</button>
+      <button id="clearSelection">Clear Highlight</button>
+    </div>
+  </div>
+
+  <main>
+    <section>
+      <div class="section-head"><h2>1. Executive Architecture Overview</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body">
+        <p>NAVI is implemented as a local-first personal AI runtime. The long-running daemon is <strong>NaviD</strong>, while <strong>NaviExe</strong> and the browser Console act as clients through the gateway contract. The repository is Go-first, with a TypeScript/React Console, Docker deployment targets, SQLite persistence, embedded NATS messaging, plugin-owned connectors/providers, and optional Python skill execution support.</p>
+        <p>The implemented architecture is centered around a persistent NAVI agent loop, a runtime coordinator, a deterministic Governor, and a first-class Inference Control System (ICS). The ICS constrains model calls and tool execution through governed envelopes, model directives, tool contracts, and permits. World Model state is persisted through SQLite-backed store helpers and projected into inference context through facts, memory, retrieval, reflection, intake, and the Memory Vault path.</p>
+        <div class="legend">
+          <span class="badge ok">Implemented</span><span class="badge partial">Partial</span><span class="badge warn">Inferred / needs verification</span><span class="badge missing">Missing / gap</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>2. Architecture Pillars</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body">
+        <div class="grid cards" id="pillars">
+          <article class="card" data-id="navid" data-deps="config,store,bus,governor,ics,navi-agent,gateway,connectors,llm,worldmodel,workers"><h3>NaviD Runtime Daemon</h3><div class="tags"><span class="badge ok">Implemented</span><span class="badge">Go</span></div><p>Bootstraps the whole runtime: config, SQLite, identity, embedded NATS, plugin registry, connectors, LLM control plane, Governor, NAVI agent, workers, cron, heartbeat, intake, vault, and gateway.</p><p class="path">cmd/navid/main.go</p><div class="detail"><strong>Depends on:</strong> config, store, bus, governor, llm, navi, gateway, connectors, worldmodel, workers.<br><strong>Risk:</strong> very large composition root; useful but overloaded.</div></article>
+          <article class="card" data-id="cli" data-deps="gateway"><h3>NaviExe CLI</h3><div class="tags"><span class="badge ok">Implemented</span><span class="badge">Go</span></div><p>Owner/operator client for chat, ask, init, status, sessions, models, logs, daemon lifecycle, proposals, connectors, skills, activity, runs, doctor, and console launch.</p><p class="path">cmd/navi/main.go</p><div class="detail"><strong>Boundary:</strong> client process talking to Gateway HTTP/WebSocket APIs.</div></article>
+          <article class="card" data-id="console" data-deps="gateway"><h3>Browser Console</h3><div class="tags"><span class="badge ok">Implemented</span><span class="badge partial">Undertested e2e</span><span class="badge">TypeScript / React / Vite</span></div><p>Browser UI for chat, message controls, variants, feedback, plugins, model browser, and tool-call indicators. Built into <code>web/</code> and served by the gateway.</p><p class="path">web-src/navi-console/, web/</p><div class="detail"><strong>Known gap:</strong> no browser e2e harness and ChatPage orchestration is not directly tested.</div></article>
+          <article class="card" data-id="gateway" data-deps="navi-agent,store,bus,governor,connectors,llm,worldmodel,tools"><h3>Interface / API Gateway</h3><div class="tags"><span class="badge ok">Implemented</span><span class="badge">Go HTTP</span></div><p>Serves static Console files and exposes authenticated APIs for chat, setup, plugins, capabilities, LLM providers, proposals, intake, vault, runs, projects, workspaces, presence, and governance status.</p><p class="path">internal/gateway/</p><div class="detail"><strong>Boundary:</strong> all clients use gateway contract. Auth is via token/shared secret/API key paths.</div></article>
+          <article class="card" data-id="navi-agent" data-deps="runtime,ics,tools,worldmodel,llm,store,bus,governor"><h3>NAVI Agent Loop / Runtime Coordinator</h3><div class="tags"><span class="badge ok">Implemented</span><span class="badge">Go</span></div><p>Persistent conversational agent with chat/runtime stores, skill registry, experience layer, status/presence, orchestration pipeline, runtime run coordinator, and ICS-backed execution.</p><p class="path">internal/navi/, internal/runtime/</p><div class="detail"><strong>Responsibilities:</strong> assemble context, run inference cycle, call model, execute authorized tools, persist run state.</div></article>
+          <article class="card" data-id="ics" data-deps="governor,tools,llm,runtime,store"><h3>Inference Control System</h3><div class="tags"><span class="badge ok">Implemented core</span><span class="badge partial">Draft normative docs</span><span class="badge">Go</span></div><p>Conscious-loop control plane: AssembleInput, Decide, Validate/Govern, PrepareModelCall, CallModel, AuthorizeModelResponse, ExecuteAuthorizedAction, ObserveOutcome, PersistState.</p><p class="path">internal/navi/inference/, internal/navi/runtime_inference.go, internal/navi/runtime_executor.go</p><div class="detail"><strong>Key artifacts:</strong> InferenceInput, DecisionEnvelope, ModelDirective, ToolContract, ToolPermit, AuthorizedToolInvocation, ExecutionSnapshot.</div></article>
+          <article class="card" data-id="governor" data-deps="worldmodel,tools,store"><h3>Governance Layer / Governor</h3><div class="tags"><span class="badge ok">Implemented</span><span class="badge partial">Some checks partial</span><span class="badge">Go</span></div><p>Hard-coded authority layer for action budgets, retry/cost/repetition limits, workspace path containment, autonomy domains, validation pipeline, owner config/priorities, and proposal boundaries.</p><p class="path">internal/governor/, config/runtime.yaml</p><div class="detail"><strong>Validation:</strong> permissions → policy → configuration → priority alignment → risk. Configuration checks are still thin.</div></article>
+          <article class="card" data-id="tools" data-deps="ics,governor,plugins,skills,llm"><h3>Tools / Skills / Plugins</h3><div class="tags"><span class="badge ok">Implemented</span><span class="badge">Go + plugin files + Python runtime support</span></div><p>First-class registry for LLM-callable actions from file tools, skills, plugins, self-mod, and builtins. Tools carry schema, source, executor, governance, authority, risk, domain, and metadata.</p><p class="path">internal/tool/, internal/navi/skill/, plugins/, skills/_runtime/</p><div class="detail"><strong>Execution rule:</strong> runtime should execute only ICS-authorized invocations with matching contracts and permits.</div></article>
+          <article class="card" data-id="worldmodel" data-deps="store,governor,intake,reflection,vault"><h3>World Model / Memory / State</h3><div class="tags"><span class="badge ok">Implemented façade</span><span class="badge partial">Boundary thin</span><span class="badge">Go / SQLite</span></div><p>SQLite-backed domain state for owner, contacts, events, memories, artifacts, workspaces, whitelist rules, facts, configuration, priorities, relationships, provenance, and prompt context blocks.</p><p class="path">internal/worldmodel/, internal/store/, internal/schema/</p><div class="detail"><strong>Note:</strong> WorldModel is explicitly a thin façade over store, so domain ownership is partly in store helpers.</div></article>
+          <article class="card" data-id="workers" data-deps="bus,orchestrator,governor,ics,worldmodel,llm"><h3>Agent Orchestration + Workers</h3><div class="tags"><span class="badge ok">Implemented</span><span class="badge">Go / NATS</span></div><p>Directive orchestrator loop and task workers: coder, critic, strategist, and scout. Workers subscribe to task assignment events and are routed through ICS governance before execution.</p><p class="path">internal/orchestrator/, internal/coder/, internal/critic/, internal/strategist/, internal/scout/</p><div class="detail"><strong>Runtime:</strong> NATS event-driven task assignment, worldmodel interaction event recording.</div></article>
+          <article class="card" data-id="connectors" data-deps="gateway,bus,intake,plugins,governor"><h3>External Integration Layer</h3><div class="tags"><span class="badge ok">Implemented</span><span class="badge partial">Provider-dependent</span></div><p>Connector registry and manager with plugin-owned connectors. Telegram and Slack are built-in/configured surfaces; intake can emit connector data into the refinement pipeline.</p><p class="path">internal/connectors/, connectors/, plugins/&lt;name&gt;/connectors</p><div class="detail"><strong>External systems:</strong> Telegram, Slack, LLM provider APIs, Ollama, Docker sandbox, optional Brave Search.</div></article>
+          <article class="card" data-id="llm" data-deps="config,plugins,ics"><h3>LLM Control Plane / Providers</h3><div class="tags"><span class="badge ok">Implemented</span><span class="badge">Go</span></div><p>Provider catalog, routes, active model selection, fallback policy, provider policies, and dynamic provider abstraction for Ollama/OpenAI/Anthropic/OpenRouter-style backends.</p><p class="path">internal/llm/, plugins/llm-*/, config/runtime.yaml</p><div class="detail"><strong>Model roles:</strong> chat, coder, orchestrator and provider-qualified routes.</div></article>
+          <article class="card" data-id="runtime-infra" data-deps="docker,store,bus"><h3>Runtime / Deployment Infrastructure</h3><div class="tags"><span class="badge ok">Implemented</span><span class="badge partial">Single-node</span><span class="badge">Docker / local daemon</span></div><p>Local daemon and Docker modes. Default runtime uses SQLite and embedded NATS; Docker mode packages Console, Go daemon, skills, plugins, schema, and Python runtime support.</p><p class="path">Dockerfile, compose.yml, compose.strict.yml, Makefile</p><div class="detail"><strong>Gap:</strong> deployment remains single-node and owner-centric; strict compose is safer than default compose.</div></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>3. Layered Architecture Diagram</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body layers">
+        <div class="layer"><div class="layer-title">User / Client Layer <span class="mini">NaviExe CLI, Browser Console, PET</span></div><p>Humans and client apps interact with the gateway over HTTP/WebSocket. PET is referenced as using the same gateway contract but is outside this repo's main implementation.</p></div>
+        <div class="layer"><div class="layer-title">Interface / API Layer <span class="mini">internal/gateway</span></div><p>Public health/version/onboarding, authenticated chat and operator APIs, static Console serving, auth/token exchange, plugins, connectors, proposals, LLM, runs, projects, workspaces.</p></div>
+        <div class="layer"><div class="layer-title">Governance / Governor Layer <span class="mini">internal/governor + config/runtime.yaml</span></div><p>Central policy and hard safety controls: budgets, cost ceilings, repetition trips, path containment, validation pipeline, autonomy dimensions, owner priority/config reads, proposals.</p></div>
+        <div class="layer"><div class="layer-title">Inference Control Layer <span class="mini">internal/navi/inference</span></div><p>Turns assembled context into governed model/tool boundaries. Owns DecisionEnvelope, ModelDirective, ToolContract, ToolPermit, response authorization, outcome supervision, state persistence.</p></div>
+        <div class="layer"><div class="layer-title">Agent / Orchestration Layer <span class="mini">internal/navi, internal/runtime, internal/orchestrator</span></div><p>NAVI agent loop, runtime coordinator, directive orchestrator, backlog poller, cron, heartbeat, reflection, presence/status, worker assignment loop.</p></div>
+        <div class="layer"><div class="layer-title">Tools / Actions Layer <span class="mini">internal/tool, internal/navi/skill, plugins, skills</span></div><p>Registry-backed actions with schemas, executors, governance metadata, surfaces, authority, risk, and source provenance.</p></div>
+        <div class="layer"><div class="layer-title">World Model / Domain State Layer <span class="mini">internal/worldmodel, internal/schema</span></div><p>Owner model, memories, facts, priorities, configuration, contacts, events, artifacts, projects/workspaces, relationships, provenance, and prompt-context blocks.</p></div>
+        <div class="layer"><div class="layer-title">Memory / Persistence Layer <span class="mini">internal/store, SQLite, artifacts filesystem, JetStream</span></div><p>SQLite tables and migrations, chat/runtime/ICS stores, execution outcomes, settings, proposals, artifacts, events, NATS JetStream state, workspace files.</p></div>
+        <div class="layer"><div class="layer-title">External Integration Layer <span class="mini">Telegram, Slack, Ollama, cloud LLMs, Docker sandbox</span></div><p>Connectors and provider plugins bridge external systems, feed intake, or provide model/tool execution.</p></div>
+        <div class="layer"><div class="layer-title">Runtime / Deployment Infrastructure <span class="mini">Dockerfile, compose.yml, compose.strict.yml, local daemon</span></div><p>Single-node daemon in Docker or host process. Strict mode binds loopback and avoids host mounts; default compose mounts docker.sock and host paths for broader functionality.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>4. Component Map</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body">
+        <p>Click a component to highlight its dependency neighborhood.</p>
+        <div class="component-map">
+          <div class="card map-card" data-id="config" data-deps="navid"><h3>Config</h3><p>YAML + env overrides feed all runtime construction.</p><p class="path">config/runtime.yaml, internal/config/config.go</p></div>
+          <div class="card map-card" data-id="store" data-deps="worldmodel,navi-agent,gateway,governor"><h3>SQLite Store</h3><p>Shared DB for settings, chat, runtime sessions, ICS state, proposals, outcomes, world model.</p><p class="path">internal/store/, internal/navi/store/</p></div>
+          <div class="card map-card" data-id="bus" data-deps="workers,intake,reflection,heartbeat"><h3>NATS Bus</h3><p>Embedded or external event bus, worker task assignment, intake, reflection, heartbeat signals.</p><p class="path">internal/bus/</p></div>
+          <div class="card map-card" data-id="runtime" data-deps="ics,navi-agent,store"><h3>Runtime Coordinator</h3><p>Run sessions, inbox, checkpoints, execution results, streaming behavior.</p><p class="path">internal/runtime/</p></div>
+          <div class="card map-card" data-id="plugins" data-deps="tools,connectors,llm"><h3>Plugin Registry</h3><p>Loads built-in and filesystem plugins, connector metadata, provider IDs, plugin skills.</p><p class="path">internal/navi/plugin/, plugins/</p></div>
+          <div class="card map-card" data-id="skills" data-deps="tools,governor"><h3>Skills</h3><p>Declarative and runtime-backed capabilities exposed as governed tools.</p><p class="path">internal/navi/skill/, skills/</p></div>
+          <div class="card map-card" data-id="intake" data-deps="bus,worldmodel,governor,store"><h3>Intake / Refinery</h3><p>Connector/vault data admission, dedupe, synthesize, fold, and proposal-backed world-model mutation.</p><p class="path">internal/intake/, python/</p></div>
+          <div class="card map-card" data-id="reflection" data-deps="worldmodel,bus,store"><h3>Reflection</h3><p>Consumes reflection queued events, consolidates facts, proposals, and experience controls.</p><p class="path">internal/navi/reflection/</p></div>
+          <div class="card map-card" data-id="vault" data-deps="worldmodel,intake,governor"><h3>Memory Vault</h3><p>Owner-editable Markdown projection and round-trip edits through same governed mutation seam.</p><p class="path">internal/config VaultConfig, cmd/navid/startVaultWorker</p></div>
+          <div class="card map-card" data-id="docker" data-deps="runtime-infra"><h3>Docker Runtime</h3><p>Builds Console, Go daemon, runtime image with Python, docker-cli, git, skills/plugins/schema.</p><p class="path">Dockerfile, compose*.yml</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>5. Governance Layer Deep Dive</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body two">
+        <div class="card"><h3>What the Governor Controls</h3><ul><li>Action budget, retry limit, cost ceiling, autonomous duration, repeated-response tripwire.</li><li>Workspace path safety through absolute-path rejection, symlink resolution, and workspace escape checks.</li><li>Governed action validation for skills, workers, connectors, gateway commands, and world-model mutations.</li><li>Proposal boundaries for intent-changing actions, code modification, communication, tombstone, owner-set fact supersede/deprecate.</li><li>Connector intake cost enforcement.</li></ul><p class="path">internal/governor/governor.go, internal/governor/validate.go</p></div>
+        <div class="card"><h3>Governance Shape</h3><p><strong>Centralized but distributed in use.</strong> The Governor and validation pipeline are centralized Go code, but callers include ICS, worker authorization, file/tool path checks, intake synthesis, Memory Vault edits, and gateway/operator flows.</p><p><strong>Current maturity:</strong> implemented core. Configuration and priority alignment exist as pipeline stages, but configuration-specific validation is thin and some checks are tag/simple-text based. Treat this as implemented infrastructure with partial policy depth.</p><p class="path">cmd/navid/main.go, internal/navi/inference/validate_govern.go, internal/governor/validate.go</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>6. Inference Control System Deep Dive</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body">
+        <div class="flow">
+          <div class="step"><div><strong>AssembleInput</strong><p>Runtime assembly loads run/session/checkpoint state, prior envelope, governance state, recovery state, visible capabilities, and relevant context.</p></div></div>
+          <div class="step"><div><strong>Decide</strong><p>ICS selects focus, route/mode, candidate, rationale, execution intent, governance handoff, and recovery/reflection scaffolding.</p></div></div>
+          <div class="step"><div><strong>Validate / Govern</strong><p>Selected candidate goes through deterministic governance. Reject, approve, modify, or create proposal and pause.</p></div></div>
+          <div class="step"><div><strong>PrepareModelCall</strong><p>ICS narrows model-visible tool surface into a ModelDirective and requires ToolContracts for executable tools.</p></div></div>
+          <div class="step"><div><strong>CallModel</strong><p>Runtime compiles prepared request, calls selected provider/model, and normalizes the response.</p></div></div>
+          <div class="step"><div><strong>AuthorizeModelResponse</strong><p>ICS rejects out-of-bound or contractless tool calls and emits AuthorizedToolInvocation + ToolPermit when safe.</p></div></div>
+          <div class="step"><div><strong>ExecuteAuthorizedAction</strong><p>Runtime executes only a matching permit/contract pair. Raw model tool calls are not executable authority.</p></div></div>
+          <div class="step"><div><strong>ObserveOutcome + PersistState</strong><p>ICS supervises execution snapshot and runtime persists DecisionEnvelope and history for replay/resume.</p></div></div>
+        </div>
+        <div class="callout"><strong>Runtime dispositions:</strong> <code>call_model</code>, <code>pause_for_proposal</code>, <code>block_with_reply</code>, and <code>proceed_direct</code>. These are first-class execution boundaries, not prompt suggestions.</div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>7. Tools System Deep Dive</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body two">
+        <div class="card"><h3>Registration and Discovery</h3><p>The tool registry is the first-class catalog for file tools, skills, plugins, self-mod tools, and builtins. It enforces collision detection, aliases, snapshot IDs, registration order, source replacement, domain/source listing, and LLM-facing definitions.</p><p class="path">internal/tool/registry.go, internal/tool/types.go</p></div>
+        <div class="card"><h3>Execution and Safety</h3><p>Execution occurs through a registered ToolExecutor, but runtime safety depends on ICS: ModelDirective limits visible tools, ToolContract defines executable semantics, ToolPermit authorizes a concrete call, and runtime fails closed on mismatch.</p><p class="path">internal/navi/inference/model_authorization.go, internal/navi/runtime_executor.go</p></div>
+        <div class="card"><h3>Tool Metadata</h3><p>Tools carry source, schema refs, category, authority, status, visible surfaces, connector dependencies, risk tier, side effects, reversibility, domain, workspace action, confirmation requirement, trust tier, and interaction modes.</p></div>
+        <div class="card"><h3>External Integrations</h3><p>Plugin and connector registration ties tools to Telegram, Slack, LLM providers, Docker-backed sandbox behavior, Python subprocess skills, and future extension points.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>8. World Model Deep Dive</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body">
+        <table>
+          <thead><tr><th>Entity / State</th><th>Evidence Path</th><th>Behavior</th><th>Maturity</th></tr></thead>
+          <tbody>
+            <tr><td>Owner / timezone</td><td>internal/worldmodel/worldmodel.go</td><td>Owner timezone read/update and local timezone fallback.</td><td><span class="badge ok">Implemented</span></td></tr>
+            <tr><td>Contacts, events, artifacts</td><td>internal/worldmodel/worldmodel.go, internal/store</td><td>CRUD-style façade over store helpers.</td><td><span class="badge ok">Implemented</span></td></tr>
+            <tr><td>Memories</td><td>WorldModel.CreateOrUpdateMemory, ForgetMemoryByID</td><td>Persisted memories with refresh of knowledge links.</td><td><span class="badge ok">Implemented</span></td></tr>
+            <tr><td>Facts / Knowledge</td><td>PromoteFact, SupersedeFactWith, DeprecateFact</td><td>Facts include provenance, lifecycle mutation history, prompt formatting, owner-set confirmation rules.</td><td><span class="badge ok">Implemented</span></td></tr>
+            <tr><td>Configuration / priorities</td><td>ListConfigurationByScope, ListPrioritiesByScope</td><td>Feeds Governor owner-scoped checks.</td><td><span class="badge partial">Partial policy depth</span></td></tr>
+            <tr><td>Workspaces / project binding</td><td>workspace methods, gateway project/workspace APIs</td><td>Active workspace selection, operating modes, whitelist rules.</td><td><span class="badge ok">Implemented</span></td></tr>
+            <tr><td>Relationships</td><td>TouchRelationship, DecayRelationships</td><td>Confidence/recency model for entity relationships.</td><td><span class="badge ok">Implemented</span></td></tr>
+            <tr><td>Memory Vault</td><td>VaultConfig, startVaultWorker path in navid</td><td>Owner-editable Markdown projection through governed mutation seam.</td><td><span class="badge partial">Conditional / partially reviewed</span></td></tr>
+          </tbody>
+        </table>
+        <p class="detail">Boundary note: the file itself describes WorldModel as a thin façade over <code>internal/store</code>. That is workable for now but should not be mistaken for a fully isolated domain model.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>9. Language and Runtime Inventory</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body">
+        <table id="inventory">
+          <thead><tr><th>Component</th><th>Language</th><th>Framework / Library</th><th>Runtime</th><th>Main paths</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td>NaviD</td><td>Go 1.24</td><td>net/http, slog, NATS, SQLite</td><td>Host daemon or Docker container</td><td>cmd/navid</td><td>Main server process</td></tr>
+            <tr><td>NaviExe</td><td>Go 1.24</td><td>flag, http, WebSocket, cliui</td><td>Host CLI</td><td>cmd/navi</td><td>Operator and chat client</td></tr>
+            <tr><td>Gateway</td><td>Go</td><td>net/http ServeMux, middleware</td><td>NaviD process</td><td>internal/gateway</td><td>API and static Console serving</td></tr>
+            <tr><td>Console</td><td>TypeScript</td><td>React 19, Vite 6, React Query, Vitest</td><td>Browser, built static assets</td><td>web-src/navi-console, web</td><td>Browser UI</td></tr>
+            <tr><td>Persistence</td><td>Go / SQL</td><td>modernc.org/sqlite, SQLite</td><td>Local file DB</td><td>internal/store, internal/navi/store</td><td>State, settings, runtime, proposals, outcomes</td></tr>
+            <tr><td>Event Bus</td><td>Go</td><td>NATS server/client, JetStream</td><td>Embedded default or external NATS</td><td>internal/bus</td><td>Async events, workers, intake</td></tr>
+            <tr><td>LLM Providers</td><td>Go</td><td>Provider abstraction, plugin providers</td><td>Local Ollama or remote APIs</td><td>internal/llm, plugins/llm-*</td><td>Model routing and provider control plane</td></tr>
+            <tr><td>Skills Runtime</td><td>Go + Python</td><td>Subprocess Python support, skill specs</td><td>NaviD container/host</td><td>skills, skills/_runtime, plugins</td><td>Capabilities and tool execution</td></tr>
+            <tr><td>Deployment</td><td>Docker YAML</td><td>Docker Compose, Alpine, Node build stage</td><td>Container or host daemon</td><td>Dockerfile, compose*.yml, Makefile</td><td>Build/run/test infrastructure</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>10. Request / Execution Flows</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body two">
+        <div class="card"><h3>Normal User Request Flow</h3><div class="flow"><div class="step"><div>Console or CLI sends chat request to Gateway.</div></div><div class="step"><div>Gateway authenticates and calls NAVI message input path.</div></div><div class="step"><div>Runtime session/inbox records the message.</div></div><div class="step"><div>Agent loop assembles context, facts, retrieval, capabilities, and prior ICS state.</div></div><div class="step"><div>ICS governs model/tool boundary and runtime calls model if allowed.</div></div><div class="step"><div>Response/tool events persist to SQLite and stream/live-update back to clients.</div></div></div></div>
+        <div class="card"><h3>Tool Execution Flow</h3><div class="flow"><div class="step"><div>Tool registry exposes filtered definitions to model via ICS ModelDirective.</div></div><div class="step"><div>Model returns tool call; runtime normalizes it but does not execute it.</div></div><div class="step"><div>ICS validates tool attempt against boundary, contract, workspace/action rules, and Governor.</div></div><div class="step"><div>If approved, ICS emits ToolPermit and AuthorizedToolInvocation.</div></div><div class="step"><div>Runtime executor checks permit/contract match, calls registry Execute, and captures ToolResult.</div></div><div class="step"><div>ICS observes outcome and persists updated envelope/history.</div></div></div></div>
+        <div class="card"><h3>World State Update Flow</h3><div class="flow"><div class="step"><div>Connector, Vault edit, reflection, or runtime event produces intake/reflection input.</div></div><div class="step"><div>Intake worker admits, dedupes, scores, embeds, extracts, resolves, synthesizes, and folds.</div></div><div class="step"><div>World-model mutation effect routes through Governor and autonomy policy.</div></div><div class="step"><div>Approved writes update store/worldmodel; hard-floor writes create proposals.</div></div><div class="step"><div>Facts/memories become available to context blocks and retrieval for future inference.</div></div></div></div>
+        <div class="card"><h3>Startup / Bootstrap Flow</h3><div class="flow"><div class="step"><div>Load config and env overrides.</div></div><div class="step"><div>Open SQLite, run migrations, seed sandbox profiles.</div></div><div class="step"><div>Initialize identity and onboarding state.</div></div><div class="step"><div>Create WorldModel, start/connect NATS, load plugins/connectors/providers.</div></div><div class="step"><div>Create LLM control plane, Governor, chat/runtime store, NAVI agent.</div></div><div class="step"><div>Start heartbeat, cron, backlog poller, orchestrator, workers, reflection, intake, vault, gateway, connectors.</div></div></div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>11. Repository Map</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body tree">
+<code>NAVI/
+├─ cmd/
+│  ├─ navid/                 # daemon composition root and runtime bootstrap
+│  └─ navi/                  # CLI client and local daemon lifecycle commands
+├─ internal/
+│  ├─ gateway/               # HTTP/WebSocket API, auth, static Console, operator endpoints
+│  ├─ navi/                  # persistent agent, loop, runtime inference/executor, skills, plugins, reflection, experience
+│  │  └─ inference/          # ICS controller, authority, model authorization, validation, outcome supervision
+│  ├─ runtime/               # runtime sessions, run coordinator, metrics, execution state
+│  ├─ governor/              # hard limits, workspace containment, validation pipeline, autonomy domains
+│  ├─ worldmodel/            # façade over domain state and prompt context helpers
+│  ├─ store/                 # SQLite table creation, migrations, settings, facts, proposals, outcomes
+│  ├─ llm/                   # provider abstraction, control plane, routing, fallback
+│  ├─ connectors/            # connector registry/manager framework
+│  ├─ orchestrator/          # directive loop and LLM directive adapter
+│  ├─ coder|critic|strategist|scout/ # task workers
+│  ├─ intake/                # admission/refinery/synthesis/retrieval/policy
+│  ├─ bus/                   # embedded/external NATS bridge
+│  ├─ config/                # runtime config loading/defaults/env overrides
+│  └─ schema/                # shared domain/runtime event types
+├─ connectors/               # shared connector interface package
+├─ plugins/                  # plugin-owned skills, connectors, LLM providers
+├─ skills/                   # skill definitions and runtime helpers
+├─ python/                   # Python workers/helpers copied into runtime image
+├─ web-src/navi-console/     # React + TypeScript + Vite Console source
+├─ web/                      # built static Console output and legacy static files
+├─ config/                   # runtime.yaml, personas, connector policy overlays
+├─ schema/                   # schema assets/codegen inputs
+├─ docs/                     # specs, architecture, ADRs, plans, runbooks, reviews
+├─ test/                     # integration/e2e/live test packages
+├─ Dockerfile                # multi-stage Console + Go daemon build
+├─ compose.yml               # default Docker runtime
+├─ compose.strict.yml        # loopback-only isolated runtime profile
+├─ Makefile                  # build/test/docker/codegen targets
+└─ go.mod                    # Go module and dependency inventory</code>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>12. Architecture Risks and Gaps</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body">
+        <table>
+          <thead><tr><th>Severity</th><th>Risk / Gap</th><th>Why it matters</th><th>Evidence paths</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge missing">Critical</span></td><td>Default Docker compose mounts docker.sock, exposes gateway on all interfaces, uses stable shared secret, and enables debug.</td><td>This is powerful for local automation but dangerous if treated as production or run on a reachable host.</td><td>compose.yml, compose.strict.yml</td></tr>
+            <tr><td><span class="badge missing">Critical</span></td><td>Security posture depends heavily on local-first assumptions.</td><td>Single-owner local default is valid, but remote/multi-user deployment needs explicit threat model, secret handling, auth hardening, and sandbox isolation.</td><td>README.md, internal/gateway, config/runtime.yaml</td></tr>
+            <tr><td><span class="badge warn">High</span></td><td>Governance configuration stage is structurally present but shallow.</td><td>The validation pipeline has a configuration stage, but concrete checks are mostly owner-disable/tag based.</td><td>internal/governor/validate.go</td></tr>
+            <tr><td><span class="badge warn">High</span></td><td>Plugin enable/disable state is in-memory and not persisted.</td><td>Operator expectations and runtime behavior can diverge after restart.</td><td>internal/gateway/server.go</td></tr>
+            <tr><td><span class="badge warn">High</span></td><td>Console e2e coverage missing; ChatPage orchestration untested.</td><td>The user-facing surface depends on streaming, live-event accumulation, variants, feedback, and tool chips.</td><td>docs/architecture/navi-console-frontend.md</td></tr>
+            <tr><td><span class="badge partial">High</span></td><td>Native token streaming is partial.</td><td>Stakeholders may expect streaming everywhere; fallback paths can make UX inconsistent.</td><td>README.md</td></tr>
+            <tr><td><span class="badge partial">Medium</span></td><td>WorldModel is a thin façade over store.</td><td>Persistence helpers own much of domain behavior; this can blur boundaries as memory/state semantics grow.</td><td>internal/worldmodel/worldmodel.go, internal/store</td></tr>
+            <tr><td><span class="badge partial">Medium</span></td><td>NaviD composition root is large.</td><td>Bootstrap visibility is good, but testability and subsystem ownership suffer as more services are wired in one file.</td><td>cmd/navid/main.go</td></tr>
+            <tr><td><span class="badge partial">Medium</span></td><td>Docs and implementation use draft normative language.</td><td>ICS docs are valuable, but branch-specific and draft labels mean they must be continuously checked against code.</td><td>docs/architecture/ics-*.md</td></tr>
+            <tr><td><span class="badge partial">Medium</span></td><td>Deployment is single-node / owner-centric.</td><td>Correct for local-first, but not enough for hosted/multi-tenant use.</td><td>README.md, compose*.yml</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>13. Recommendations</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body">
+        <table>
+          <thead><tr><th>Priority</th><th>Problem</th><th>Suggested Fix</th><th>Relevant paths</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge missing">Critical</span></td><td>Default compose is too permissive for anything beyond trusted local dev.</td><td>Make strict profile the default safe path. Generate shared secrets, bind loopback by default, remove docker.sock from default, gate debug through explicit dev profile.</td><td>compose.yml, compose.strict.yml, docs/runbooks</td></tr>
+            <tr><td><span class="badge missing">Critical</span></td><td>Auth/security model needs deployment-mode boundaries.</td><td>Create explicit Local Dev, Local Owner, LAN, and Hosted threat-model docs. Enforce config validation at startup for dangerous combinations.</td><td>internal/gateway, internal/config, config/runtime.yaml</td></tr>
+            <tr><td><span class="badge warn">High</span></td><td>Governance pipeline has placeholder/thin configuration behavior.</td><td>Implement concrete configuration and priority checks with tests. Add table-driven validation cases for each domain.</td><td>internal/governor/validate.go, internal/navi/inference/validate_govern_test.go</td></tr>
+            <tr><td><span class="badge warn">High</span></td><td>Plugin enabled state is not durable.</td><td>Persist plugin enablement in SQLite settings or plugin state table and reload before registry activation.</td><td>internal/navi/plugin, internal/gateway/server.go, internal/store</td></tr>
+            <tr><td><span class="badge warn">High</span></td><td>Console lacks browser-level e2e coverage.</td><td>Add Playwright with a mocked gateway plus one live smoke test against NaviD. Prioritize ChatPage orchestration and tool event rendering.</td><td>web-src/navi-console, test/e2e</td></tr>
+            <tr><td><span class="badge partial">Medium</span></td><td>NaviD bootstrap is too dense.</td><td>Extract subsystem builders: persistence, messaging, plugins/connectors, LLM, agent, workers, gateway. Keep main as orchestration only.</td><td>cmd/navid/main.go</td></tr>
+            <tr><td><span class="badge partial">Medium</span></td><td>WorldModel/store boundary may become hard to reason about.</td><td>Move domain invariants into WorldModel services or explicitly document store as domain repository layer.</td><td>internal/worldmodel, internal/store</td></tr>
+            <tr><td><span class="badge partial">Medium</span></td><td>ICS is documented well but complex.</td><td>Add generated architecture tests/checks that prove no forbidden shortcuts execute tools without ICS authorization.</td><td>internal/navi/inference, internal/navi/runtime_executor.go</td></tr>
+            <tr><td><span class="badge">Low</span></td><td>Architecture knowledge is spread across README, docs, comments, and implementation.</td><td>Commit this guide under docs/architecture and update it as part of major subsystem changes.</td><td>docs/architecture</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>14. Source Paths Reviewed</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body">
+        <div class="grid cards">
+          <div class="card"><h3>Primary repo metadata</h3><p class="path">README.md, go.mod, Makefile, Dockerfile, compose.yml, compose.strict.yml, config/runtime.yaml</p></div>
+          <div class="card"><h3>Runtime and API</h3><p class="path">cmd/navid/main.go, cmd/navi/main.go, internal/gateway/server.go, internal/navi/navi.go, internal/navi/loop.go</p></div>
+          <div class="card"><h3>Control and governance</h3><p class="path">internal/navi/inference/interfaces.go, internal/navi/inference/validate_govern.go, docs/architecture/ics-end-to-end-control-flow.md, docs/architecture/ics-implementation-mapping.md, internal/governor/governor.go, internal/governor/validate.go</p></div>
+          <div class="card"><h3>Tools and state</h3><p class="path">internal/tool/registry.go, internal/tool/types.go, internal/worldmodel/worldmodel.go, internal/store, internal/schema</p></div>
+          <div class="card"><h3>Frontend</h3><p class="path">web-src/navi-console/package.json, docs/architecture/navi-console-frontend.md</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>15. Known Unknowns</h2><button class="toggle-section">Collapse</button></div>
+      <div class="section-body">
+        <ul>
+          <li>Full file tree and circular dependency analysis were not exhaustively generated from a local clone in this review. The component map is grounded in key files and docs reviewed through GitHub access.</li>
+          <li>Some implementation files referenced by ICS mapping, such as <code>runtime_inference.go</code>, <code>runtime_executor.go</code>, <code>model_authorization.go</code>, and <code>outcome_supervisor.go</code>, were mapped from repository docs and related code but not fully line-by-line audited here.</li>
+          <li>Memory Vault startup was observed in the daemon bootstrap and config comments, but the complete vault worker implementation was not fully reviewed in this pass.</li>
+          <li>PET is described as a client using the gateway contract, but its implementation appears to live outside the core NAVI repository.</li>
+          <li>Security claims should be revalidated before deployment outside trusted local owner environments.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const body = document.body;
+    const search = document.getElementById('search');
+    const viewToggle = document.getElementById('viewToggle');
+    const clearSelection = document.getElementById('clearSelection');
+    const selectable = [...document.querySelectorAll('[data-id]')];
+
+    document.querySelectorAll('.toggle-section').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        section.classList.toggle('collapsed');
+        btn.textContent = section.classList.contains('collapsed') ? 'Expand' : 'Collapse';
+      });
+    });
+
+    viewToggle.addEventListener('click', () => {
+      body.classList.toggle('high-level');
+      viewToggle.textContent = body.classList.contains('high-level') ? 'Switch to Detailed View' : 'Switch to High-level View';
+    });
+
+    function clearHighlights() {
+      selectable.forEach(el => el.classList.remove('selected','dependency','dimmed'));
+    }
+    clearSelection.addEventListener('click', clearHighlights);
+
+    selectable.forEach(el => {
+      el.addEventListener('click', e => {
+        if (e.target.closest('button')) return;
+        clearHighlights();
+        const deps = (el.dataset.deps || '').split(',').map(s => s.trim()).filter(Boolean);
+        el.classList.add('selected');
+        selectable.forEach(other => {
+          if (other === el) return;
+          if (deps.includes(other.dataset.id)) other.classList.add('dependency');
+          else other.classList.add('dimmed');
+        });
+      });
+    });
+
+    search.addEventListener('input', () => {
+      const q = search.value.trim().toLowerCase();
+      const searchable = [...document.querySelectorAll('.card, tbody tr, .layer, .step')];
+      searchable.forEach(el => {
+        const text = el.innerText.toLowerCase();
+        el.classList.toggle('hidden', q && !text.includes(q));
+      });
+    });
+  </script>
+</body>
+</html>

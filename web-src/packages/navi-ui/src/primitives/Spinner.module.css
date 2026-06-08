@@ -1,0 +1,14 @@
+.spinner {
+  display: inline-block;
+  border: 2px solid var(--navi-border-strong);
+  border-top-color: var(--navi-accent);
+  border-radius: 50%;
+  animation: navi-spin 0.7s linear infinite;
+  flex: none;
+}
+
+@keyframes navi-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

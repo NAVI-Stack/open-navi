@@ -1,0 +1,76 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--navi-foreground);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--navi-foreground);
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.projectList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid var(--navi-border);
+  border-radius: 6px;
+  padding: 4px;
+  background-color: var(--navi-bg-secondary);
+}
+
+.projectItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  color: var(--navi-foreground);
+  font-size: 0.875rem;
+}
+
+.projectItem:hover {
+  background-color: var(--navi-bg-hover);
+}
+
+.projectItem.selected {
+  background-color: var(--navi-accent);
+  color: var(--navi-accent-foreground);
+}
+
+.projectItemLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

@@ -1,0 +1,13 @@
+id: navi.llm.openai
+name: OpenAI and OpenRouter LLM Provider
+description: Built-in OpenAI-compatible inference provider plugin.
+version: 0.1.0
+kind: llm-provider
+status: active
+trust_tier: builtin
+components:
+  providers:
+    - path: providers/openai
+      provider_id: openai
+    - path: providers/openai
+      provider_id: openrouter

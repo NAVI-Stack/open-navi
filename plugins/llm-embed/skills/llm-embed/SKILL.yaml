@@ -1,0 +1,78 @@
+oss27_version: "1.0"
+skill_id: "navi.llm.embed"
+semver: "1.0.0"
+
+display:
+  name: "text-embedder"
+  description: "Embeds text using a local or remote embedding model. Returns a float vector."
+  emoji: "🧮"
+
+interfaces:
+  - name: embed
+    transport:
+      type: subprocess_python
+      subprocess_python:
+        entrypoint: "main.py"
+        function: "embed"
+    input_schema:
+      type: object
+      required: [text]
+      properties:
+        text:
+          type: string
+          maxLength: 8192
+        model:
+          type: string
+          default: "text-embedding-3-small"
+    output_schema:
+      type: object
+      properties:
+        vector:
+          type: array
+          items: { type: number }
+        model:
+          type: string
+        token_count:
+          type: integer
+
+effects:
+  side_effects: []
+  risk_tier: "low"
+  idempotency: true
+  requires_confirmation: false
+
+security:
+  auth: []
+  data_access:
+    pii: "possible"
+    secrets: "forbidden"
+  sandbox:
+    required: false
+    network_egress: ["api.openai.com"]
+
+performance:
+  expected_p50_ms: 300
+  timeout_ms: 10000
+
+python_runtime:
+  python_version: "3.11"
+  venv_strategy: "per_category"      # shares venv with other navi.llm.* skills
+  dependencies:
+    - "openai>=1.0"
+    - "tiktoken"
+  lifecycle: "warm"
+  warm_pool_size: 2
+  spawn_timeout_ms: 4000
+  io_format: "json_stdio"
+  max_input_bytes: 65536             # 64 KiB; text payloads are small
+  max_output_bytes: 524288           # 512 KiB; float vectors can be large
+  timeout_ms: 10000
+  max_memory_mb: 128
+  network_access: true               # calls api.openai.com
+  allow_fs_write: false
+  tmpdir_mb: 0                       # no scratch space needed
+  maturity: "stable"
+
+governance:
+  publisher: "navi.official"
+  signed: true

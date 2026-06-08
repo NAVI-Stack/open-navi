@@ -1,0 +1,209 @@
+oss27_version: "1.0"
+skill_id: "core-scheduler"
+semver: "1.0.0"
+display:
+  name: "Core Scheduler"
+  description: "Schedule future tasks and recurring cron jobs for NAVI."
+  emoji: "clock"
+interfaces:
+  - name: "schedule_task"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "A short, descriptive name for the task."
+        description:
+          type: "string"
+          description: "More details about why this is scheduled."
+        schedule_pattern:
+          type: "string"
+          description: "A standard 5-field cron expression or descriptor (e.g. @daily, @hourly) for kind=cron jobs. For fixed intervals use kind=every with every_ms; for a single future instant use kind=at with an RFC3339 timestamp. For short conversational delays inside the current chat (under 1 hour) prefer the send_reply tool."
+        kind:
+          type: "string"
+          description: "Optional schedule kind: cron (default), at, or every."
+        schedule_kind:
+          type: "string"
+          description: "Alias of kind for explicit schedule_kind values."
+        at:
+          type: "string"
+          description: "RFC3339 instant for one-shot `at` schedules."
+        every_ms:
+          type: "integer"
+          description: "Interval in milliseconds for `every` schedules."
+        schedule_anchor_ms:
+          type: "integer"
+          description: "Optional epoch-ms anchor for `every` schedules."
+        timezone:
+          type: "string"
+          description: "IANA timezone for cron/every (falls back to owner timezone when empty)."
+        wake_mode:
+          type: "string"
+          description: "now (wake heartbeat immediately, coalesced) or next-heartbeat (directive only)."
+        timeout_ms:
+          type: "integer"
+          description: "Optional per-job execution timeout (defaults to server cron.default_timeout_ms)."
+        delete_after_run:
+          type: "boolean"
+          description: "For one-shot jobs, delete the job after a successful run instead of leaving a disabled record."
+        failure_alert_after:
+          type: "integer"
+          description: "Optional per-job alert threshold after this many consecutive failures."
+        failure_alert_cooldown_ms:
+          type: "integer"
+          description: "Optional per-job minimum milliseconds between failure alerts."
+        schedule_stagger_ms:
+          type: "integer"
+          description: "Optional stagger window (ms) for cron jobs to spread top-of-hour fires."
+        prompt:
+          type: "string"
+          description: "The directive message payload when the job fires (systemEvent text)."
+      required: ["name", "prompt"]
+    output_schema:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "The ID of the newly created scheduled task."
+  - name: "list_tasks"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties: {}
+    output_schema:
+      type: "object"
+      properties:
+        tasks:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              id:
+                type: "string"
+              name:
+                type: "string"
+              schedule_kind:
+                type: "string"
+              schedule:
+                type: "string"
+              wake_mode:
+                type: "string"
+              enabled:
+                type: "boolean"
+              schedule_pattern:
+                type: "string"
+              next_run_at:
+                type: "string"
+              delete_after_run:
+                type: "boolean"
+              payload_kind:
+                type: "string"
+              failure_alert:
+                type: "object"
+  - name: "update_task"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        prompt:
+          type: "string"
+        enabled:
+          type: "boolean"
+        schedule_pattern:
+          type: "string"
+        kind:
+          type: "string"
+        schedule_kind:
+          type: "string"
+        at:
+          type: "string"
+        every_ms:
+          type: "integer"
+        schedule_anchor_ms:
+          type: "integer"
+        timezone:
+          type: "string"
+        wake_mode:
+          type: "string"
+        timeout_ms:
+          type: "integer"
+        delete_after_run:
+          type: "boolean"
+        failure_alert_after:
+          type: "integer"
+        failure_alert_cooldown_ms:
+          type: "integer"
+        schedule_stagger_ms:
+          type: "integer"
+      required: ["id"]
+    output_schema:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        schedule_kind:
+          type: "string"
+        schedule:
+          type: "string"
+        next_run_at:
+          type: "string"
+        enabled:
+          type: "boolean"
+  - name: "run_task_now"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+      required: ["id"]
+    output_schema:
+      type: "object"
+      properties:
+        success:
+          type: "boolean"
+  - name: "delete_task"
+    transport:
+      type: "internal"
+    input_schema:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+      required: ["id"]
+    output_schema:
+      type: "object"
+      properties:
+        success:
+          type: "boolean"
+effects:
+  side_effects: []
+  risk_tier: "low"
+  requires_confirmation: false
+security:
+  auth: []
+  data_access:
+    pii: "none"
+    secrets: "forbidden"
+  sandbox:
+    required: false
+    network_egress: []
+governance:
+  publisher: "navi.official"
+  signed: false
+capability:
+  tags: ["scheduler", "schedule", "time", "reminder", "timer", "cron", "delayed-message", "recurring-task"]
+  domains: ["scheduling", "automation"]
+  provides: ["cron_jobs.create", "cron_jobs.list", "cron_jobs.update", "cron_jobs.delete", "cron_jobs.run_now"]
+  command_type: "schedule"

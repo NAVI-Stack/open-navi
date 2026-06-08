@@ -1,0 +1,98 @@
+oss27_version: 1.0
+skill_id: navi.example.messaging.send_message
+semver: 0.1.0
+
+display:
+  name: Send Example Message
+  description: Sends a message through the Example Messaging connector.
+  emoji: "📨"
+
+interfaces:
+  - name: send
+    description: Send a message to a recipient through the configured messaging account.
+    transport:
+      type: internal
+      connector: navi.connector.example_messaging
+      operation: send_message
+    input_schema:
+      type: object
+      additionalProperties: false
+      required:
+        - recipient
+        - body
+      properties:
+        recipient:
+          type: string
+          description: Stable recipient identifier, username, phone number, email, or platform-specific address.
+        body:
+          type: string
+          minLength: 1
+          maxLength: 4000
+          description: Message body to send.
+        idempotency_key:
+          type: string
+          description: Optional caller-provided key to prevent duplicate sends when supported.
+    output_schema:
+      type: object
+      additionalProperties: false
+      required:
+        - message_id
+        - delivered
+      properties:
+        message_id:
+          type: string
+        delivered:
+          type: boolean
+        provider_status:
+          type: string
+
+effects:
+  side_effects:
+    - writes_external_system
+    - sends_message
+  risk_tier: high
+  requires_confirmation: true
+  idempotency_level: conditional
+  reversibility: irreversible
+
+security:
+  auth:
+    type: api_key
+    env:
+      - EXAMPLE_MESSAGING_API_KEY
+  data_access:
+    pii: possible
+    secrets: forbidden
+  sandbox:
+    required: true
+    network_egress: allowlist
+
+performance:
+  timeout_ms: 8000
+  rate_limit:
+    qps: 2
+    burst: 5
+
+governance:
+  publisher: navi.local
+  signed: false
+  trust_tier: local
+
+capability:
+  tags:
+    - messaging
+    - send
+  domains:
+    - communication
+  provides:
+    - messaging.send
+  requires:
+    - navi.connector.example_messaging
+
+reliability:
+  expected_failure_modes:
+    - permission_denied
+    - rate_limited
+    - connector_unavailable
+    - recipient_invalid
+  retry_policy: conditional

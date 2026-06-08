@@ -1,0 +1,108 @@
+oss27_version: 1.0
+skill_id: navi.native.list_dir
+semver: 0.1.0
+
+display:
+  name: List Native Directory
+  description: List files and directories on the host filesystem via the PET desktop bridge.
+  emoji: "📂"
+
+interfaces:
+  - name: list
+    description: List entries in a directory on the host filesystem using an absolute path relayed through the PET bridge.
+    transport:
+      type: bridge
+      connector: navi.connector.pet_bridge
+      operation: list_dir
+    input_schema:
+      type: object
+      additionalProperties: false
+      required:
+        - path
+      properties:
+        path:
+          type: string
+          description: Absolute path to the directory on the host filesystem.
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 500
+          default: 256
+          description: Maximum number of entries to return.
+    output_schema:
+      type: object
+      additionalProperties: false
+      required:
+        - entries
+      properties:
+        path:
+          type: string
+          description: Resolved absolute path of the listed directory.
+        entries:
+          type: array
+          items:
+            type: object
+            required:
+              - name
+              - is_dir
+            properties:
+              name:
+                type: string
+              is_dir:
+                type: boolean
+              size_bytes:
+                type: integer
+        truncated:
+          type: boolean
+          description: True if the directory had more entries than the limit.
+
+effects:
+  side_effects:
+    - reads_external_system
+  risk_tier: medium
+  requires_confirmation: false
+  idempotency_level: idempotent
+  reversibility: reversible_internal
+
+security:
+  auth:
+    type: bridge_token
+    env:
+      - NAVI_PET_BRIDGE_TOKEN
+  data_access:
+    pii: possible
+    secrets: forbidden
+  sandbox:
+    required: true
+    network_egress: none
+
+performance:
+  timeout_ms: 5000
+  rate_limit:
+    qps: 10
+    burst: 20
+
+governance:
+  publisher: navi.builtin
+  signed: false
+  trust_tier: builtin
+
+capability:
+  tags:
+    - filesystem
+    - directory
+    - native
+  domains:
+    - workspace
+  provides:
+    - native.list_dir
+  requires:
+    - navi.connector.pet_bridge
+
+reliability:
+  expected_failure_modes:
+    - permission_denied
+    - directory_not_found
+    - bridge_unavailable
+    - path_outside_workspace
+  retry_policy: safe

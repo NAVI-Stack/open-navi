@@ -1,0 +1,69 @@
+/* ─── Trigger row ─────────────────────────────────────────────────────────── */
+
+.triggerRow {
+  display: flex;
+  align-items: center;
+  gap: var(--navi-space-sm);
+  width: min(820px, 100%);
+  margin: 0 auto var(--navi-space-sm);
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--navi-space-sm);
+  max-width: 220px;
+  min-width: 0;
+  padding: var(--navi-space-xs) var(--navi-space-sm);
+  border-radius: var(--navi-radius);
+  border: 1px solid var(--navi-border);
+  background: var(--navi-panel-hover);
+  color: var(--navi-text-secondary);
+  font: inherit;
+  font-size: var(--navi-font-size-xs);
+  font-weight: var(--navi-font-weight-medium);
+  cursor: pointer;
+  transition:
+    background var(--navi-transition-fast),
+    border-color var(--navi-transition-fast),
+    color var(--navi-transition-fast);
+}
+
+.trigger:hover {
+  background: var(--navi-panel-active);
+  color: var(--navi-text);
+  border-color: var(--navi-border-strong);
+}
+
+.triggerOpen {
+  background: var(--navi-panel-active);
+  color: var(--navi-text);
+  border-color: var(--navi-accent-glow);
+}
+
+.triggerIcon { flex-shrink: 0; color: var(--navi-text-tertiary); }
+.triggerOpen .triggerIcon { color: var(--navi-accent); }
+
+.triggerName {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--navi-text-tertiary);
+  transition: transform var(--navi-transition-fast);
+}
+
+.chevronOpen { transform: rotate(180deg); }
+
+.inlineTrigger {
+  height: 32px;
+  padding: 0 var(--navi-space-md);
+  border-radius: var(--navi-radius-md);
+  border: 1px solid var(--navi-border);
+  background: rgba(255, 255, 255, 0.03);
+}

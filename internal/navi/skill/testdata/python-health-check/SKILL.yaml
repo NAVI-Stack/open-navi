@@ -1,0 +1,54 @@
+oss27_version: "1.0"
+skill_id: "test-python-health-check"
+semver: "1.0.0"
+
+display:
+  name: "Test Python Health Check"
+  description: "Minimal Python subprocess skill fixture for testing the subprocess_python transport."
+  emoji: "🔧"
+
+interfaces:
+  - name: "health_check"
+    description: "Returns a static ok status. Used to validate Python subprocess execution."
+    transport:
+      type: "subprocess_python"
+      subprocess_python:
+        entrypoint: "bridge.py"
+    input_schema:
+      type: "object"
+      properties: {}
+      additionalProperties: false
+    output_schema:
+      type: "object"
+      properties:
+        status: { type: "string" }
+
+effects:
+  side_effects: []
+  risk_tier: "low"
+  idempotency_level: "idempotent"
+  reversibility: "reversible_internal"
+  requires_confirmation: false
+
+security:
+  auth: []
+  data_access:
+    pii: "none"
+    secrets: "forbidden"
+  sandbox:
+    required: false
+    network_egress: []
+
+performance:
+  expected_p50_ms: 50
+  timeout_ms: 5000
+
+python_runtime:
+  python_version: "3.11"
+  lifecycle: "cold"
+  io_format: "json_stdio"
+
+governance:
+  publisher: "navi.test"
+  signed: false
+  trust_tier: "builtin"

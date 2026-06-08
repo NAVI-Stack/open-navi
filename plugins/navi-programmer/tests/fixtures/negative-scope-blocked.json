@@ -1,0 +1,71 @@
+{
+  "fixture_id": "np-fixture-negative-scope-blocked",
+  "kind": "task_fixture",
+  "version": "0.1.0",
+  "description": "Negative mutation case that lacks an explicit workspace binding and should block honestly.",
+  "task": {
+    "source": "chat",
+    "raw_task": "Update files somewhere under the repo so the bug goes away.",
+    "current_repo": ".",
+    "acceptance_hint": "No mutation should proceed without explicit scope."
+  },
+  "expected": {
+    "task_class": "bounded_mutation",
+    "mutation_intent": "mutative",
+    "requires_mutation": true,
+    "required_evidence": [
+      "raw_task_input",
+      "normalized_task",
+      "repo_status",
+      "execution_plan"
+    ],
+    "must_not_emit": [
+      "changed_files",
+      "lifecycle_summary"
+    ]
+  },
+  "runner_input": {
+    "current_state": "normalized",
+    "target_state": "scope_bound",
+    "task_class": "bounded_mutation",
+    "available_skills": [
+      "navi-programmer.task-normalize",
+      "navi-programmer.repo-inspect"
+    ],
+    "evidence": {
+      "raw_task_input": {
+        "source": "chat",
+        "content": "Update files somewhere under the repo so the bug goes away.",
+        "received_at": "2026-05-09T00:00:00Z"
+      },
+      "normalized_task": {
+        "summary": "Update files somewhere under the repo so the bug goes away.",
+        "task_class": "bounded_mutation",
+        "mutation_intent": "mutative",
+        "acceptance_target": "No mutation should proceed without explicit scope.",
+        "ambiguity_notes": [
+          "repo target ambiguous",
+          "allowed scope missing"
+        ],
+        "validation_hints": {
+          "required": true,
+          "classes": [
+            "test"
+          ],
+          "candidate_commands": []
+        }
+      },
+      "repo_status": {
+        "is_git_repo": true,
+        "dirty": false,
+        "status_lines": []
+      },
+      "execution_plan": {
+        "steps": [
+          "Stop before mutation because scope is ambiguous."
+        ],
+        "intended_file_touch_set": []
+      }
+    }
+  }
+}

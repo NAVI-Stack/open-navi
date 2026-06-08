@@ -1,0 +1,21 @@
+{
+  "name": "navi",
+  "version": "0.1.0",
+  "description": "NAVI local daemon CLI wrapper for Node.js installs.",
+  "main": "index.cjs",
+  "bin": {
+    "navi": "./cli.cjs"
+  },
+  "files": [
+    "bin/",
+    "cli.cjs",
+    "index.cjs"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.cjs"
+  },
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18"
+  }
+}

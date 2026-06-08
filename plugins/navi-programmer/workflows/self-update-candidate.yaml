@@ -1,0 +1,340 @@
+workflow_id: navi.programmer.self_update_candidate
+name: Self Update Candidate
+version: "0.1.0"
+status: contract
+last_updated: "2026-04-30"
+description: >
+  Safely execute a NAVI Programmer programming task whose target repository
+  is NAVI or NAVI Programmer itself. Extends bounded mutation with candidate
+  workspace isolation, candidate runtime smoke validation, and an explicit
+  promotion readiness gate.
+extends: navi.programmer.bounded_mutation
+
+# ---------------------------------------------------------------------------
+# Invariants
+# These must hold throughout the workflow. Violation is a stop condition,
+# not a degraded path.
+# ---------------------------------------------------------------------------
+invariants:
+  candidate_workspace_is_isolated:
+    rule: candidate workspace path must differ from live runtime working tree
+    violation_class: candidate_preparation_failure
+  mutations_target_candidate_only:
+    rule: all file-mutate and patch-apply calls must use candidate workspace root
+    violation_class: mutation_failure
+  candidate_runtime_is_isolated:
+    rule: candidate runtime must use separate port, config, state, and connectors
+    violation_class: candidate_preparation_failure
+  validation_is_mandatory:
+    rule: at least one validation result must exist before any promotion step
+    violation_class: missing_validation_evidence
+  task_success_is_not_promotion:
+    rule: reaching review_ready state does not constitute promotion
+    violation_class: implicit_promotion_attempt
+  live_control_path_survives_failure:
+    rule: live instance must remain operational after any candidate failure
+    violation_class: control_path_loss
+  promotion_requires_confirmation:
+    rule: no remote push, PR, or runtime replacement without explicit operator confirmation
+    violation_class: implicit_promotion_attempt
+  failure_evidence_is_preserved:
+    rule: candidate evidence must not be discarded on failure
+    violation_class: evidence_loss
+
+# ---------------------------------------------------------------------------
+# States
+# Inherits all bounded-mutation states. Self-update adds three phases after
+# the executing/validating gate and before review_ready.
+# ---------------------------------------------------------------------------
+states:
+
+  # --- Inherited from bounded_mutation (summary) ---
+
+  received:
+    description: Raw self-update task received.
+    required_evidence:
+      - raw_task_input
+      - task_source
+    transitions_to:
+      - normalized
+      - blocked
+      - failed
+
+  normalized:
+    description: Task normalized. Must confirm self_update classification.
+    required_evidence:
+      - normalized_task         # must include self_update: true
+      - workspace_binding       # bound to NAVI or NAVI Programmer repo root
+    self_update_checks:
+      - normalized_task.self_update must be true
+      - normalized_task.task_class must be self_update_candidate
+      - workspace_binding.scope_status or binding_status must be bound
+    transitions_to:
+      - candidate_prepared
+      - blocked                 # if scope is ambiguous
+      - failed
+
+  candidate_prepared:
+    description: >
+      Isolated candidate workspace created. This is the first self-update-specific
+      state. Candidate workspace must be distinct from the live runtime working tree.
+    required_evidence:
+      - candidate_context
+    candidate_context_shape:
+      workspace_path: required
+      branch_name: required
+      isolation_confirmed: true
+      strategy: one of [git_worktree, isolated_clone]
+    transitions_to:
+      - scope_bound
+      - failed                  # if workspace cannot be created or isolated
+
+  scope_bound:
+    description: Repo inspected and execution scope confirmed within candidate workspace.
+    required_evidence:
+      - repo_status
+      - inspected_files
+      - relevant_patterns
+    transitions_to:
+      - inspecting
+      - blocked
+      - failed
+
+  inspecting:
+    description: Pre-mutation inspection complete.
+    required_evidence:
+      - repo_status
+      - inspected_files
+      - relevant_patterns
+    transitions_to:
+      - planned
+      - blocked
+      - failed
+
+  planned:
+    description: Execution plan produced for candidate workspace changes.
+    required_evidence:
+      - execution_plan
+      - intended_touch_set
+      - validation_plan
+      - recovery_notes
+    transitions_to:
+      - executing
+      - blocked
+      - failed
+
+  executing:
+    description: >
+      File mutations applied to candidate workspace only. scope_root for all
+      mutation skills must be the candidate workspace path.
+    required_evidence:
+      - changed_files
+      - diff_summary
+    transitions_to:
+      - validating
+      - failed
+
+  validating:
+    description: >
+      Build, test, and lint validation run against the candidate workspace.
+      Validation cannot be skipped when changed_files is non-empty.
+    required_evidence:
+      - validation_results      # at least one run_command or record_not_run entry
+    validation_gate:
+      rule: >
+        If changed_files is non-empty, validation_results must contain at least
+        one run_command result or one record_not_run result with an explicit reason.
+      violation: workflow outcome becomes failed if gate is not satisfied
+    transitions_to:
+      - candidate_runtime_validated
+      - partially_succeeded     # validation failed but evidence exists
+      - failed                  # validation gate not satisfied
+
+  # --- Self-update-specific states ---
+
+  candidate_runtime_validated:
+    description: >
+      Candidate NAVI runtime launched in isolation and smoke suite executed.
+      Required for any change that affects runtime behavior. For documentation-only
+      changes, this state may be reached with smoke_results containing an explicit
+      docs_only_skip with reason.
+    required_evidence:
+      - smoke_results
+    smoke_results_shape:
+      boot: pass | fail | skipped_docs_only
+      health: pass | fail | skipped_docs_only
+      basic_request: pass | fail | skipped_docs_only
+      skill_surface_bootstrap: pass | fail | skipped_docs_only
+      governance_path: pass | fail | skipped_docs_only
+      clean_shutdown: pass | fail | skipped_docs_only
+    candidate_runtime_requirements:
+      separate_process: true
+      separate_port: true
+      separate_config_dir: true
+      separate_state_dir: true
+      connectors: disabled_or_stubbed
+    transitions_to:
+      - promotion_readiness_reported
+      - partially_succeeded     # smoke failed
+      - failed                  # candidate failed to boot
+
+  promotion_readiness_reported:
+    description: >
+      Promotion readiness synthesized from all validation and smoke evidence.
+      This is a distinct state from review_ready. Reaching this state means
+      the evidence is complete and a promotion recommendation has been produced.
+      It does not mean the candidate is promoted.
+    required_evidence:
+      - promotion_readiness_summary
+    promotion_readiness_summary_shape:
+      all_validation_layers_ran: true | false
+      skipped_layers_have_reasons: true | false
+      any_validation_failed: true | false
+      candidate_runtime_passed: true | false | not_applicable
+      unresolved_risks: list
+      promotion_recommendation: recommended | needs_review | not_recommended
+    transitions_to:
+      - review_ready            # if promotion_recommendation is recommended or needs_review
+      - partially_succeeded     # if not_recommended but useful evidence exists
+      - failed                  # if required evidence is missing
+
+  review_ready:
+    description: >
+      Review-ready branch and commit produced in the candidate workspace.
+      Live repo and live runtime are unchanged. Remote action (push, PR)
+      requires explicit operator confirmation and must not happen automatically.
+    required_evidence:
+      - lifecycle_summary
+    lifecycle_summary_shape:
+      branch: required
+      commit: required
+      changed_files: required
+      review_handoff_summary: required
+    confirmation_required_before:
+      - remote_push
+      - pr_creation
+      - trusted_runtime_replacement
+    transitions_to:
+      - completed               # after operator confirms and remote action completes
+      - promotion_rejected      # operator rejects or defers
+
+# ---------------------------------------------------------------------------
+# Terminal outcomes
+# ---------------------------------------------------------------------------
+outcomes:
+
+  completed:
+    description: >
+      All phases completed. Candidate validated. Promotion confirmed by operator.
+      Review-ready output exists with all required evidence.
+    requires:
+      - review_ready evidence complete
+      - promotion_readiness_summary with recommended or needs_review
+      - all required validation evidence present
+      - operator confirmation recorded
+
+  partially_succeeded:
+    description: >
+      Useful candidate evidence exists but the workflow did not reach clean
+      completion. Examples: validation failed, smoke suite had failures,
+      promotion not recommended.
+    requires:
+      - at least changed_files and diff_summary evidence
+      - failure reason recorded
+
+  blocked:
+    description: >
+      Workflow paused waiting for operator input, missing context, unavailable
+      candidate workspace, or ambiguous scope. Not a failure. Candidate context
+      is preserved.
+    requires:
+      - current evidence preserved
+      - block reason and needed resolution recorded
+
+  promotion_rejected:
+    description: >
+      Operator reviewed and rejected or deferred promotion. Candidate evidence
+      is preserved. Candidate workspace archived or discarded per operator
+      instruction.
+    requires:
+      - promotion_readiness_summary
+      - rejection reason recorded
+
+  failed:
+    description: >
+      Workflow cannot produce useful reviewable progress or violated a required
+      gate. Candidate evidence preserved. Live instance unchanged and operational.
+    requires:
+      - failure_class recorded (see below)
+      - all available evidence preserved
+      - live instance confirmed operational
+
+# ---------------------------------------------------------------------------
+# Failure classes
+# ---------------------------------------------------------------------------
+failure_classes:
+  - scope_resolution_failure
+  - candidate_preparation_failure
+  - mutation_failure
+  - build_validation_failure
+  - test_validation_failure
+  - candidate_startup_failure
+  - candidate_smoke_failure
+  - missing_validation_evidence
+  - implicit_promotion_attempt
+  - control_path_loss
+  - evidence_loss
+  - promotion_rejected
+  - cleanup_failure
+
+# ---------------------------------------------------------------------------
+# Required evidence — full set for a complete run
+# ---------------------------------------------------------------------------
+required_evidence_complete_run:
+  - raw_task_input
+  - normalized_task            # must include self_update: true
+  - workspace_binding
+  - candidate_context          # workspace path, branch, isolation_confirmed
+  - repo_status
+  - inspected_files
+  - relevant_patterns
+  - execution_plan
+  - changed_files
+  - diff_summary
+  - validation_results         # at least one entry
+  - smoke_results              # at least one entry per check, or docs_only_skip
+  - promotion_readiness_summary
+  - lifecycle_summary          # branch, commit, changed_files, handoff summary
+
+# ---------------------------------------------------------------------------
+# Skills used
+# All inherited skills operate on candidate workspace, not live repo root.
+# ---------------------------------------------------------------------------
+skills:
+  navi-programmer.task-normalize:
+    interfaces: [normalize_task, bind_scope]
+    phases: [received, normalized]
+  navi-programmer.repo-inspect:
+    interfaces: [list_tree, read_file, search_text, repo_status, inspect_diff]
+    phases: [scope_bound, inspecting]
+    scope_note: targets candidate workspace after candidate_prepared
+  navi-programmer.file-mutate:
+    interfaces: [create_file, write_file]
+    phases: [executing]
+    scope_note: scope_root must be candidate workspace path
+  navi-programmer.patch-apply:
+    interfaces: [preview_patch, apply_patch]
+    phases: [executing]
+    scope_note: scope_root must be candidate workspace path
+  navi-programmer.run-validation:
+    interfaces: [run_command, record_not_run]
+    phases: [validating]
+    scope_note: working directory must be candidate workspace
+  navi-programmer.git-lifecycle:
+    interfaces: [inspect_status, create_branch, create_commit, prepare_review]
+    phases: [review_ready]
+    scope_note: operates on candidate workspace branch, not live working tree
+  navi-programmer.remote-review:
+    interfaces: [push_branch, create_pull_request]
+    phases: [review_ready]
+    scope_note: executes only after explicit confirmation and carries validation context into remote review output

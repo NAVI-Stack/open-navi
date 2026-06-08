@@ -1,0 +1,4 @@
+- status "loading" [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: NAVI
+    - generic [ref=e5]: "-SOLE"

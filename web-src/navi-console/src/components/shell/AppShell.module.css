@@ -1,0 +1,46 @@
+.shell {
+  display: grid;
+  grid-template-columns: var(--navi-rail-width) 1fr;
+  height: 100vh;
+  overflow: hidden;
+  transition: grid-template-columns var(--navi-transition-slow);
+}
+
+.shell.inspectorOpen {
+  grid-template-columns: var(--navi-rail-width) 1fr var(--navi-inspector-width);
+}
+
+.shell.railCollapsed {
+  grid-template-columns: var(--navi-rail-collapsed-width) 1fr;
+}
+
+.shell.railCollapsed.inspectorOpen {
+  grid-template-columns: var(--navi-rail-collapsed-width) 1fr var(--navi-inspector-width);
+}
+
+.mainArea {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .shell {
+    grid-template-columns: var(--navi-rail-collapsed-width) minmax(0, 1fr);
+  }
+  .shell.inspectorOpen {
+    grid-template-columns: var(--navi-rail-collapsed-width) minmax(0, 1fr);
+  }
+  .shell.railCollapsed,
+  .shell.railCollapsed.inspectorOpen {
+    grid-template-columns: var(--navi-rail-collapsed-width) minmax(0, 1fr);
+  }
+}

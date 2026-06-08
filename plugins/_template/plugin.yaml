@@ -1,0 +1,71 @@
+# NAVI Plugin Manifest
+# This file is the lifecycle, packaging, permission, and discovery boundary.
+# Skills and connectors remain typed subcomponents owned by this plugin.
+
+plugin_id: navi.example.messaging
+semver: 0.1.0
+kind: integration
+status: disabled
+trust_tier: local
+
+display:
+  name: Example Messaging Plugin
+  description: Example scaffold for a plugin that exposes messaging capabilities through governed skills and a connector.
+  emoji: "💬"
+
+categories:
+  - integration
+
+capabilities:
+  - messaging.send
+  - messaging.fetch_updates
+
+components:
+  skills:
+    - path: skills/send-message/SKILL.yaml
+      skill_id: navi.example.messaging.send_message
+    - path: skills/fetch-updates/SKILL.yaml
+      skill_id: navi.example.messaging.fetch_updates
+  connectors:
+    - path: connectors/examplemessaging
+      connector_id: navi.connector.example_messaging
+  policies:
+    - path: policies/permissions.yaml
+    - path: policies/rate-limits.yaml
+
+permissions:
+  auth:
+    type: api_key
+    env:
+      - EXAMPLE_MESSAGING_API_KEY
+  scopes:
+    - messages.read
+    - messages.write
+  data_access:
+    pii: possible
+    secrets: forbidden
+  network:
+    egress: allowlist
+    allowlist:
+      - api.example-messaging.local
+
+runtime:
+  isolation:
+    required: true
+    mode: process
+  failure_behavior:
+    mark_degraded_on_crash: true
+    circuit_breaker: true
+
+lifecycle:
+  install:
+    requires_confirmation: true
+    checks:
+      - env: EXAMPLE_MESSAGING_API_KEY
+  activate:
+    expose_skills: true
+  disable:
+    hide_skills: true
+    revoke_runtime_handles: true
+  uninstall:
+    remove_local_state: prompt_owner
