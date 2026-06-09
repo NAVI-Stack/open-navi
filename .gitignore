@@ -62,6 +62,12 @@ env/
 .vscode/
 *.swp
 *.swo
+.cursor/settings.json
+.cursor/plans/
+.cursor/commands/
+.cursor/rules/
+.claude/
+.agents/
 
 # Local Compose overrides (from compose.custom.example.yml)
 compose.local.yml
@@ -92,7 +98,7 @@ navid.stdout.log
 .codex-go-cache/
 .codex-go-modcache/
 .cursor/hooks/state/continual-learning.json
-.claude/settings.local.json
+**/.claude/settings.local.json
 /scratch/
 .navi/
 
@@ -134,3 +140,12 @@ web-src/navi-console/.vite/
 .cursor/hooks/state/continual-learning-index.json
 web-src/navi-console/.claude/
 docs/.tmp.driveupload*
+
+# Volatile agent handoff/task state. Keep public docs in docs/; keep live task
+# queues, handoffs, and screenshots out of the public source tree.
+PROJECT_STATE.md
+NEXT_ACTION.md
+TASK_QUEUE.md
+docs/agents/handoff/
+docs/agents/logs/
+docs/agents/tasks/
