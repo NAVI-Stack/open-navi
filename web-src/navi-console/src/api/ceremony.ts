@@ -156,7 +156,7 @@ export interface CeremonyStepInput {
   action?: string;
 }
 
-const CeremonyStepResponseSchema = z.object({
+export const CeremonyStepResponseSchema = z.object({
   step: z.string(),
   ok: z.boolean().optional(),
   action: z.string().optional(),

@@ -47,7 +47,8 @@ import {
 import type { CeremonyControlOption, CeremonyControlAction } from '@/components/chat/CeremonyControls';
 import { parseRenderPayload, type ChatRenderPayload } from '@/components/chat/renderPayload';
 import { TypingIndicator } from '@/components/chat/TypingIndicator';
-import { useCeremonyStep } from '@/api/ceremony';
+import { useCeremony, useCeremonyStep } from '@/api/ceremony';
+import { shouldShowCeremonyControls } from '@/lib/ceremonyChat';
 import { useRail, useLocalWorking } from '@/components/shell/AppShell';
 import styles from './ChatPage.module.css';
 
@@ -150,6 +151,14 @@ function ExistingChatView({
     return firstRun?.type === 'navi_ceremony';
   }, [chatData]);
 
+  const ceremony = useCeremony();
+  const isCeremonyActive =
+    isCeremonyThread && ceremony.data?.journeyState.status === 'in_progress';
+  const ceremonyCurrentStep = ceremony.data?.journeyState.currentStep;
+  const [ceremonyStreamActive, setCeremonyStreamActive] = useState(false);
+  const ceremonyNeedsLiveSync =
+    isCeremonyThread && (isCeremonyActive || ceremonyStreamActive);
+
   const {
     messages,
     sendMessage,
@@ -162,7 +171,7 @@ function ExistingChatView({
     transport,
     onFinish: () => {
       void refreshChatQueries(queryClient, chatId, projectId, true).then(() => {
-        if (!isCeremonyThread) return;
+        if (!ceremonyNeedsLiveSync) return;
         void queryClient.refetchQueries({ queryKey: ['chat', chatId] });
       });
     },
@@ -180,13 +189,13 @@ function ExistingChatView({
       return;
     }
     const ceremonyNeedsSync =
-      isCeremonyThread &&
+      ceremonyNeedsLiveSync &&
       (serverMessages.length > messages.length ||
         serverMessages.at(-1)?.id !== messages.at(-1)?.id);
     if (ceremonyNeedsSync || shouldSyncServerMessages(serverMessages, messages, status)) {
       setMessages(serverMessages);
     }
-  }, [serverMessages, messages, status, setMessages, isCeremonyThread]);
+  }, [serverMessages, messages, status, setMessages, ceremonyNeedsLiveSync]);
 
   // Reset when chatId changes
   useEffect(() => {
@@ -232,14 +241,14 @@ function ExistingChatView({
       } else if (TERMINAL_EVENT_TYPES.has(type) || RUN_FAILURE_EVENT_TYPES.has(type)) {
         setLiveToolParts([]);
         if (
-          isCeremonyThread &&
+          ceremonyNeedsLiveSync &&
           (type === 'assistant.message.completed' || type === 'run.completed')
         ) {
           void refreshChatQueries(queryClient, chatId, projectId, false);
         }
       }
     });
-  }, [live.subscribe, chatId, isCeremonyThread, projectId, queryClient]);
+  }, [live.subscribe, chatId, ceremonyNeedsLiveSync, projectId, queryClient]);
 
   const handleScroll = useCallback(() => {
     const el = scrollRef.current;
@@ -352,13 +361,11 @@ function ExistingChatView({
   // Auto-collapse the sidebar when entering a ceremony thread so NAVI gets full focus.
   const rail = useRail();
   useEffect(() => {
-    if (isCeremonyThread && !isLoading) {
+    if (isCeremonyActive && !isLoading) {
       rail.silentCollapse();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCeremonyThread, isLoading]);
-
-  const [ceremonyStreamActive, setCeremonyStreamActive] = useState(false);
+  }, [isCeremonyActive, isLoading]);
 
   const ceremonyStep = useCeremonyStep();
 
@@ -405,7 +412,7 @@ function ExistingChatView({
       .map((msg) => {
         const base = uiMessageToChatView(msg);
         if (!base) return null;
-        if (isCeremonyThread && base.role === 'assistant') {
+        if (isCeremonyActive && base.role === 'assistant') {
           return { ...base, ...ceremonyMetaFor(base.id) };
         }
         if (base.role === 'assistant') {
@@ -415,7 +422,7 @@ function ExistingChatView({
         return base;
       })
       .filter((m): m is ChatMessageView => m !== null);
-  }, [messages, isCeremonyThread, ceremonyMetaFor, renderPayloadFor]);
+  }, [messages, isCeremonyActive, ceremonyMetaFor, renderPayloadFor]);
 
   // Smart auto-scroll: only stick to the bottom when the user is already there.
   useEffect(() => {
@@ -452,15 +459,6 @@ function ExistingChatView({
       ceremonyStep.mutate(
         { chatId, step, value },
         {
-          onSuccess: (data) => {
-            if (!data.redirect) return;
-            stopListen();
-            setCeremonyStreamActive(false);
-            setMessages((prev) => prev.filter((m) => m.id !== assistantId));
-            void refreshChatQueries(queryClient, chatId, projectId, false);
-            queryClient.invalidateQueries({ queryKey: ['ceremony'] });
-            navigate(data.redirect, true);
-          },
           onError: (err) => {
             stopListen();
             setCeremonyStreamActive(false);
@@ -478,7 +476,6 @@ function ExistingChatView({
       live.subscribe,
       setMessages,
       updateStreamingAssistant,
-      navigate,
     ],
   );
 
@@ -493,7 +490,7 @@ function ExistingChatView({
   }, [isWorking, setLocalWorking]);
 
   const showTyping =
-    (isWorking || (isCeremonyThread && ceremonyStreamActive)) &&
+    (isWorking || ceremonyStreamActive) &&
     messages.at(-1)?.role !== 'assistant';
 
   // Id of the most recent assistant message (regenerate target).
@@ -515,7 +512,7 @@ function ExistingChatView({
       <div className={styles.header}>
         <div className={styles.titleInfo}>
           <h2 className={styles.title}>{pageTitle}</h2>
-          {isCeremonyThread && (
+          {isCeremonyActive && (
             <span className={styles.titleSubtitle}>Your first conversation.</span>
           )}
           {projectId && <StatusBadge label={`Project: ${projectId}`} />}
@@ -533,8 +530,7 @@ function ExistingChatView({
           <div className={styles.timelineInner}>
             {displayMessages.map((msg) => {
               const isStreamingTail =
-                (status === 'streaming' ||
-                  (isCeremonyThread && ceremonyStreamActive)) &&
+                (status === 'streaming' || ceremonyStreamActive) &&
                 msg.role === 'assistant' &&
                 msg.id === messages.at(-1)?.id;
               return (
@@ -550,7 +546,7 @@ function ExistingChatView({
                           : persistedToolParts(msg.id)
                         : undefined,
                     variant:
-                      msg.role === 'assistant' && !isCeremonyThread
+                      msg.role === 'assistant' && !isCeremonyActive
                         ? variantInfo(
                             chatData?.messages?.find((x) => (x.id ?? '') === msg.id)
                               ?.metadata as Record<string, unknown> | undefined,
@@ -585,7 +581,11 @@ function ExistingChatView({
                       : undefined
                   }
                   onCeremonySelect={
-                    isCeremonyThread && msg.role === 'assistant'
+                    shouldShowCeremonyControls(
+                      isCeremonyActive,
+                      msg.ceremonyStep,
+                      ceremonyCurrentStep,
+                    )
                       ? handleCeremonySelect
                       : undefined
                   }

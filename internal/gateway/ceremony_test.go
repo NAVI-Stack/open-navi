@@ -495,13 +495,111 @@ func TestCeremonyStep_PactConfirm(t *testing.T) {
 	}
 	var body map[string]any
 	json.NewDecoder(res.Body).Decode(&body)
-	if body["redirect"] != "/chats/"+chatID {
-		t.Fatalf("expected redirect /chats/%s, got %v", chatID, body["redirect"])
+	if body["ok"] != true {
+		t.Fatalf("expected ok true, got %v", body["ok"])
+	}
+	if _, hasRedirect := body["redirect"]; hasRedirect {
+		t.Fatalf("expected no redirect on pact confirm, got %v", body["redirect"])
 	}
 
 	state, _ := onboarding.LoadCeremonyJourneyState(context.Background(), db)
 	if state.Status != onboarding.CeremonyStatusCompleted {
 		t.Fatalf("expected ceremony completed, got %q", state.Status)
+	}
+
+	time.Sleep(400 * time.Millisecond)
+
+	events, err := store.SessionEventsSince(
+		context.Background(),
+		db,
+		chatID,
+		0,
+		[]schema.EventVisibility{schema.VisibilityUser},
+		100,
+	)
+	if err != nil {
+		t.Fatalf("SessionEventsSince: %v", err)
+	}
+	var sawClosing bool
+	for _, ev := range events {
+		if ev.Type != schema.FactAssistantMessageCompleted {
+			continue
+		}
+		payloadJSON, err := json.Marshal(ev.Payload)
+		if err != nil {
+			continue
+		}
+		var payload schema.AssistantMessageCompletedPayload
+		if err := json.Unmarshal(payloadJSON, &payload); err != nil {
+			continue
+		}
+		if strings.Contains(payload.Content, "I'm ready") {
+			sawClosing = true
+			break
+		}
+	}
+	if !sawClosing {
+		t.Fatal("expected user-visible closing assistant message after pact confirm")
+	}
+
+	chatRes := doReq(t, srv, http.MethodGet, "/api/navi/chats/"+chatID, "", "", "127.0.0.1:1234", nil)
+	if chatRes.StatusCode != http.StatusOK {
+		t.Fatalf("GET chat: expected 200, got %d", chatRes.StatusCode)
+	}
+	var chatBody map[string]any
+	if err := json.NewDecoder(chatRes.Body).Decode(&chatBody); err != nil {
+		t.Fatalf("decode chat: %v", err)
+	}
+	messages, _ := chatBody["messages"].([]any)
+	var sawUserConfirm, sawClosingMessage bool
+	for _, raw := range messages {
+		msg, _ := raw.(map[string]any)
+		content, _ := msg["content"].(string)
+		role, _ := msg["role"].(string)
+		if role == "user" && content == "Looks right" {
+			sawUserConfirm = true
+		}
+		if role == "assistant" && strings.Contains(content, "I'm ready") {
+			sawClosingMessage = true
+		}
+	}
+	if !sawUserConfirm {
+		t.Fatal("expected user transcript line for pact confirm")
+	}
+	if !sawClosingMessage {
+		t.Fatal("expected closing assistant message in chat transcript")
+	}
+}
+
+func TestCeremonyStep_PactConfirmRejectedWhenNotInProgress(t *testing.T) {
+	srv, _, db := testServerWithNavi(t)
+	completeRequiredOnboardingForCeremonyTest(t, srv, db, "Test Owner")
+
+	res := doReq(t, srv, http.MethodPost, "/api/ceremony/init-chat", "", "", "127.0.0.1:1234", nil)
+	var initBody map[string]any
+	json.NewDecoder(res.Body).Decode(&initBody)
+	chatID := initBody["chatId"].(string)
+
+	if _, err := onboarding.StartCeremonyJourney(context.Background(), db, "pact_summary"); err != nil {
+		t.Fatalf("start journey at pact_summary: %v", err)
+	}
+
+	res = doReq(t, srv, http.MethodPost, "/api/ceremony/step", "", "", "127.0.0.1:1234", map[string]any{
+		"chatId": chatID,
+		"step":   "pact_summary",
+		"action": "confirm",
+	})
+	if res.StatusCode != http.StatusOK {
+		t.Fatalf("first pact confirm: expected 200, got %d", res.StatusCode)
+	}
+
+	res = doReq(t, srv, http.MethodPost, "/api/ceremony/step", "", "", "127.0.0.1:1234", map[string]any{
+		"chatId": chatID,
+		"step":   "pact_summary",
+		"action": "confirm",
+	})
+	if res.StatusCode != http.StatusBadRequest {
+		t.Fatalf("second pact confirm: expected 400, got %d", res.StatusCode)
 	}
 }
 
@@ -526,9 +624,42 @@ func TestCeremonyStep_PactSkip(t *testing.T) {
 	if res.StatusCode != http.StatusOK {
 		t.Fatalf("ceremony step pact skip: expected 200, got %d", res.StatusCode)
 	}
+	var body map[string]any
+	json.NewDecoder(res.Body).Decode(&body)
+	if body["ok"] != true {
+		t.Fatalf("expected ok true, got %v", body["ok"])
+	}
+	if _, hasRedirect := body["redirect"]; hasRedirect {
+		t.Fatalf("expected no redirect on pact skip, got %v", body["redirect"])
+	}
 
 	state, _ := onboarding.LoadCeremonyJourneyState(context.Background(), db)
 	if state.Status != onboarding.CeremonyStatusSkipped {
 		t.Fatalf("expected ceremony skipped, got %q", state.Status)
+	}
+
+	time.Sleep(400 * time.Millisecond)
+
+	chatRes := doReq(t, srv, http.MethodGet, "/api/navi/chats/"+chatID, "", "", "127.0.0.1:1234", nil)
+	if chatRes.StatusCode != http.StatusOK {
+		t.Fatalf("GET chat: expected 200, got %d", chatRes.StatusCode)
+	}
+	var chatBody map[string]any
+	if err := json.NewDecoder(chatRes.Body).Decode(&chatBody); err != nil {
+		t.Fatalf("decode chat: %v", err)
+	}
+	messages, _ := chatBody["messages"].([]any)
+	var sawSkipClosing bool
+	for _, raw := range messages {
+		msg, _ := raw.(map[string]any)
+		content, _ := msg["content"].(string)
+		role, _ := msg["role"].(string)
+		if role == "assistant" && strings.Contains(content, "revisit these choices") {
+			sawSkipClosing = true
+			break
+		}
+	}
+	if !sawSkipClosing {
+		t.Fatal("expected skip closing assistant message in chat transcript")
 	}
 }

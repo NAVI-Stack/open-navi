@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildCeremonyStepRequestBody } from './ceremony';
+import { buildCeremonyStepRequestBody, CeremonyStepResponseSchema } from './ceremony';
 
 describe('buildCeremonyStepRequestBody', () => {
   it('sends action (not value) for pact_summary', () => {
@@ -29,6 +29,16 @@ describe('buildCeremonyStepRequestBody', () => {
       step: 'pact_summary',
       action: 'confirm',
     });
+  });
+
+  it('parses pact confirm responses without redirect', () => {
+    const parsed = CeremonyStepResponseSchema.parse({
+      step: 'pact_summary',
+      action: 'confirm',
+      ok: true,
+    });
+    expect(parsed.ok).toBe(true);
+    expect(parsed.redirect).toBeUndefined();
   });
 
   it('sends value for structured choice steps', () => {

@@ -503,6 +503,18 @@ func (s *Server) savePreferenceSignalsForCeremonySeed(ctx context.Context, owner
 	return nil
 }
 
+func buildCeremonyConfirmClosing(owner ceremonyOwnerProfileSeed) string {
+	name := strings.TrimSpace(owner.DisplayName)
+	if name == "" {
+		name = "there"
+	}
+	return "Good, " + name + ". I'm ready.\n\nWhenever you like, just say what's on your mind — we can plan, explore, or start on something together."
+}
+
+func buildCeremonySkipClosing() string {
+	return "No problem — we can always revisit these choices later.\n\nWhenever you're ready, just say what's on your mind."
+}
+
 func buildCeremonyPactSummary(owner ceremonyOwnerProfileSeed, presence ceremonyPresencePreference, boundaries ceremonyTrustBoundaryDefaults, seed ceremonyPersonalizationSeed) []string {
 	name := strings.TrimSpace(owner.DisplayName)
 	if name == "" {
@@ -845,6 +857,10 @@ func (s *Server) handleCeremonyStep(w http.ResponseWriter, r *http.Request) {
 		replyErrorAPI(w, http.StatusBadRequest, "BAD_REQUEST", "chatId does not match ceremony chat", nil)
 		return
 	}
+	if state.Status != onboarding.CeremonyStatusInProgress {
+		replyErrorAPI(w, http.StatusBadRequest, "BAD_REQUEST", "ceremony is not in progress", nil)
+		return
+	}
 
 	switch req.Step {
 	case "navi_presence":
@@ -901,28 +917,33 @@ func (s *Server) handleCeremonyStep(w http.ResponseWriter, r *http.Request) {
 	case "pact_summary":
 		switch req.Action {
 		case "confirm":
+			if _, err := s.cfg.Navi.RecordUserMessage(r.Context(), req.ChatID, "Looks right"); err != nil {
+				replyErrorAPI(w, http.StatusInternalServerError, "INTERNAL", err.Error(), nil)
+				return
+			}
 			if _, err := onboarding.CompleteCeremonyJourney(r.Context(), s.cfg.DB); err != nil {
 				replyErrorAPI(w, http.StatusInternalServerError, "INTERNAL", err.Error(), nil)
 				return
 			}
-			replyJSON(w, http.StatusOK, map[string]any{
-				"step":     "pact_summary",
-				"action":   "confirm",
-				"redirect": "/chats/" + req.ChatID,
-			})
-			return
+			ownerSeed := s.loadCeremonyOwnerProfileSeed(r.Context(), ownerID)
+			if err := s.injectCeremonyAssistantMessage(r.Context(), req.ChatID, buildCeremonyConfirmClosing(ownerSeed), nil); err != nil {
+				replyErrorAPI(w, http.StatusInternalServerError, "INTERNAL", err.Error(), nil)
+				return
+			}
 
 		case "skip":
+			if _, err := s.cfg.Navi.RecordUserMessage(r.Context(), req.ChatID, "Skip for now"); err != nil {
+				replyErrorAPI(w, http.StatusInternalServerError, "INTERNAL", err.Error(), nil)
+				return
+			}
 			if _, err := onboarding.SkipCeremonyJourney(r.Context(), s.cfg.DB); err != nil {
 				replyErrorAPI(w, http.StatusInternalServerError, "INTERNAL", err.Error(), nil)
 				return
 			}
-			replyJSON(w, http.StatusOK, map[string]any{
-				"step":     "pact_summary",
-				"action":   "skip",
-				"redirect": "/chats/" + req.ChatID,
-			})
-			return
+			if err := s.injectCeremonyAssistantMessage(r.Context(), req.ChatID, buildCeremonySkipClosing(), nil); err != nil {
+				replyErrorAPI(w, http.StatusInternalServerError, "INTERNAL", err.Error(), nil)
+				return
+			}
 
 		case "adjust":
 			if _, err := onboarding.StartCeremonyJourney(r.Context(), s.cfg.DB, "owner_recognition"); err != nil {

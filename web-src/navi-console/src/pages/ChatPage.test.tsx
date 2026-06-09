@@ -77,7 +77,8 @@ vi.mock('@/hooks/useLiveEvents', () => ({
 }));
 
 vi.mock('@/api/ceremony', () => ({
-  useCeremonyStep: () => ({ data: null, isLoading: false }),
+  useCeremony: () => ({ data: null, isLoading: false }),
+  useCeremonyStep: () => ({ mutate: vi.fn(), data: null, isLoading: false }),
 }));
 
 vi.mock('@/components/shell/AppShell', () => ({
